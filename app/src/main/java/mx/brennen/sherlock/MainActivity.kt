@@ -1,12 +1,11 @@
 package mx.brennen.sherlock
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
-
 
     private lateinit var textMessage: TextView
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -26,7 +25,16 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                textMessage.setText(R.string.title_dashboard)
+
+                val fragmentManager = supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+                fragmentTransaction.apply {
+
+                    replace(R.id.hostFragment, NewtonFragment())
+
+                }
+                fragmentTransaction.commit()
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {

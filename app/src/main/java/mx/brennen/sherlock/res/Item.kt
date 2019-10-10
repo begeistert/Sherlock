@@ -1,9 +1,5 @@
 package mx.brennen.sherlock.res
 
-class Item (title: String, info : String, image : Int){
+import android.view.View
 
-    var title :String = title
-    var info : String = info
-    var image : Int = image
-
-}
+class Item (var title: String, var info: String, var image: Int, var listener: View.OnClickListener)

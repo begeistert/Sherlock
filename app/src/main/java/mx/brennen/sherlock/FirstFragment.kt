@@ -2,18 +2,42 @@ package mx.brennen.sherlock
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_first.*
 import mx.brennen.sherlock.res.Item
 import mx.brennen.sherlock.res.PersonalAdapter
+import mx.brennen.sherlock.res.misc.OnNoteLister
 
-class FirstFragment : Fragment() {
+
+class FirstFragment : Fragment(), OnNoteLister {
+
+    override fun OnNoteListener(position: Int) {
+
+        when (position) {
+
+            1 -> {
+
+                val fragmentManager = activity!!.supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+                fragmentTransaction.apply {
+
+                    replace(R.id.hostFragment, NewtonFragment())
+
+                }
+                fragmentTransaction.commit()
+
+
+            }
+
+        }
+
+    }
 
     val itemList : ArrayList<Item> = ArrayList()
     lateinit var reciclerView : RecyclerView
@@ -35,10 +59,8 @@ class FirstFragment : Fragment() {
 
         createList()
 
-        val personalAdapter = PersonalAdapter(itemList)
+        val personalAdapter = PersonalAdapter(itemList,this)
         reciclerView.adapter = personalAdapter
-
-
         val list = arrayOf("Newton","Lagrange","Interpolacion","Lineal","Cuadratica")
         val stringAdapter = context?.let { ArrayAdapter<String>(it, android.R.layout.simple_list_item_1, list) }
 
@@ -48,16 +70,136 @@ class FirstFragment : Fragment() {
 
     private fun createList() {
 
-        itemList.add(Item("Interpolacion Lineal", "Metodo de Interpolacion Lineal",R.drawable.calculo))
-        itemList.add(Item("Interpolacion Cuadratica", "Metodo de Interpolacion Lineal",R.drawable.calculo))
-        itemList.add(Item("Newton", "Metodo de Interpolacion Lineal",R.drawable.calculo))
-        itemList.add(Item("Lagrange", "Metodo de Interpolacion Lineal",R.drawable.calculo))
-        itemList.add(Item("Gauss", "Metodo de Interpolacion Lineal",R.drawable.calculo))
-        itemList.add(Item("Interpolacion Lineal", "Metodo de Interpolacion Lineal",R.drawable.calculo))
-        itemList.add(Item("Interpolacion Cuadratica", "Metodo de Interpolacion Lineal",R.drawable.calculo))
-        itemList.add(Item("Newton", "Metodo de Interpolacion Lineal",R.drawable.calculo))
-        itemList.add(Item("Lagrange", "Metodo de Interpolacion Lineal",R.drawable.calculo))
-        itemList.add(Item("", "",R.drawable.empty))
+        itemList.add(Item("Interpolacion Lineal", "Metodo de Interpolacion Lineal",R.drawable.calculo,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
+        itemList.add(Item("Interpolacion Cuadratica", "Metodo de Interpolacion Lineal",R.drawable.calculo,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
+        itemList.add(Item("Newton", "Metodo de Interpolacion Lineal",R.drawable.calculo,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
+        itemList.add(Item("Lagrange", "Metodo de Interpolacion Lineal",R.drawable.calculo,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
+        itemList.add(Item("Gauss", "Metodo de Interpolacion Lineal",R.drawable.calculo,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
+        itemList.add(Item("Interpolacion Lineal", "Metodo de Interpolacion Lineal",R.drawable.calculo,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
+        itemList.add(Item("Interpolacion Cuadratica", "Metodo de Interpolacion Lineal",R.drawable.calculo,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
+        itemList.add(Item("Newton", "Metodo de Interpolacion Lineal",R.drawable.calculo,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
+        itemList.add(Item("Lagrange", "Metodo de Interpolacion Lineal",R.drawable.calculo,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
+        itemList.add(Item("", "",R.drawable.empty,View.OnClickListener {
+
+            val fragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+
+                replace(R.id.hostFragment, NewtonFragment())
+
+            }
+            fragmentTransaction.commit()
+
+
+        }))
 
     }
 
