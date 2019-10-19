@@ -1,10 +1,24 @@
 <resources>
     <string name="app_name">Sherlock</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Inicio</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="todo">TODO</string>
+    <string name="todo">todo</string>
+    <string name="falsa_posicion">Falsa Posicion</string>
+    <string name="f_x">Función</string>
+    <string name="ejemplo_x_2_cos_x_exp_x_2">Ejemplo: x^2+cos(x)+exp(x^2)</string>
+    <string name="var">var</string>
+    <string name="f">F (</string>
+    <string name="parentesis">) =</string>
+    <string name="introduce_los_valores_de_a_y_b">Introduce los valores de A y B</string>
+    <string name="a">A</string>
+    <string name="b">B</string>
+    <string name="limite_de_iteraciones">Limite de Iteraciones</string>
+    <string name="tolerancia">Tolerancia</string>
+    <string name="usar">Usar</string>
+    <string name="calcular">Calcular</string>
+    <string name="la_ra_z_es">La Raíz es:</string>
 </resources>

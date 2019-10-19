@@ -462,7 +462,7 @@ class CoreServices{
 
     }
 
-    fun falsePosition(function:String, variable :String, intervals:DoubleArray, tolerance:Double) : ArrayList<IteracionVI> {
+    fun falsePosition(function:String, variable :String, intervals:DoubleArray, tolerance:Double, limit:Int) : ArrayList<IteracionVI> {
 
         var x0 = 0.0
         var x = 0.0
@@ -662,9 +662,21 @@ class CoreServices{
 
                 niteration++
 
-                if (niteration > 1000) {
+                if (limit!=0){
 
-                    break
+                    if (niteration > limit) {
+
+                        break
+
+                    }
+
+                } else {
+
+                    if (niteration > 1000) {
+
+                        break
+
+                    }
 
                 }
 
@@ -1229,6 +1241,19 @@ class CoreServices{
         }
 
         return iteration
+
+    }
+
+    fun isFunction(function: String, variable: String, value : Double) : Boolean {
+
+        return JEP().apply{
+
+            addStandardConstants()
+            addStandardFunctions()
+            addVariable( variable, value)
+            parseExpression(function)
+
+        }.value.isNaN()
 
     }
 

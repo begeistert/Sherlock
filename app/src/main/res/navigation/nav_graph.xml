@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
+            app:startDestination="@id/intervalsFragment">
+
+    <fragment android:id="@+id/intervalsFragment" android:name="mx.brennen.sherlock.IntervalsFragment"
+              android:label="fragment_intervals" tools:layout="@layout/fragment_intervals">
+        <action android:id="@+id/toIntervalsFragment"
+                app:destination="@id/intervalOptionsFragment" app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment android:id="@+id/intervalOptionsFragment" android:name="mx.brennen.sherlock.IntervalOptionsFragment"
+              android:label="fragment_interval_options" tools:layout="@layout/fragment_interval_options">
+        <action android:id="@+id/toFalseFragment" app:destination="@id/falseFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment android:id="@+id/falseFragment" android:name="mx.brennen.sherlock.FalseFragment"
+              android:label="fragment_false" tools:layout="@layout/fragment_false"/>
+</navigation>
