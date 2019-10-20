@@ -4,8 +4,9 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:background="#ffffff"
-             tools:context=".FalseFragment">
+             android:background="@drawable/gradient"
+             tools:context=".FalseFragment"
+        >
 
     <ScrollView
             android:layout_width="match_parent"
@@ -19,6 +20,7 @@
 
             <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card"
+                    android:background="@drawable/gradient"
                     android:transitionName="card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -26,7 +28,8 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/title"
                         android:padding="10sp"
-                        android:layout_width="wrap_content"
+                        android:background="#42D6F2"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:ignore="UseCompoundDrawables"
                         android:orientation="horizontal">
@@ -42,10 +45,11 @@
                             android:contentDescription="@string/todo"/>
 
                     <RelativeLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent">
 
                         <TextView
+                                android:textColor="#ffffff"
                                 android:id="@+id/titleContent"
                                 android:transitionName="itemTittle"
                                 android:layout_width="wrap_content"
@@ -57,6 +61,7 @@
                         />
 
                         <TextView
+                                android:textColor="#ffffff"
                                 android:id="@+id/descriptionContent"
                                 android:transitionName="itemContent"
                                 android:fontFamily="@font/displayregular"
@@ -64,6 +69,13 @@
                                 android:text="@string/todo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
+
+                        <Button
+                                android:id="@+id/settings"
+                                android:background="@drawable/ic_setting"
+                                android:layout_alignParentEnd="true"
+                                android:layout_width="40sp"
+                                android:layout_height="40sp"/>
 
                     </RelativeLayout>
 
@@ -128,12 +140,13 @@
                         android:fontFamily="@font/displayregular"
                         app:hintTextAppearance="@style/AppTheme.FloatingLabel"
                         app:errorTextAppearance="@style/AppTheme.EditTextError"
-                >
+                        >
 
                     <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editFunctionInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_cancel"
                             android:fontFamily="@font/displayregular"
                             android:inputType="textNoSuggestions"
                             android:theme="@style/EditText"/>
@@ -143,8 +156,16 @@
             </LinearLayout>
 
             <TextView
-                    android:id="@+id/descab"
+                    android:id="@+id/functionwithSintax"
                     android:layout_below="@id/linearl"
+                    android:layout_centerInParent="true"
+                    android:padding="5sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/descab"
+                    android:layout_below="@id/functionwithSintax"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="10sp"
                     android:textSize="15sp"
@@ -306,11 +327,12 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtRaiz"
                     android:visibility="gone"
+                    android:padding="10sp"
                     android:layout_below="@id/Table"
                     android:layout_centerInParent="true"
+                    android:textColor="#000000"
                     android:fontFamily="@font/displayregular"
                     android:text="@string/la_ra_z_es"
-                    android:textColor="@color/colorAccent"
                     />
 
         </RelativeLayout>

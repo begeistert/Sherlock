@@ -1,5 +1,6 @@
 package mx.brennen.sherlock
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
@@ -14,6 +15,7 @@ import mx.brennen.sherlock.res.TableDynamic
 import mx.brennen.sherlock.res.misc.IteracionVI
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
+import java.text.DecimalFormat
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 class FalseActivity : AppCompatActivity() {
@@ -23,6 +25,7 @@ class FalseActivity : AppCompatActivity() {
     var iterations : ArrayList<IteracionVI> = ArrayList()
     private var header = arrayOf("Iteracion","Valor","Evaluacion")
     private var rows: ArrayList<Array<String>> = ArrayList()
+    private lateinit var df : DecimalFormat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,6 +130,8 @@ class FalseActivity : AppCompatActivity() {
 
         }
 
+
+
     }
 
     fun checkButton(v : View) {
@@ -152,7 +157,7 @@ class FalseActivity : AppCompatActivity() {
     private fun createTable(){
 
         Table.removeAllViews()
-        val tableDynamic = TableDynamic(Table, applicationContext)
+        val tableDynamic = TableDynamic(Table, applicationContext, 0)
         tableDynamic.addHeader(header)
         tableDynamic.addData(getIterationsFalsePosition())
 

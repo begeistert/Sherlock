@@ -2,6 +2,7 @@ package mx.brennen.sherlock.res;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -9,26 +10,30 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import mx.brennen.sherlock.R;
+
 
 public class TableDynamic {
 
     private TableLayout tableLayout;
     private Context context;
-    private String[] header;
+    private CharSequence[] header;
     private ArrayList<String[]> data;
     private TableRow tableRow;
     private TextView txtCell;
     private int indexC;
     private int indexR;
+    private int color;
 
-    public TableDynamic(TableLayout tableLayout,Context context) {
+    public TableDynamic(TableLayout tableLayout,Context context, Integer Color) {
 
         this.tableLayout = tableLayout;
         this.context = context;
+        this.color = Color;
 
     }
 
-    public  void addHeader(String[] header){
+    public  void addHeader(CharSequence[] header){
 
         this.header = header;
         createHeader();
@@ -64,7 +69,11 @@ public class TableDynamic {
 
             newCell();
             txtCell.setText(header[indexC++]);
-            txtCell.setBackgroundColor(Color.rgb(205,92,92));
+            txtCell.setBackgroundColor(Color.parseColor("#ffffff"));
+            txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/displayregular.ttf" ));
+            txtCell.setTextSize(1,10f);
+            txtCell.setTextColor(Color.parseColor("#C81E0A"));
+            txtCell.setBackground(context.getDrawable(R.drawable.cellrectangle));
             tableRow.addView(txtCell,newTableRow());
 
         }
@@ -86,7 +95,11 @@ public class TableDynamic {
                 String[] Colums = data.get(indexR-1);
                 info = (indexC<Colums.length)?Colums[indexC]:"";
                 txtCell.setText(info);
-                txtCell.setBackgroundColor(Color.rgb(233,150,122));
+                txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/displayregular.ttf" ));
+                txtCell.setTextColor(Color.parseColor("#000000"));
+                txtCell.setTextSize(1,10f);
+                txtCell.setBackgroundColor(Color.parseColor("#ffffff"));
+                txtCell.setBackground(context.getDrawable(R.drawable.cellrectangle));
                 tableRow.addView(txtCell,newTableRow());
 
             }

@@ -1,6 +1,7 @@
 package mx.brennen.sherlock
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_home.*
@@ -16,16 +17,6 @@ class HomeActivity : AppCompatActivity() {
 
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
-
-
-
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_notifications -> {
-
-                return@OnNavigationItemSelectedListener true
-            }
         }
         false
     }
@@ -35,9 +26,6 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         actionBar?.hide()
-
-        val navView: BottomNavigationView = nav_view
-        navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
     }
 

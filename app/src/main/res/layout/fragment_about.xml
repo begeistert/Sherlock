@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient"
+        tools:context=".AboutFragment">
+
+    <ImageView
+            android:id="@+id/image"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30sp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/logoita"
+            android:layout_width="250sp"
+            android:layout_height="100sp"/>
+
+    <TextView
+            android:layout_below="@id/image"
+            android:id="@+id/title"
+            android:layout_centerInParent="true"
+            android:textColor="#fff"
+            android:fontFamily="@font/displayregular"
+            android:textSize="18sp"
+            android:text="@string/instituto_tecnol_gico_de_apizaco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20sp"
+            android:fontFamily="@font/textregularitalicg3"
+            android:id="@+id/sample"
+            android:text="@string/metodos_numericos"
+            android:layout_below="@id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_marginTop="5sp"
+            android:id="@+id/build"
+            android:layout_below="@id/sample"
+            android:layout_centerInParent="true"
+            android:text="@string/txt"
+            android:fontFamily="@font/textregulartalic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_marginStart="15sp"
+            android:layout_marginTop="10sp"
+            android:layout_below="@id/build"
+            android:id="@+id/devby"
+            android:textColor="#fff"
+            android:text="@string/desarrollado_por"
+            android:fontFamily="@font/displayregular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_marginTop="15sp"
+            android:id="@+id/ir"
+            android:padding="5sp"
+            android:layout_marginStart="15sp"
+            android:fontFamily="@font/textregulartalic"
+            android:layout_below="@id/devby"
+            android:text="@string/irvin_baez_suarez"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/gus"
+            android:layout_marginStart="15sp"
+            android:text="@string/java_developer_gustavo_juarez_cano"
+            android:padding="5sp"
+            android:fontFamily="@font/textregulartalic"
+            android:layout_below="@id/ir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/jhon"
+            android:layout_below="@id/gus"
+            android:padding="5sp"
+            android:layout_marginStart="15sp"
+            android:text="@string/ux_designer_jhonatan_mendez_gonzales"
+            android:fontFamily="@font/textregulartalic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_below="@id/jhon"
+            android:padding="5sp"
+            android:layout_marginStart="15sp"
+            android:fontFamily="@font/textregulartalic"
+            android:text="@string/kotlin_developer_ivan_montiel_cardona"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+</RelativeLayout>

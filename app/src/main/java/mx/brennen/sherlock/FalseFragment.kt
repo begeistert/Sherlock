@@ -1,34 +1,58 @@
 package mx.brennen.sherlock
 
 
+import android.annotation.SuppressLint
+import android.annotation.TargetApi
+import android.content.Context
 import android.graphics.Color
+import android.media.Image
+import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.Html
 import android.text.InputType
-import android.view.Gravity
+import android.text.Spanned
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.TableLayout
+import android.widget.TableRow
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import kotlinx.android.synthetic.main.fragment_false.*
 import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.TableDynamic
 import mx.brennen.sherlock.res.misc.IteracionVI
+import org.jetbrains.anko.image
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.tableLayout
 import org.jetbrains.anko.toast
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
+
+
+@TargetApi(Build.VERSION_CODES.N)
 @Suppress("UNCHECKED_CAST")
 class FalseFragment : Fragment() {
 
     private var variable = ""
     private lateinit var radioButton: RadioButton
     var iterations : ArrayList<IteracionVI> = ArrayList()
-    private var header = arrayOf("Iteracion","Valor","Evaluacion")
+    private var header = arrayOf("Iter.",Html.fromHtml("A<sub> i\n</sub>",
+        Html.FROM_HTML_MODE_LEGACY),Html.fromHtml("B<sub> i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
+        Html.fromHtml("P<sub> i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
+        Html.fromHtml("F( P<sub> i\n</sub>)",Html.FROM_HTML_MODE_LEGACY))
     private var rows: ArrayList<Array<String>> = ArrayList()
+    private var originalFunction = ""
+    private var function = ""
+    lateinit var df : DecimalFormat
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +68,11 @@ class FalseFragment : Fragment() {
 
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.slide_top).setDuration(350)
 
-    editvarInput.gravity = Gravity.CENTER
+        radioButton = limit
+
+        itemImage.image = context!!.getDrawable(R.drawable.bucle)
+
+        editvarInput.gravity = Gravity.CENTER
 
         editvarInput.addTextChangedListener {
 
@@ -90,7 +118,6 @@ class FalseFragment : Fragment() {
                         text_input_layout_email.isErrorEnabled = true
 
                     } else {
-
                         editFunctionInput.setTextColor(Color.parseColor("#008000"))
                         text_input_layout_email.isErrorEnabled = false
 
@@ -110,10 +137,17 @@ class FalseFragment : Fragment() {
 
         }
 
+        editFunctionInput.onRightDrawableClicked {
+
+            it.text.clear()
+
+        }
+
         tolerance.onClick {
 
             radioButton = tolerance
             edittoleranceInput.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS ; InputType.TYPE_TEXT_VARIATION_NORMAL
+            textInputtolerance.hint = "Tolerancia -> 10^n"
 
         }
 
@@ -121,8 +155,11 @@ class FalseFragment : Fragment() {
 
             radioButton = limit
             edittoleranceInput.inputType = InputType.TYPE_CLASS_NUMBER
+            textInputtolerance.hint = "Limite de Iteraciones"
 
         }
+
+        radioGroup.check( limit.id )
 
         calculate.onClick {
 
@@ -168,12 +205,31 @@ class FalseFragment : Fragment() {
 
         }
 
+        settings.onClick {
+
+            Navigation.findNavController(view).navigate(R.id.falseFragmenttoconfigurationFragment2)
+
+        }
+
+        val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+
+        var form = "#."
+        for ( i in 1..prefs.getInt("Decimales",16)){
+
+            form+="#"
+
+        }
+
+        df = DecimalFormat(form)
+        df.roundingMode = RoundingMode.CEILING
+
     }
 
     private fun createTable(){
 
+        Table.removeAllViewsInLayout()
         Table.removeAllViews()
-        val tableDynamic = TableDynamic(Table, context)
+        val tableDynamic = TableDynamic(Table, context,0)
         tableDynamic.addHeader(header)
         tableDynamic.addData(getIterationsFalsePosition())
 
@@ -181,12 +237,14 @@ class FalseFragment : Fragment() {
 
     private fun getIterationsFalsePosition() : ArrayList<Array<String>>? {
 
+        rows.clear()
+
         var x0 = 0.0
 
         for(iteration in iterations){
 
-            rows.add(arrayOf(iteration.iteracion.toString(),iteration.an.toString(),iteration.bn.toString()
-                ,iteration.pn.toString(),iteration.fn.toString()))
+            rows.add(arrayOf(iteration.iteracion.toString(),df.format(iteration.an).toString(),df.format(iteration.bn).toString()
+                ,df.format(iteration.pn).toString(),df.format(iteration.fn).toString()))
 
             x0 = iteration.pn
 
@@ -200,6 +258,22 @@ class FalseFragment : Fragment() {
 
         return rows
 
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun EditText.onRightDrawableClicked(onClicked: (view: EditText) -> Unit) {
+        this.setOnTouchListener { v, event ->
+            var hasConsumed = false
+            if (v is EditText) {
+                if (event.x >= v.width - v.totalPaddingRight) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        onClicked(this)
+                    }
+                    hasConsumed = true
+                }
+            }
+            hasConsumed
+        }
     }
 
 }

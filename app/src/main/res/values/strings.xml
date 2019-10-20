@@ -21,4 +21,19 @@
     <string name="usar">Usar</string>
     <string name="calcular">Calcular</string>
     <string name="la_ra_z_es">La Raíz es:</string>
+    <string name="x">X</string>
+    <string name="configuraciones">Configuraciones</string>
+    <string name="numero_de_decimales">Numero de Decimales</string>
+    <string name="_0">0</string>
+    <string name="acerca_de">Acerca De La Aplicacion</string>
+    <string name="creado_por_alumnos_del_instituto_tecnologico_de_apizaco">Desarrollado por alumnos del Instituto Tecnologico de Apizaco</string>
+    <string name="instituto_tecnol_gico_de_apizaco">Instituto Tecnológico de Apizaco</string>
+    <string name="irvin_baez_suarez">UI Designer: Irvin Baez Suarez</string>
+    <string name="java_developer_gustavo_juarez_cano">Java Developer: Gustavo Juarez Cano</string>
+    <string name="ux_designer_jhonatan_mendez_gonzales">UX Designer: Jhonatan Mendez Gonzales</string>
+    <string name="kotlin_developer_ivan_montiel_cardona">Kotlin Developer: Ivan Montiel Cardona</string>
+    <string name="sample">Sample</string>
+    <string name="desarrollado_por">Desarrollado por:</string>
+    <string name="metodos_numericos">Metodos Numericos</string>
+    <string name="txt">txt</string>
 </resources>
