@@ -207,7 +207,11 @@ class FalseFragment : Fragment() {
 
         settings.onClick {
 
-            Navigation.findNavController(view).navigate(R.id.falseFragmenttoconfigurationFragment2)
+            val newFragment = ConfigurationFragment()
+            val transaction = activity!!.supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.FragmentHost, newFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
 
         }
 

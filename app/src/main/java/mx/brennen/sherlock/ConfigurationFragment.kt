@@ -60,8 +60,11 @@ class ConfigurationFragment : Fragment() {
 
         about.onClick {
 
-            Navigation.findNavController(view).navigate(R.id.configurationFragment2toaboutFragment)
-
+            val newFragment = AboutFragment()
+            val transaction = activity!!.supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.FragmentHost, newFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
 
     }
