@@ -4,6 +4,7 @@ package mx.brennen.sherlock
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.media.Image
 import android.os.Build
@@ -13,11 +14,9 @@ import android.text.Html
 import android.text.InputType
 import android.text.Spanned
 import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.TableLayout
-import android.widget.TableRow
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.Navigation
@@ -32,6 +31,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.tableLayout
+import org.jetbrains.anko.textColor
 import org.jetbrains.anko.toast
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -50,8 +50,6 @@ class FalseFragment : Fragment() {
         Html.fromHtml("P<sub> i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
         Html.fromHtml("F( P<sub> i\n</sub>)",Html.FROM_HTML_MODE_LEGACY))
     private var rows: ArrayList<Array<String>> = ArrayList()
-    private var originalFunction = ""
-    private var function = ""
     lateinit var df : DecimalFormat
 
     override fun onCreateView(
@@ -67,8 +65,6 @@ class FalseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.slide_top).setDuration(350)
-
-        radioButton = limit
 
         itemImage.image = context!!.getDrawable(R.drawable.bucle)
 
@@ -107,6 +103,16 @@ class FalseFragment : Fragment() {
 
         editFunctionInput.addTextChangedListener {
 
+            if (editFunctionInput.text!!.isNotEmpty()){
+
+                editFunctionInput.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_cancel, 0)
+
+            } else {
+
+                editFunctionInput.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+
+            }
+
             if (variable!=""){
 
                 try {
@@ -143,23 +149,51 @@ class FalseFragment : Fragment() {
 
         }
 
-        tolerance.onClick {
+        edittoleranceInput.addTextChangedListener {
 
-            radioButton = tolerance
-            edittoleranceInput.inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS ; InputType.TYPE_TEXT_VARIATION_NORMAL
-            textInputtolerance.hint = "Tolerancia -> 10^n"
+            if(edittoleranceInput.text!!.isNotEmpty()){
+
+                edittoleranceInput.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_cancel, 0)
+
+            } else {
+
+                edittoleranceInput.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+
+            }
+
+            val text = textInputtolerance.hint.toString()
+            when(text){
+
+                "Tolerancia -> 10^n" -> {
+
+                    try {
+
+                        if(CoreServices().tolerance("10^"+edittoleranceInput.text.toString())>0){
+
+                            edittoleranceInput.textColor = Color.GREEN
+                            textInputtolerance.isErrorEnabled = false
+
+                        } else {
+
+                            edittoleranceInput.textColor = Color.BLACK
+                            textInputtolerance.error = "Solo inserta el valor de n"
+                            textInputtolerance.isErrorEnabled = true
+
+                        }
+
+                    } catch (e : Exception){}
+
+                }
+
+            }
 
         }
 
-        limit.onClick {
+        edittoleranceInput.onRightDrawableClicked {
 
-            radioButton = limit
-            edittoleranceInput.inputType = InputType.TYPE_CLASS_NUMBER
-            textInputtolerance.hint = "Limite de Iteraciones"
+            edittoleranceInput.text!!.clear()
 
         }
-
-        radioGroup.check( limit.id )
 
         calculate.onClick {
 
@@ -177,16 +211,15 @@ class FalseFragment : Fragment() {
                     "Limite de Iteraciones" -> {
 
                         iterations = CoreServices().falsePosition(editFunctionInput.text.toString(),
-                            editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^-3"),
+                            editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^-1000"),
                             edittoleranceInput.text.toString().toInt()).clone() as ArrayList<IteracionVI>
-
 
                     }
 
                     "Tolerancia" -> {
 
                         iterations = CoreServices().falsePosition(editFunctionInput.text.toString(),
-                            editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance(edittoleranceInput.text.toString())
+                            editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^"+edittoleranceInput.text.toString())
                             ,0).clone() as ArrayList<IteracionVI>
 
                     }
@@ -205,13 +238,9 @@ class FalseFragment : Fragment() {
 
         }
 
-        settings.onClick {
+        aproachOptions.onClick {
 
-            val newFragment = ConfigurationFragment()
-            val transaction = activity!!.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.FragmentHost, newFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            createSingleListDialog()
 
         }
 
@@ -278,6 +307,48 @@ class FalseFragment : Fragment() {
             }
             hasConsumed
         }
+    }
+
+    private fun createSingleListDialog() {
+
+        val builder = this.context?.let { AlertDialog.Builder(it) }
+        val items = arrayOf("Limite de Iteraciones","Tolerancia")
+
+        val optionSelected = when(aproachOptions.text){
+
+            "Limite de Iteraciones" -> 0
+
+            "Tolerancia" -> 1
+
+            else -> 0
+        }
+
+        builder!!.setTitle("Aproximar por").setSingleChoiceItems(items,optionSelected,(DialogInterface.OnClickListener { dialog, i ->
+
+            aproachOptions.text = items[i]
+            when(items[i]){
+
+                "Limite de Iteraciones"->{
+
+                    textInputtolerance.hint = "Limite de Iteraciones"
+                    textInputtolerance.isErrorEnabled = false
+
+                }
+
+                "Tolerancia"->{
+
+                    textInputtolerance.hint = "Tolerancia -> 10^n"
+                    textInputtolerance.isErrorEnabled = false
+
+                }
+
+            }
+            dialog.cancel()
+
+        }))
+        builder.create()
+        builder.show()
+
     }
 
 }

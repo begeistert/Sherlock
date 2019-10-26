@@ -4,7 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:background="@drawable/gradient"
+             android:background="#ffffff"
              tools:context=".FalseFragment"
         >
 
@@ -70,13 +70,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
-                        <Button
-                                android:id="@+id/settings"
-                                android:background="@drawable/ic_setting"
-                                android:layout_alignParentEnd="true"
-                                android:layout_width="40sp"
-                                android:layout_height="40sp"/>
-
                     </RelativeLayout>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -118,7 +111,7 @@
                             android:id="@+id/editvarInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textNoSuggestions"
+                            android:inputType="textNoSuggestions|textVisiblePassword"
                             android:fontFamily="@font/displayregular"
                             android:theme="@style/EditText"/>
 
@@ -146,9 +139,8 @@
                             android:id="@+id/editFunctionInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableRight="@drawable/ic_cancel"
                             android:fontFamily="@font/displayregular"
-                            android:inputType="textNoSuggestions"
+                            android:inputType="textNoSuggestions|textVisiblePassword"
                             android:theme="@style/EditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -199,7 +191,7 @@
                             android:textAlignment="center"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/displayregular"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
                             android:theme="@style/EditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -221,7 +213,7 @@
                             android:textAlignment="center"
                             android:fontFamily="@font/displayregular"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
                             android:theme="@style/EditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -237,6 +229,7 @@
                     android:layout_height="wrap_content" tools:ignore="RtlSymmetry">
 
                 <TextView
+                        android:textColor="#000000"
                         android:paddingTop="20sp"
                         android:paddingEnd="10sp"
                         android:layout_width="wrap_content"
@@ -245,28 +238,14 @@
                         android:text="@string/usar"
                         tools:ignore="RtlSymmetry"/>
 
-                <RadioGroup
-                        android:id="@+id/radioGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <RadioButton
-                            android:id="@+id/limit"
-                            android:layout_width="wrap_content"
-                            android:fontFamily="@font/displayregular"
-                            android:layout_height="wrap_content"
-                            android:text="@string/limite_de_iteraciones"
-                    />
-
-                    <RadioButton
-                            android:id="@+id/tolerance"
-                            android:layout_width="wrap_content"
-                            android:fontFamily="@font/displayregular"
-                            android:layout_height="wrap_content"
-                            android:text="@string/tolerancia"
-                    />
-
-                </RadioGroup>
+                <TextView
+                        android:id="@+id/aproachOptions"
+                        android:text="@string/limite_de_iteraciones"
+                        android:padding="10sp"
+                        android:textColor="#000000"
+                        android:fontFamily="@font/displayregular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -293,7 +272,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
-                            android:inputType="numberDecimal"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
                             android:fontFamily="@font/displayregular"
                             android:theme="@style/EditText"/>
 

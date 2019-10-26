@@ -25,9 +25,6 @@ class IntervalOptionsFragment : Fragment() , OnNoteLister {
 
             "Método de Falsa posicion" -> {
 
-                val extras = FragmentNavigatorExtras(
-                     personalAdapter.images[position] to "itemImage" )
-                view?.let { Navigation.findNavController(it).navigate(R.id.toFalseFragment, null,null,extras) }
 
             }
 

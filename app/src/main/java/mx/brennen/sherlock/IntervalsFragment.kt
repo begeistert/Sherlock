@@ -28,7 +28,6 @@ class IntervalsFragment : Fragment() , OnNoteLister {
 
             "Metodos de Intervalo" -> {
 
-                this.view?.let { Navigation.findNavController(it).navigate(R.id.toIntervalsFragment) }
 
             }
 

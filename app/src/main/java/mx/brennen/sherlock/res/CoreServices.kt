@@ -15,7 +15,7 @@ import kotlin.math.roundToInt
 
 class CoreServices{
 
-    fun intermediateValue(Funcion: String, `var`: String, Intervalos: DoubleArray, Tolerancia: Double) : ArrayList<IteracionVI>{
+    fun intermediateValue(function: String, `var`: String, Intervalos: DoubleArray, Tolerancia: Double, limit: Int) : ArrayList<IteracionVI>{
 
         val iterations = ArrayList<IteracionVI>()
 
@@ -38,13 +38,13 @@ class CoreServices{
                     an = Intervalos[0]
                     bn = Intervalos[1]
                     pn = pn1
-                    fn = (evaluate(Funcion, `var`, pn1) * 1000000.0).roundToInt() / 1000000.0
+                    fn = (evaluate(function, `var`, pn1) * 1000000.0).roundToInt() / 1000000.0
 
                 }
 
                 iterations.add(iter)
 
-                val fa = evaluate(Funcion, `var`, Intervalos[0]) * fn1
+                val fa = evaluate(function, `var`, Intervalos[0]) * fn1
 
                 if (fa > 0) {
 
@@ -112,12 +112,12 @@ class CoreServices{
                     an = fa1
                     bn = fb
                     pn = ((fa1 + fb) / 2 * 1000000.0).roundToInt() / 1000000.0
-                    fn = (evaluate(Funcion, `var`, pn1) * 1000000.0).roundToInt() / 1000000.0
+                    fn = (evaluate(function, `var`, pn1) * 1000000.0).roundToInt() / 1000000.0
 
                 }
                 iterations.add(iter)
 
-                val fa = evaluate(Funcion, `var`, fa1) * fn1
+                val fa = evaluate(function, `var`, fa1) * fn1
 
                 if (fa > 0) {
 
@@ -182,6 +182,12 @@ class CoreServices{
 
                 }
                 iteration1++
+
+            }
+
+            if (iteration1 > limit) {
+
+                break
 
             }
 
