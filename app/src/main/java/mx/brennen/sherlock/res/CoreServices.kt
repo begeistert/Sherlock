@@ -269,7 +269,7 @@ class CoreServices{
 
     }
 
-    fun secant(function: String, variable: String, intervals: DoubleArray, tolerance: Double) : ArrayList<IteracionS> {
+    fun secant(function: String, variable: String, intervals: DoubleArray, tolerance: Double, limit: Int) : ArrayList<IteracionS> {
 
         var x0: Double = 0.toDouble()
         var x: Double = 0.toDouble()
@@ -396,13 +396,19 @@ class CoreServices{
 
             }
 
+            if (nIteration>limit){
+
+                break
+
+            }
+
         }
 
         return iterations
 
     }
 
-    fun fixedPoint(function:String, variable :String, intervals:DoubleArray, tolerance:Double) : ArrayList<IteracionPF> {
+    fun fixedPoint(function:String, variable :String, intervals:DoubleArray, tolerance:Double, limit: Int) : ArrayList<IteracionPF> {
 
         var x0: Double
         var xn: Double
@@ -459,6 +465,12 @@ class CoreServices{
             {
 
                 cond *= -1
+
+            }
+
+            if (niter>limit){
+
+                break
 
             }
 
@@ -1132,7 +1144,7 @@ class CoreServices{
 
     }
 
-    fun newtonRaphson(function: String, variable : String, intervals: DoubleArray, tolerance: Double) : ArrayList<Iteracion>{
+    fun newtonRaphson(function: String, variable : String, intervals: DoubleArray, tolerance: Double, limit: Int) : ArrayList<Iteracion>{
 
         var numberIteration = 1
         var xn: Double = 0.toDouble()
@@ -1241,6 +1253,12 @@ class CoreServices{
 
                 iteration.add(it)
                 numberIteration++
+
+            }
+
+            if (numberIteration>limit){
+
+                break
 
             }
 

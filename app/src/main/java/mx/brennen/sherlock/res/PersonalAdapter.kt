@@ -1,5 +1,7 @@
 package mx.brennen.sherlock.res
 
+import android.content.res.AssetManager
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +15,10 @@ import mx.brennen.sherlock.R
 import mx.brennen.sherlock.res.misc.OnNoteLister
 
 
-class PersonalAdapter(receivedList : ArrayList<Item>, private val onNoteListener: OnNoteLister) : RecyclerView.Adapter<PersonalAdapter.ViewItems>() {
+class PersonalAdapter(receivedList : ArrayList<Item>, private val onNoteListener: OnNoteLister, val typeface: Typeface) : RecyclerView.Adapter<PersonalAdapter.ViewItems>() {
 
     private val listOfItems = receivedList
     private var lastPosition = -1
-    val cards : ArrayList<CardView> = ArrayList()
     val images : ArrayList<ImageView> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewItems {
@@ -35,11 +36,12 @@ class PersonalAdapter(receivedList : ArrayList<Item>, private val onNoteListener
 
     override fun onBindViewHolder(holder: ViewItems, position: Int) {
 
-        holder.title.text = listOfItems.get(position).title
-        holder.info.text = listOfItems.get(position).info
         holder.image.setImageResource(listOfItems.get(position).image)
-        cards.add(holder.card)
         images.add(holder.image)
+        holder.title.text = listOfItems.get(position).title
+        holder.title.typeface = typeface
+        holder.info.text = listOfItems.get(position).info
+        holder.info.typeface = typeface
         setAnimation(holder.itemView, position)
 
     }
@@ -66,7 +68,7 @@ class PersonalAdapter(receivedList : ArrayList<Item>, private val onNoteListener
         val image : ImageView = itemView.findViewById(R.id.itemImage)
         val card : CardView = itemView.findViewById(R.id.card)
         var listener = onNoteListener
-        val linearLayout : LinearLayout = itemView.findViewById(R.id.itemContainer)
+        var linearLayout : LinearLayout = itemView.findViewById(R.id.itemContainer)
 
         init {
 

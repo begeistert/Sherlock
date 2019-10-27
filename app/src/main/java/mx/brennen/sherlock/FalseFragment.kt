@@ -1,56 +1,43 @@
 package mx.brennen.sherlock
 
-
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
-import android.media.Image
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
 import android.text.Html
-import android.text.InputType
-import android.text.Spanned
 import android.view.*
-import android.widget.*
-import androidx.fragment.app.Fragment
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doAfterTextChanged
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
 import kotlinx.android.synthetic.main.fragment_false.*
 import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.TableDynamic
 import mx.brennen.sherlock.res.misc.IteracionVI
+import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.image
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.toast
-import org.jetbrains.anko.tableLayout
 import org.jetbrains.anko.textColor
-import org.jetbrains.anko.toast
 import java.math.RoundingMode
 import java.text.DecimalFormat
-
-
 
 @TargetApi(Build.VERSION_CODES.N)
 @Suppress("UNCHECKED_CAST")
 class FalseFragment : Fragment() {
 
     private var variable = ""
-    private lateinit var radioButton: RadioButton
-    var iterations : ArrayList<IteracionVI> = ArrayList()
+    private var iterations : ArrayList<IteracionVI> = ArrayList()
     private var header = arrayOf("Iter.",Html.fromHtml("A<sub> i\n</sub>",
         Html.FROM_HTML_MODE_LEGACY),Html.fromHtml("B<sub> i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
         Html.fromHtml("P<sub> i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
         Html.fromHtml("F( P<sub> i\n</sub>)",Html.FROM_HTML_MODE_LEGACY))
     private var rows: ArrayList<Array<String>> = ArrayList()
-    lateinit var df : DecimalFormat
+    private lateinit var df : DecimalFormat
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +50,8 @@ class FalseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
+        context?.let { TypefaceUtil().overrideFont(it,"SERIF","fonts/arciform.otf") }
 
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.slide_top).setDuration(350)
 
@@ -161,8 +150,7 @@ class FalseFragment : Fragment() {
 
             }
 
-            val text = textInputtolerance.hint.toString()
-            when(text){
+            when(textInputtolerance.hint.toString()){
 
                 "Tolerancia -> 10^n" -> {
 
@@ -197,16 +185,17 @@ class FalseFragment : Fragment() {
 
         calculate.onClick {
 
-            if(!editAInput.text!!.toString().equals("") && !editBInput.text!!.toString().equals("")
-                && !editFunctionInput.text!!.toString().equals("") &&
-                !edittoleranceInput.text!!.toString().equals("")){
+            if(editAInput.text!!.toString() != "" && editBInput.text!!.toString() != ""
+                && editFunctionInput.text!!.toString() != "" &&
+                edittoleranceInput.text!!.toString() != ""
+            ){
 
                 val a = editAInput.text.toString().toDouble()
                 val b = editBInput.text.toString().toDouble()
 
                 iterations.clear()
 
-                when(radioButton.text.toString()){
+                when(aproachOptions.text.toString()){
 
                     "Limite de Iteraciones" -> {
 
@@ -346,6 +335,7 @@ class FalseFragment : Fragment() {
             dialog.cancel()
 
         }))
+        TypefaceUtil().overrideFont(builder.context,"SERIF","fonts/arciform.otf")
         builder.create()
         builder.show()
 

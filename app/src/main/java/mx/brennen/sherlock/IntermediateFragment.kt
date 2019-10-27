@@ -10,16 +10,16 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.EditText
-import android.widget.RadioButton
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
 import kotlinx.android.synthetic.main.fragment_intermediate.*
 import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.TableDynamic
 import mx.brennen.sherlock.res.misc.IteracionVI
+import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.image
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.toast
@@ -32,14 +32,13 @@ import java.text.DecimalFormat
 class IntermediateFragment : Fragment() {
 
     private var variable = ""
-    private lateinit var radioButton: RadioButton
-    var iterations : ArrayList<IteracionVI> = ArrayList()
+    private var iterations : ArrayList<IteracionVI> = ArrayList()
     private var header = arrayOf("Iter.", Html.fromHtml("A<sub> i\n</sub>",
         Html.FROM_HTML_MODE_LEGACY), Html.fromHtml("B<sub> i\n</sub>", Html.FROM_HTML_MODE_LEGACY),
         Html.fromHtml("P<sub> i\n</sub>", Html.FROM_HTML_MODE_LEGACY),
         Html.fromHtml("F( P<sub> i\n</sub>)", Html.FROM_HTML_MODE_LEGACY))
     private var rows: ArrayList<Array<String>> = ArrayList()
-    lateinit var df : DecimalFormat
+    private lateinit var df : DecimalFormat
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -150,8 +149,7 @@ class IntermediateFragment : Fragment() {
 
             }
 
-            val text = textInputtolerance.hint.toString()
-            when(text){
+            when(textInputtolerance.hint.toString()){
 
                 "Tolerancia -> 10^n" -> {
 
@@ -186,16 +184,17 @@ class IntermediateFragment : Fragment() {
 
         calculate.onClick {
 
-            if(!editAInput.text!!.toString().equals("") && !editBInput.text!!.toString().equals("")
-                && !editFunctionInput.text!!.toString().equals("") &&
-                !edittoleranceInput.text!!.toString().equals("")){
+            if(editAInput.text!!.toString() != "" && editBInput.text!!.toString() != ""
+                && editFunctionInput.text!!.toString() != "" &&
+                edittoleranceInput.text!!.toString() != ""
+            ){
 
                 val a = editAInput.text.toString().toDouble()
                 val b = editBInput.text.toString().toDouble()
 
                 iterations.clear()
 
-                when(radioButton.text.toString()){
+                when(aproachOptions.text.toString()){
 
                     "Limite de Iteraciones" -> {
 
@@ -335,6 +334,7 @@ class IntermediateFragment : Fragment() {
             dialog.cancel()
 
         }))
+        TypefaceUtil().overrideFont(builder.context,"SERIF","fonts/arciform.otf")
         builder.create()
         builder.show()
 

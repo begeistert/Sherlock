@@ -2,6 +2,7 @@ package mx.brennen.sherlock
 
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -58,7 +59,8 @@ class IntervalsFragment : Fragment() , OnNoteLister {
 
                 itemList.clear()
                 createList()
-                val personalAdapter = PersonalAdapter(itemList,this)
+                val personalAdapter = PersonalAdapter(itemList,this,
+                    Typeface.createFromAsset(context!!.assets,"fonts/arciform.otf"))
                 recyclerView.adapter = personalAdapter
 
             }
@@ -88,7 +90,7 @@ class IntervalsFragment : Fragment() , OnNoteLister {
 
         createList()
 
-        val personalAdapter = PersonalAdapter(itemList,this)
+        val personalAdapter = PersonalAdapter(itemList,this,Typeface.createFromAsset(context!!.assets,"fonts/arciform.otf"))
         recyclerView.adapter = personalAdapter
     }
 

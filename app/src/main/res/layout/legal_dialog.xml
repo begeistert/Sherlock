@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:background="@drawable/layout_bounded"
+        android:padding="15sp"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:id="@+id/frst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/font"
+                android:layout_marginTop="15sp"
+                android:layout_marginStart="15sp"
+                android:textColor="#000000"
+                android:text="@string/font"
+                android:fontFamily="@font/arciform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:layout_below="@id/font"
+                android:id="@+id/fontname"
+                android:layout_marginStart="15sp"
+                android:layout_marginTop="2sp"
+                android:text="@string/arciform"
+                android:fontFamily="@font/arciform"
+                android:textStyle="italic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/fontmatt"
+                android:text="@string/dise_ada_por_matt_ellis"
+                android:layout_below="@id/fontname"
+                android:layout_marginStart="15sp"
+                android:fontFamily="@font/arciform"
+                android:textStyle="italic"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="2sp"
+                android:layout_marginBottom="15sp"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_below="@id/frst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/icons"
+                android:layout_marginTop="15sp"
+                android:layout_marginStart="15sp"
+                android:textColor="#000000"
+                android:text="@string/iconos"
+                android:fontFamily="@font/arciform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:layout_below="@id/icons"
+                android:id="@+id/nameiconfont"
+                android:layout_marginStart="15sp"
+                android:layout_marginTop="2sp"
+                android:text="@string/matem_ticas"
+                android:fontFamily="@font/arciform"
+                android:textStyle="italic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/matematicas"
+                android:text="@string/matem_ticas_hecho_por_freepik_de_www_flaticon_com"
+                android:layout_below="@id/nameiconfont"
+                android:layout_marginStart="15sp"
+                android:fontFamily="@font/arciform"
+                android:textStyle="italic"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="2sp"
+                android:layout_marginBottom="15sp"
+                android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

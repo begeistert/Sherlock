@@ -29,11 +29,11 @@
     <string name="creado_por_alumnos_del_instituto_tecnologico_de_apizaco">Desarrollado por alumnos del Instituto Tecnologico de Apizaco</string>
     <string name="instituto_tecnol_gico_de_apizaco">Instituto Tecnológico de Apizaco</string>
     <string name="irvin_baez_suarez">UI Designer: Irvin Baez Suarez</string>
-    <string name="java_developer_gustavo_juarez_cano">Java Developer: Gustavo Juarez Cano</string>
-    <string name="ux_designer_jhonatan_mendez_gonzales">UX Designer: Jhonatan Mendez Gonzales</string>
-    <string name="kotlin_developer_ivan_montiel_cardona">Kotlin Developer: Ivan Montiel Cardona</string>
+    <string name="java_developer_gustavo_juarez_cano">Gustavo Juarez Cano</string>
+    <string name="ux_designer_jhonatan_mendez_gonzales">Jhonatan Mendez Gonzales</string>
+    <string name="kotlin_developer_ivan_montiel_cardona">Ivan Montiel Cardona</string>
     <string name="sample">Sample</string>
-    <string name="desarrollado_por">Desarrollado por:</string>
+    <string name="desarrollado_por">Desarrollado por</string>
     <string name="metodos_numericos">Metodos Numericos</string>
     <string name="txt">txt</string>
     <string name="title_activity_main_menu">MainMenuActivity</string>
@@ -51,4 +51,19 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="valor_intermedio">Valor Intermedio</string>
+    <string name="informacion_legal">Informacion Legal</string>
+    <string name="ui_designer">UI Designer</string>
+    <string name="irvin_baez_suare">Irvin Baez Suarez</string>
+    <string name="java_developer">Java Developer</string>
+    <string name="ux_designer">UX Designer</string>
+    <string name="kotlin_developer">Kotlin Developer</string>
+    <string name="font">Fuentes</string>
+    <string name="arciform">\"Arciform\"</string>
+    <string name="dise_ada_por_matt_ellis">Diseñada por Matt Ellis</string>
+    <string name="iconos">Iconos</string>
+    <string name="matem_ticas_hecho_por_freepik_de_www_flaticon_com">Hecho por Freepik de www.flaticon.com</string>
+    <string name="matem_ticas">\"Matemáticas\"</string>
+    <string name="secante">Secante</string>
+    <string name="newton_raphson">Newton-Raphson</string>
+    <string name="punto_fijo">Punto Fijo</string>
 </resources>

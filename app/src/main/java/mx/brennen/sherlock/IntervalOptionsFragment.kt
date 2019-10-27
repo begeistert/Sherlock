@@ -1,6 +1,7 @@
 package mx.brennen.sherlock
 
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -55,7 +56,7 @@ class IntervalOptionsFragment : Fragment() , OnNoteLister {
         itemList.add(Item("Metodo de Bisección", "Metodo de Interpolacion Lineal",R.drawable.graph))
         itemList.add(Item("Método de Falsa posicion", "Metodo de Interpolacion Lineal",R.drawable.bucle))
 
-        personalAdapter = PersonalAdapter(itemList,this)
+        personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(context!!.assets,"fonts/arciform.otf"))
         recyclerView.adapter = personalAdapter
 
     }

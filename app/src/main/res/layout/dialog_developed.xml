@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:background="@drawable/layout_bounded"
+        android:padding="15sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:layout_marginTop="15sp"
+            android:id="@+id/irvin"
+            android:text="@string/ui_designer"
+            android:layout_marginStart="15sp"
+            android:fontFamily="@font/arciform"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_below="@id/irvin"
+            android:id="@+id/irvinname"
+            android:text="@string/irvin_baez_suare"
+            android:layout_marginTop="2sp"
+            android:textStyle="italic"
+            android:fontFamily="@font/arciform"
+            android:layout_marginStart="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_below="@id/irvinname"
+            android:id="@+id/javadev"
+            android:layout_marginTop="15sp"
+            android:layout_marginStart="15sp"
+            android:fontFamily="@font/arciform"
+            android:text="@string/java_developer"
+            android:textColor="#000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_below="@id/javadev"
+            android:id="@+id/gustavoname"
+            android:text="@string/java_developer_gustavo_juarez_cano"
+            android:layout_marginStart="15sp"
+            android:layout_marginTop="2sp"
+            android:fontFamily="@font/arciform"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_below="@id/gustavoname"
+            android:id="@+id/ux_designer"
+            android:layout_marginTop="15sp"
+            android:layout_marginStart="15sp"
+            android:text="@string/ux_designer"
+            android:fontFamily="@font/arciform"
+            android:textColor="#000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_below="@id/ux_designer"
+            android:id="@+id/jhonname"
+            android:layout_marginStart="15sp"
+            android:layout_marginTop="2sp"
+            android:text="@string/ux_designer_jhonatan_mendez_gonzales"
+            android:fontFamily="@font/arciform"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_below="@id/jhonname"
+            android:id="@+id/kotdev"
+            android:layout_marginTop="15sp"
+            android:layout_marginStart="15sp"
+            android:text="@string/kotlin_developer"
+            android:textColor="#000000"
+            android:fontFamily="@font/arciform"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_below="@id/kotdev"
+            android:layout_marginTop="2sp"
+            android:layout_marginStart="15sp"
+            android:layout_marginBottom="15sp"
+            android:text="@string/kotlin_developer_ivan_montiel_cardona"
+            android:fontFamily="@font/arciform"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+</RelativeLayout>

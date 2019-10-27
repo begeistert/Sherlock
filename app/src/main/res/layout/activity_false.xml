@@ -22,7 +22,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/falsa_posicion"
-                    android:fontFamily="@font/displayregular"
+                    android:fontFamily="@font/arciform"
                     android:layout_centerInParent="true"
                     android:layout_alignParentTop="true"
                     android:textSize="25sp"
@@ -44,7 +44,7 @@
                 <TextView
                         android:paddingTop="30sp"
                         android:layout_width="wrap_content"
-                        android:fontFamily="@font/displayregular"
+                        android:fontFamily="@font/arciform"
                         android:layout_height="wrap_content"
                         android:text="@string/f"
                 />
@@ -54,7 +54,7 @@
                         android:layout_width="34sp"
                         android:layout_height="wrap_content"
                         android:hint="@string/var"
-                        android:fontFamily="@font/displayregular"
+                        android:fontFamily="@font/arciform"
                         app:hintTextAppearance="@style/AppTheme.FloatingLabel"
                         app:errorTextAppearance="@style/AppTheme.EditTextError"
                         tools:ignore="RtlSymmetry">
@@ -64,14 +64,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textNoSuggestions"
-                            android:fontFamily="@font/displayregular"
+                            android:fontFamily="@font/arciform"
                             android:theme="@style/EditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                         android:paddingTop="30sp"
-                        android:fontFamily="@font/displayregular"
+                        android:fontFamily="@font/arciform"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/parentesis"
@@ -82,7 +82,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/f_x"
-                        android:fontFamily="@font/displayregular"
+                        android:fontFamily="@font/arciform"
                         app:hintTextAppearance="@style/AppTheme.FloatingLabel"
                         app:errorTextAppearance="@style/AppTheme.EditTextError"
                 >
@@ -90,7 +90,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editFunctionInput"
                             android:layout_width="match_parent"
-                            android:fontFamily="@font/displayregular"
+                            android:fontFamily="@font/arciform"
                             android:layout_height="wrap_content"
                             android:inputType="textNoSuggestions"
                             android:theme="@style/EditText"/>
@@ -106,7 +106,7 @@
                     android:layout_marginTop="10sp"
                     android:textSize="15sp"
                     android:text="@string/introduce_los_valores_de_a_y_b"
-                    android:fontFamily="@font/displayregular"
+                    android:fontFamily="@font/arciform"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -124,7 +124,7 @@
                         android:padding="5sp"
                         android:layout_height="wrap_content"
                         android:hint="@string/a"
-                        android:fontFamily="@font/displayregular"
+                        android:fontFamily="@font/arciform"
                         app:hintTextAppearance="@style/AppTheme.FloatingLabel"
                         app:errorTextAppearance="@style/AppTheme.EditTextError"
                         tools:ignore="RtlSymmetry">
@@ -134,7 +134,7 @@
                             android:layout_width="wrap_content"
                             android:textAlignment="center"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/displayregular"
+                            android:fontFamily="@font/arciform"
                             android:inputType="numberDecimal"
                             android:theme="@style/EditText"/>
 
@@ -146,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="@string/b"
-                        android:fontFamily="@font/displayregular"
+                        android:fontFamily="@font/arciform"
                         app:hintTextAppearance="@style/AppTheme.FloatingLabel"
                         app:errorTextAppearance="@style/AppTheme.EditTextError"
                 >
@@ -176,7 +176,7 @@
                         android:paddingEnd="10sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/displayregular"
+                        android:fontFamily="@font/arciform"
                         android:text="@string/usar"
                         tools:ignore="RtlSymmetry"/>
 
@@ -189,7 +189,7 @@
                             android:id="@+id/limit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/displayregular"
+                            android:fontFamily="@font/arciform"
                             android:text="@string/limite_de_iteraciones"
                             android:onClick="checkButton"
                     />
@@ -198,7 +198,7 @@
                             android:id="@+id/tolerance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/displayregular"
+                            android:fontFamily="@font/arciform"
                             android:text="@string/tolerancia"
                             android:onClick="checkButton"
                     />
@@ -244,7 +244,7 @@
                     android:layout_centerInParent="true"
                     android:background="#ffffff"
                     android:text="@string/calcular"
-                    android:fontFamily="@font/displayregular"
+                    android:fontFamily="@font/arciform"
             />
 
             <TableLayout
@@ -263,7 +263,7 @@
                     android:layout_below="@id/Table"
                     android:layout_centerInParent="true"
                     android:text="@string/la_ra_z_es"
-                    android:fontFamily="@font/displayregular"
+                    android:fontFamily="@font/arciform"
                     android:textColor="@color/colorAccent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
