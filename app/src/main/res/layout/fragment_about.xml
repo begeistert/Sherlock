@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/layout_bounded">
 
     <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
 
         <RelativeLayout
                 android:layout_width="match_parent"
@@ -82,7 +84,7 @@
                     android:textColor="#000"
                     android:text="@string/desarrollado_por"
                     android:fontFamily="@font/arciform"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <TextView
@@ -92,9 +94,14 @@
                     android:textColor="#000"
                     android:fontFamily="@font/arciform"
                     android:text="@string/informacion_legal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
+            <TextView
+                    android:layout_below="@id/legal"
+                    android:layout_marginTop="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
         </RelativeLayout>
 

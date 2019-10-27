@@ -204,7 +204,7 @@ class FixedFragment : Fragment() {
 
                     "Tolerancia" -> {
 
-                        iterations = CoreServices().newtonRaphson(editFunctionInput.text.toString(),
+                        iterations = CoreServices().fixedPoint(editFunctionInput.text.toString(),
                             editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^"+edittoleranceInput.text.toString())
                             ,0).clone() as ArrayList<IteracionPF>
 

@@ -96,21 +96,18 @@ class ConfigurationFragment : Fragment() {
 
             legal.onClick {
 
-                dialog.cancel()
-
                 val builder1 = context?.let { AlertDialog.Builder(it) }
                 val v1 = layoutInflater.inflate(R.layout.legal_dialog,null)
                 val fonturl = v1.findViewById(R.id.fontmatt) as TextView
 
-                fonturl.onClick {
-
-                    val uri = Uri.parse("https://www.behance.net/matt_ellis/")
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    startActivity(intent)
-
-                }
-
                 val iconurl = v1.findViewById(R.id.matematicas) as TextView
+
+                builder1!!.setView(v1)
+                TypefaceUtil().overrideFont(builder1.context,"SERIF","fonts/arciform.otf")
+                val dialog1 = builder1.create()
+                dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog1.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+                dialog.cancel()
 
                 iconurl.onClick {
 
@@ -120,11 +117,14 @@ class ConfigurationFragment : Fragment() {
 
                 }
 
-                builder1!!.setView(v)
-                TypefaceUtil().overrideFont(builder1.context,"SERIF","fonts/arciform.otf")
-                val dialog1 = builder1.create()
-                dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                dialog1.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+                fonturl.onClick {
+
+                    val uri = Uri.parse("https://www.behance.net/matt_ellis/")
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    startActivity(intent)
+
+                }
+
                 dialog1.show()
 
             }

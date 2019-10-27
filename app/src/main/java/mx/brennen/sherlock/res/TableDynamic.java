@@ -70,7 +70,6 @@ public class TableDynamic {
             newCell();
             txtCell.setText(header[indexC++]);
             txtCell.setBackgroundColor(Color.parseColor("#ffffff"));
-            txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/displayregular.ttf" ));
             txtCell.setTextSize(1,10f);
             txtCell.setTextColor(Color.parseColor("#C81E0A"));
             txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/arciform.otf"));
@@ -96,7 +95,6 @@ public class TableDynamic {
                 String[] Colums = data.get(indexR-1);
                 info = (indexC<Colums.length)?Colums[indexC]:"";
                 txtCell.setText(info);
-                txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/displayregular.ttf" ));
                 txtCell.setTextColor(Color.parseColor("#000000"));
                 txtCell.setTextSize(1,10f);
                 txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/arciform.otf"));

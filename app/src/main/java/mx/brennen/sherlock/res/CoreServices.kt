@@ -185,9 +185,13 @@ class CoreServices{
 
             }
 
-            if (iteration1 > limit) {
+            if (limit>0){
 
-                break
+                if (iteration1>limit){
+
+                    break
+
+                }
 
             }
 
@@ -396,9 +400,13 @@ class CoreServices{
 
             }
 
-            if (nIteration>limit){
+            if (limit>0){
 
-                break
+                if (nIteration>limit){
+
+                    break
+
+                }
 
             }
 
@@ -468,11 +476,16 @@ class CoreServices{
 
             }
 
-            if (niter>limit){
+            if (limit>0){
 
-                break
+                if (niter>limit){
+
+                    break
+
+                }
 
             }
+
 
         }
         
@@ -1256,9 +1269,13 @@ class CoreServices{
 
             }
 
-            if (numberIteration>limit){
+            if (limit>0){
 
-                break
+                if (numberIteration>limit){
+
+                    break
+
+                }
 
             }
 
