@@ -1,90 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient"
-        tools:context=".AboutFragment">
+        android:background="@drawable/layout_bounded">
 
-    <ImageView
-            android:id="@+id/image"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="30sp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/logoita"
-            android:layout_width="250sp"
-            android:layout_height="100sp"/>
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-            android:layout_below="@id/image"
-            android:id="@+id/title"
-            android:layout_centerInParent="true"
-            android:textColor="#fff"
-            android:fontFamily="@font/arciform"
-            android:textSize="18sp"
-            android:text="@string/instituto_tecnol_gico_de_apizaco"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <RelativeLayout
-            android:layout_marginTop="20sp"
-            android:layout_marginBottom="20sp"
-            android:layout_below="@id/title"
-            android:id="@+id/iconapp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/bunds_rounded"
-            android:layout_width="100sp"
-            android:layout_height="100sp">
+            <ImageView
+                    android:id="@+id/image"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="30sp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/logoita"
+                    android:layout_width="250sp"
+                    android:layout_height="100sp"
+                    android:contentDescription="@string/todo" />
 
-        <ImageView
-                android:src="@drawable/matematicas"
-                android:contentDescription="@string/todo"
-                android:layout_centerInParent="true"
-                android:layout_width="70sp"
-                android:layout_height="70sp"/>
+            <TextView
+                    android:layout_below="@id/image"
+                    android:id="@+id/title"
+                    android:layout_centerInParent="true"
+                    android:textColor="#000"
+                    android:fontFamily="@font/arciform"
+                    android:textSize="18sp"
+                    android:text="@string/instituto_tecnol_gico_de_apizaco"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-    </RelativeLayout>
+            <RelativeLayout
+                    android:layout_marginTop="20sp"
+                    android:layout_marginBottom="20sp"
+                    android:layout_below="@id/title"
+                    android:id="@+id/iconapp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bunds_rounded"
+                    android:layout_width="100sp"
+                    android:layout_height="100sp">
 
-    <TextView
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/arciform"
-            android:textStyle="italic"
-            android:id="@+id/sample"
-            android:text="@string/metodos_numericos"
-            android:layout_below="@id/iconapp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                <ImageView
+                        android:src="@drawable/matematicas"
+                        android:contentDescription="@string/todo"
+                        android:layout_centerInParent="true"
+                        android:layout_width="70sp"
+                        android:layout_height="70sp"/>
 
-    <TextView
-            android:layout_marginTop="5sp"
-            android:id="@+id/build"
-            android:layout_below="@id/sample"
-            android:layout_centerInParent="true"
-            android:text="@string/txt"
-            android:fontFamily="@font/arciform"
-            android:textStyle="italic|bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            </RelativeLayout>
 
-    <TextView
-            android:padding="15sp"
-            android:layout_marginTop="10sp"
-            android:layout_below="@id/build"
-            android:id="@+id/devby"
-            android:textColor="#fff"
-            android:text="@string/desarrollado_por"
-            android:fontFamily="@font/arciform"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <TextView
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/arciform"
+                    android:textStyle="italic"
+                    android:id="@+id/sample"
+                    android:text="@string/metodos_numericos"
+                    android:layout_below="@id/iconapp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-    <TextView
-            android:layout_below="@id/devby"
-            android:id="@+id/legal"
-            android:padding="15sp"
-            android:textColor="#ffffff"
-            android:fontFamily="@font/arciform"
-            android:text="@string/informacion_legal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <TextView
+                    android:layout_marginTop="5sp"
+                    android:id="@+id/build"
+                    android:layout_below="@id/sample"
+                    android:layout_centerInParent="true"
+                    android:text="@string/txt"
+                    android:fontFamily="@font/arciform"
+                    android:textStyle="italic|bold"
+                    android:layout_width="120sp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:padding="15sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_below="@id/build"
+                    android:id="@+id/devby"
+                    android:textColor="#000"
+                    android:text="@string/desarrollado_por"
+                    android:fontFamily="@font/arciform"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:layout_below="@id/devby"
+                    android:id="@+id/legal"
+                    android:padding="15sp"
+                    android:textColor="#000"
+                    android:fontFamily="@font/arciform"
+                    android:text="@string/informacion_legal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

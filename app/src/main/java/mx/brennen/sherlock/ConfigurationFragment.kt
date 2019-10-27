@@ -14,7 +14,13 @@ import android.R.id.edit
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.Context.MODE_PRIVATE
+import android.content.Intent
+import android.net.Uri
+import android.view.Window
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
+import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 
@@ -28,6 +34,7 @@ class ConfigurationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_configuration, container, false)
     }
 
+    @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
@@ -60,11 +67,69 @@ class ConfigurationFragment : Fragment() {
 
         about.onClick {
 
-            val newFragment = AboutFragment()
-            val transaction = activity!!.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.FragmentHost, newFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            val builder = context?.let { AlertDialog.Builder(it) }
+            val v = layoutInflater.inflate(R.layout.fragment_about,null)
+            val devBy = v.findViewById(R.id.devby) as TextView
+            val legal = v.findViewById(R.id.legal) as TextView
+            val version = v.findViewById(R.id.build) as TextView
+            version.text = BuildConfig.VERSION_NAME
+
+            builder!!.setView(v)
+            TypefaceUtil().overrideFont(builder.context,"SERIF","fonts/arciform.otf")
+            val dialog = builder.create()
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+
+            devBy.onClick {
+
+                val builder1 = context?.let { AlertDialog.Builder(it) }
+
+                dialog.cancel()
+                builder1!!.setView(layoutInflater.inflate(R.layout.dialog_developed,null))
+                TypefaceUtil().overrideFont(builder1.context,"SERIF","fonts/arciform.otf")
+                val dialog1 = builder1.create()
+                dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog1.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+                dialog1.show()
+
+            }
+
+            legal.onClick {
+
+                dialog.cancel()
+
+                val builder1 = context?.let { AlertDialog.Builder(it) }
+                val v1 = layoutInflater.inflate(R.layout.legal_dialog,null)
+                val fonturl = v1.findViewById(R.id.fontmatt) as TextView
+
+                fonturl.onClick {
+
+                    val uri = Uri.parse("https://www.behance.net/matt_ellis/")
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    startActivity(intent)
+
+                }
+
+                val iconurl = v1.findViewById(R.id.matematicas) as TextView
+
+                iconurl.onClick {
+
+                    val uri = Uri.parse("http://www.flaticon.com/")
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    startActivity(intent)
+
+                }
+
+                builder1!!.setView(v)
+                TypefaceUtil().overrideFont(builder1.context,"SERIF","fonts/arciform.otf")
+                val dialog1 = builder1.create()
+                dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog1.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+                dialog1.show()
+
+            }
+
+            dialog.show()
         }
 
     }
