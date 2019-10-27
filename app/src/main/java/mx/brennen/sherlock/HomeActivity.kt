@@ -75,19 +75,37 @@ class HomeActivity : FragmentActivity() , OnNoteLister{
 
             "Metodo de Newton-Raphson" -> {
 
-
+                homeAct.closeDrawers()
+                val newFragment = NewtonFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
 
             }
 
             "Metodo de la Secante" -> {
 
-                
+                homeAct.closeDrawers()
+                val newFragment = SecantFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
 
             }
 
             "Metodo de Punto Fijo" -> {
 
-
+                homeAct.closeDrawers()
+                val newFragment = FixedFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
 
             }
 
