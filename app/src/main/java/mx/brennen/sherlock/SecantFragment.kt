@@ -65,7 +65,7 @@ class SecantFragment : Fragment() {
 
                 try {
 
-                    if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
+                    if (CoreServices().isFunction(editFunctionInput.text.toString(), variable.toCharArray()[0],1.0)){
 
                         editFunctionInput.setTextColor(Color.parseColor("#000000"))
                         text_input_layout_email.error = "Sintaxis Incorrrecta"
@@ -103,7 +103,7 @@ class SecantFragment : Fragment() {
 
                 try {
 
-                    if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
+                    if (CoreServices().isFunction(editFunctionInput.text.toString(), variable.toCharArray()[0],1.0)){
 
                         editFunctionInput.setTextColor(Color.parseColor("#000000"))
                         text_input_layout_email.error = "Sintaxis Incorrrecta"
@@ -196,9 +196,23 @@ class SecantFragment : Fragment() {
 
                     "Limite de Iteraciones" -> {
 
-                        iterations = CoreServices().secant(editFunctionInput.text.toString(),
-                            editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^-1000"),
-                            edittoleranceInput.text.toString().toInt()).clone() as ArrayList<IteracionS>
+                        try {
+
+                            if(edittoleranceInput.text.toString().toInt()>1){
+
+                                iterations = CoreServices().secant(editFunctionInput.text.toString(),
+                                    editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^-1000"),
+                                    edittoleranceInput.text.toString().toInt()).clone() as ArrayList<IteracionS>
+                                textInputtolerance.isErrorEnabled = false
+
+                            }
+
+                        } catch (e : Exception){
+
+                            textInputtolerance.error = "El limite de iteraciones no puede ser negativo"
+                            textInputtolerance.isErrorEnabled = true
+
+                        }
 
                     }
 

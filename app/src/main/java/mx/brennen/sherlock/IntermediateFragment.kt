@@ -26,12 +26,13 @@ import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.textColor
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import kotlin.math.log
 
 @Suppress("UNCHECKED_CAST")
 @TargetApi(Build.VERSION_CODES.N)
 class IntermediateFragment : Fragment() {
 
-    private var variable = ""
+    private var variable = ' '
     private var iterations : ArrayList<IteracionVI> = ArrayList()
     private var header = arrayOf("Iter.", Html.fromHtml("A<sub> i\n</sub>",
         Html.FROM_HTML_MODE_LEGACY), Html.fromHtml("B<sub> i\n</sub>", Html.FROM_HTML_MODE_LEGACY),
@@ -60,7 +61,7 @@ class IntermediateFragment : Fragment() {
 
         editvarInput.addTextChangedListener {
 
-            variable = editvarInput.text.toString()
+            variable = editvarInput.text.toString().toCharArray()[0]
             textInputvar.isErrorEnabled = false
 
             if(editFunctionInput.text != null){
@@ -81,8 +82,8 @@ class IntermediateFragment : Fragment() {
                     }
 
                 } catch (e : Exception){
-
-
+                    val mess = e.message
+                    System.out.println(mess)
                 }
 
             }
@@ -101,7 +102,7 @@ class IntermediateFragment : Fragment() {
 
             }
 
-            if (variable!=""){
+            if (variable!=' '){
 
                 try {
 
@@ -119,7 +120,10 @@ class IntermediateFragment : Fragment() {
 
                 } catch (e : Exception){
 
-
+                    var mess = e.message
+                    mess = e.message
+                    mess = e.message
+                    mess = e.message
                 }
 
             } else {
@@ -198,9 +202,23 @@ class IntermediateFragment : Fragment() {
 
                     "Limite de Iteraciones" -> {
 
-                        iterations = CoreServices().intermediateValue(editFunctionInput.text.toString(),
-                            editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^-1000"),
-                            edittoleranceInput.text.toString().toInt()).clone() as ArrayList<IteracionVI>
+                        try {
+
+                            if(edittoleranceInput.text.toString().toInt()>1){
+
+                                iterations = CoreServices().intermediateValue(editFunctionInput.text.toString(),
+                                    editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^-1000"),
+                                    edittoleranceInput.text.toString().toInt()).clone() as ArrayList<IteracionVI>
+                                textInputtolerance.isErrorEnabled = false
+
+                            }
+
+                        } catch (e : Exception){
+
+                            textInputtolerance.error = "El limite de iteraciones no puede ser negativo"
+                            textInputtolerance.isErrorEnabled = true
+
+                        }
 
                     }
 

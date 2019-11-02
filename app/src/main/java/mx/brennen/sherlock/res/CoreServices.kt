@@ -1,12 +1,16 @@
 package mx.brennen.sherlock.res
 
+import com.chaquo.python.Python
 import mx.brennen.sherlock.res.misc.Iteracion
 import mx.brennen.sherlock.res.misc.IteracionPF
 import mx.brennen.sherlock.res.misc.IteracionS
 import mx.brennen.sherlock.res.misc.IteracionVI
 import org.lsmp.djep.djep.DJep
+import org.mozilla.javascript.Context
+import org.mozilla.javascript.Scriptable
 import org.nfunk.jep.JEP
 import org.nfunk.jep.ParseException
+import java.lang.Double.NaN
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
@@ -944,36 +948,30 @@ class CoreServices{
 
     fun evaluate(function: String, variable: String, value : Double) : Double {
 
-        return JEP().apply{
+        val py: Python = Python.getInstance()
+        val mathFunctions = py.getModule("MathFunctions")
+        val x = mathFunctions.callAttr("Symbol", variable)
+        val functionParced = mathFunctions.callAttr("sympify", function).callAttr("subs", x,value) to Double
+        val function2 = functionParced.first.repr()
+        return try {
 
-            addStandardConstants()
-            addStandardFunctions()
-            addVariable( variable, value)
-            parseExpression(function)
+            function2.toDouble()
 
-        }.value
+        } catch (e : java.lang.Exception){
+
+            NaN
+
+        }
 
     }
 
     private fun derive(function: String, respectTo : String) : String {
 
-        val derivative = DJep().apply {
-            addStandardConstants()
-            addStandardFunctions()
-            addComplex()
-            allowUndeclared = true
-            allowAssignment = true
-            implicitMul = true
-            addStandardDiffRules()
-        }
-
-        try {
-
-            return derivative.toString(derivative.simplify(derivative.differentiate(derivative.parse(function), respectTo)))
-
-        } catch (e: ParseException) {}
-
-        return ""
+        val py: Python = Python.getInstance()
+        val mathFunctions = py.getModule("MathFunctions")
+        val x = mathFunctions.callAttr("Symbol", respectTo)
+        val derivative = mathFunctions.callAttr("diff",function,x) to String()
+        return derivative.first.repr()
 
     }
 
@@ -1285,16 +1283,24 @@ class CoreServices{
 
     }
 
-    fun isFunction(function: String, variable: String, value : Double) : Boolean {
+    fun isFunction(function: String, variable: Char, value : Double) : Boolean {
 
-        return JEP().apply{
+        //Hibridacion Exitosa con Python
 
-            addStandardConstants()
-            addStandardFunctions()
-            addVariable( variable, value)
-            parseExpression(function)
+        val py: Python = Python.getInstance()
+        val mathFunctions = py.getModule("MathFunctions")
+        val x = mathFunctions.callAttr("Symbol", variable)
+        val functionParced = mathFunctions.callAttr("sympify", function).callAttr("subs", x,value) to Double
+        val function2 = functionParced.first.repr()
+        return try {
 
-        }.value.isNaN()
+            function2.toDouble().isNaN()
+
+        } catch (e : java.lang.Exception){
+
+            true
+
+        }
 
     }
 
@@ -1438,5 +1444,4 @@ class CoreServices{
         }
         return cont
     }
-
 }

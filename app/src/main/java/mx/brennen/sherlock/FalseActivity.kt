@@ -20,7 +20,7 @@ import java.text.DecimalFormat
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 class FalseActivity : AppCompatActivity() {
 
-    private var variable = ""
+    private var variable = ' '
     private lateinit var radioButton: RadioButton
     var iterations : ArrayList<IteracionVI> = ArrayList()
     private var header = arrayOf("Iteracion","Valor","Evaluacion")
@@ -34,7 +34,7 @@ class FalseActivity : AppCompatActivity() {
         editvarInput.gravity = Gravity.CENTER
         editvarInput.addTextChangedListener {
 
-            variable = editvarInput.text.toString()
+            variable = editvarInput.text.toString().toCharArray()[0]
             textInputvar.isErrorEnabled = false
 
             if(editFunctionInput.text != null){
@@ -65,7 +65,7 @@ class FalseActivity : AppCompatActivity() {
 
         editFunctionInput.addTextChangedListener {
 
-            if (variable!=""){
+            if (variable!=' '){
 
                 try {
 

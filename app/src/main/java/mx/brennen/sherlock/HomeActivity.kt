@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chaquo.python.Python
+import com.chaquo.python.android.AndroidPlatform
 import kotlinx.android.synthetic.main.activity_home.*
 import mx.brennen.sherlock.res.Item
 import mx.brennen.sherlock.res.PersonalAdapter
@@ -125,6 +127,12 @@ class HomeActivity : FragmentActivity() , OnNoteLister{
         setContentView(R.layout.activity_home)
 
         actionBar?.hide()
+
+        if(!Python.isStarted()) {
+
+            Python.start(AndroidPlatform(applicationContext))
+
+        }
 
         TypefaceUtil().overrideFont(baseContext,"SERIF","fonts/arciform.otf")
 

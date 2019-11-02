@@ -30,7 +30,7 @@ import java.text.DecimalFormat
 @Suppress("UNCHECKED_CAST")
 class FalseFragment : Fragment() {
 
-    private var variable = ""
+    private var variable = ' '
     private var iterations : ArrayList<IteracionVI> = ArrayList()
     private var header = arrayOf("Iter.",Html.fromHtml("A<sub> i\n</sub>",
         Html.FROM_HTML_MODE_LEGACY),Html.fromHtml("B<sub> i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
@@ -61,7 +61,7 @@ class FalseFragment : Fragment() {
 
         editvarInput.addTextChangedListener {
 
-            variable = editvarInput.text.toString()
+            variable = editvarInput.text.toString().toCharArray()[0]
             textInputvar.isErrorEnabled = false
 
             if(editFunctionInput.text != null){
@@ -102,7 +102,7 @@ class FalseFragment : Fragment() {
 
             }
 
-            if (variable!=""){
+            if (variable!=' '){
 
                 try {
 
@@ -199,9 +199,23 @@ class FalseFragment : Fragment() {
 
                     "Limite de Iteraciones" -> {
 
-                        iterations = CoreServices().falsePosition(editFunctionInput.text.toString(),
-                            editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^-1000"),
-                            edittoleranceInput.text.toString().toInt()).clone() as ArrayList<IteracionVI>
+                        try {
+
+                            if(edittoleranceInput.text.toString().toInt()>1){
+
+                                iterations = CoreServices().falsePosition(editFunctionInput.text.toString(),
+                                    editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^-1000"),
+                                    edittoleranceInput.text.toString().toInt()).clone() as ArrayList<IteracionVI>
+                                textInputtolerance.isErrorEnabled = false
+
+                            }
+
+                        } catch (e : Exception){
+
+                            textInputtolerance.error = "El limite de iteraciones no puede ser negativo"
+                            textInputtolerance.isErrorEnabled = true
+
+                        }
 
                     }
 
