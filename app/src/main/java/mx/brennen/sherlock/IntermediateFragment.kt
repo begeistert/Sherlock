@@ -26,7 +26,6 @@ import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.textColor
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import kotlin.math.log
 
 @Suppress("UNCHECKED_CAST")
 @TargetApi(Build.VERSION_CODES.N)
@@ -61,8 +60,17 @@ class IntermediateFragment : Fragment() {
 
         editvarInput.addTextChangedListener {
 
-            variable = editvarInput.text.toString().toCharArray()[0]
-            textInputvar.isErrorEnabled = false
+            try{
+
+                variable = editvarInput.text.toString().toCharArray()[0]
+                textInputvar.isErrorEnabled = false
+
+            } catch (e : Exception){
+
+                variable = ' '
+                textInputvar.isErrorEnabled = true
+
+            }
 
             if(editFunctionInput.text != null){
 
@@ -83,7 +91,7 @@ class IntermediateFragment : Fragment() {
 
                 } catch (e : Exception){
                     val mess = e.message
-                    System.out.println(mess)
+                    println(mess)
                 }
 
             }
@@ -119,11 +127,6 @@ class IntermediateFragment : Fragment() {
                     }
 
                 } catch (e : Exception){
-
-                    var mess = e.message
-                    mess = e.message
-                    mess = e.message
-                    mess = e.message
                 }
 
             } else {

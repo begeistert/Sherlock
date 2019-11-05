@@ -1,16 +1,14 @@
 package mx.brennen.sherlock
 
-import android.app.ActivityOptions
-import android.app.Application
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.multidex.MultiDex
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chaquo.python.Python
@@ -22,14 +20,18 @@ import mx.brennen.sherlock.res.misc.OnNoteLister
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
-import uk.co.chrisjenx.calligraphy.TypefaceUtils
 
 @Suppress("UNCHECKED_CAST")
-class HomeActivity : FragmentActivity() , OnNoteLister{
+class HomeActivity : FragmentActivity() ,OnNoteLister{
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
 
     override fun OnNoteListener(position: Int) {
 
-        when(itemList.get(position).title){
+        when(itemList[position].title){
 
             "Metodos de Intervalo" -> {
 
@@ -54,10 +56,9 @@ class HomeActivity : FragmentActivity() , OnNoteLister{
                 views = personalAdapter.images
                 val newFragment = FalseFragment()
                 val transaction = supportFragmentManager.beginTransaction()
-                val options = ActivityOptions.makeSceneTransitionAnimation(this, views.get(position) ,  "itemImage")
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 transaction.replace(R.id.FragmentHost, newFragment,"Falsa Posicion")
-                transaction.addSharedElement(views.get(position) ,  "itemImage")
+                transaction.addSharedElement(views[position],  "itemImage")
                 transaction.addToBackStack(null)
                 transaction.commit()
 
@@ -117,12 +118,13 @@ class HomeActivity : FragmentActivity() , OnNoteLister{
 
     }
 
-    lateinit var personalAdapter : PersonalAdapter
+    private lateinit var personalAdapter : PersonalAdapter
     private var itemList : ArrayList<Item> = ArrayList()
     private var views : ArrayList<ImageView> = ArrayList()
     private lateinit var recyclerView : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        MultiDex.install(baseContext)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
@@ -131,6 +133,9 @@ class HomeActivity : FragmentActivity() , OnNoteLister{
         if(!Python.isStarted()) {
 
             Python.start(AndroidPlatform(applicationContext))
+            //Precarga de librerias
+            val py: Python = Python.getInstance()
+            val mathFunctions = py.getModule("MathFunctions")
 
         }
 
