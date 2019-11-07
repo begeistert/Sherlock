@@ -253,6 +253,12 @@ class IntermediateFragment : Fragment() {
 
         }
 
+        menicon.onClick {
+
+            (activity as HomeActivity).menu()
+
+        }
+
         val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
 
         var form = "#."

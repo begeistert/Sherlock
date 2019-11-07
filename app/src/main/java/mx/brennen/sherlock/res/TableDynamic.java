@@ -74,7 +74,7 @@ public class TableDynamic {
             txtCell.setTextColor(Color.parseColor("#C81E0A"));
             txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/arciform.otf"));
             txtCell.setBackground(context.getDrawable(R.drawable.cellrectangle));
-            txtCell.setPadding(0,5,0,5);
+            txtCell.setPadding(0,10,0,15);
             tableRow.addView(txtCell,newTableRow());
 
         }
@@ -101,7 +101,7 @@ public class TableDynamic {
                 txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/arciform.otf"));
                 txtCell.setBackgroundColor(Color.parseColor("#ffffff"));
                 txtCell.setBackground(context.getDrawable(R.drawable.cellrectangle));
-                txtCell.setPadding(0,5,0,5);
+                txtCell.setPadding(0,10,0,10);
                 tableRow.addView(txtCell,newTableRow());
 
             }

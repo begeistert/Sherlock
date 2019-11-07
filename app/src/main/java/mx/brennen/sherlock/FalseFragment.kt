@@ -32,10 +32,10 @@ class FalseFragment : Fragment() {
 
     private var variable = ' '
     private var iterations : ArrayList<IteracionVI> = ArrayList()
-    private var header = arrayOf("Iter.",Html.fromHtml("A<sub> i\n</sub>",
-        Html.FROM_HTML_MODE_LEGACY),Html.fromHtml("B<sub> i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
-        Html.fromHtml("P<sub> i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
-        Html.fromHtml("F( P<sub> i\n</sub>)",Html.FROM_HTML_MODE_LEGACY))
+    private var header = arrayOf("Iter.",Html.fromHtml("A<sub>i\n</sub>",
+        Html.FROM_HTML_MODE_LEGACY),Html.fromHtml("B<sub>i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
+        Html.fromHtml("P<sub>i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
+        Html.fromHtml("F(P<sub>i\n</sub>)",Html.FROM_HTML_MODE_LEGACY))
     private var rows: ArrayList<Array<String>> = ArrayList()
     private lateinit var df : DecimalFormat
 
@@ -61,32 +61,34 @@ class FalseFragment : Fragment() {
 
         editvarInput.addTextChangedListener {
 
-            variable = editvarInput.text.toString().toCharArray()[0]
-            textInputvar.isErrorEnabled = false
+            try {
+                variable = editvarInput.text.toString().toCharArray()[0]
+                textInputvar.isErrorEnabled = false
 
-            if(editFunctionInput.text != null){
+                if(editFunctionInput.text != null){
 
-                try {
+                    try {
 
-                    if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
+                        if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
 
-                        editFunctionInput.setTextColor(Color.parseColor("#000000"))
-                        text_input_layout_email.error = "Sintaxis Incorrrecta"
-                        text_input_layout_email.isErrorEnabled = true
+                            editFunctionInput.setTextColor(Color.parseColor("#000000"))
+                            text_input_layout_email.error = "Sintaxis Incorrrecta"
+                            text_input_layout_email.isErrorEnabled = true
 
-                    } else {
+                        } else {
 
-                        editFunctionInput.setTextColor(Color.parseColor("#008000"))
-                        text_input_layout_email.isErrorEnabled = false
+                            editFunctionInput.setTextColor(Color.parseColor("#008000"))
+                            text_input_layout_email.isErrorEnabled = false
+
+                        }
+
+                    } catch (e : Exception){
+
 
                     }
 
-                } catch (e : Exception){
-
-
                 }
-
-            }
+            }catch (e : java.lang.Exception){}
 
         }
 
@@ -244,6 +246,12 @@ class FalseFragment : Fragment() {
         aproachOptions.onClick {
 
             createSingleListDialog()
+
+        }
+
+        menicon.onClick {
+
+            (activity as HomeActivity).menu()
 
         }
 

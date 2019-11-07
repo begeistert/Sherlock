@@ -19,22 +19,36 @@
                 tools:ignore="UselessLeaf">
 
             <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card"
-                    android:background="@drawable/gradient"
-                    android:transitionName="card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                android:id="@+id/card"
+                android:background="@drawable/gradient"
+                android:transitionName="card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/title"
-                        android:padding="10sp"
-                        android:background="#42D6F2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:ignore="UseCompoundDrawables"
-                        android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/title"
+                    android:padding="10sp"
+                    android:background="#42D6F2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="UseCompoundDrawables"
+                    android:orientation="horizontal">
 
                     <ImageView
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentStart="true"
+                        android:id="@+id/menicon"
+                        android:src="@drawable/ic_menu"
+                        android:layout_width="40sp"
+                        android:layout_height="40sp"
+                        android:contentDescription="@string/menuicon"/>
+
+                    <LinearLayout
+                        android:layout_marginStart="35sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
                             android:src="@drawable/bucle"
                             android:transitionName="itemImage"
                             app:layout_collapseMode="parallax"
@@ -44,11 +58,11 @@
                             android:layout_height="90sp"
                             android:contentDescription="@string/todo"/>
 
-                    <RelativeLayout
+                        <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent">
 
-                        <TextView
+                            <TextView
                                 android:textColor="#ffffff"
                                 android:id="@+id/titleContent"
                                 android:transitionName="itemTittle"
@@ -58,9 +72,9 @@
                                 android:fontFamily="@font/arciform"
                                 android:textSize="25sp"
                                 android:layout_marginTop="15sp"
-                        />
+                                />
 
-                        <TextView
+                            <TextView
                                 android:textColor="#ffffff"
                                 android:id="@+id/descriptionContent"
                                 android:transitionName="itemContent"
@@ -70,12 +84,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
-                    </RelativeLayout>
+                        </RelativeLayout>
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
+
+                </RelativeLayout>
 
             </com.google.android.material.card.MaterialCardView>
-
 
             <LinearLayout
                     android:id="@+id/linearl"

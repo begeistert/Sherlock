@@ -186,4 +186,6 @@ class FalseActivity : AppCompatActivity() {
 
     }
 
+    fun onMenuClick(view: View) {}
+
 }

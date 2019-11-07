@@ -2,24 +2,19 @@ package mx.brennen.sherlock
 
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
-import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_configuration.*
-import org.jetbrains.anko.support.v4.toast
-import android.R.id.edit
-import android.content.Context
-import android.content.SharedPreferences
-import android.content.Context.MODE_PRIVATE
-import android.content.Intent
-import android.net.Uri
 import android.view.Window
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.navigation.Navigation
+import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_configuration.*
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
@@ -130,6 +125,12 @@ class ConfigurationFragment : Fragment() {
             }
 
             dialog.show()
+        }
+
+        menicon.onClick {
+
+            (activity as HomeActivity).menu()
+
         }
 
     }

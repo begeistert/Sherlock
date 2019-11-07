@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sherlock</string>
+    <string name="app_name">Métodos Numéricos</string>
     <string name="title_home">Inicio</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -66,4 +66,20 @@
     <string name="secante">Secante</string>
     <string name="newton_raphson">Newton-Raphson</string>
     <string name="punto_fijo">Punto Fijo</string>
+    <string name="menuicon">menuicon</string>
+    <string name="interpolacion_lineal">Interpolacion Lineal</string>
+    <string name="inserta_los_valores_de_los_pares_ordenados">Inserta los valores de los pares ordenados</string>
+    <string name="generacion_y_evaluacion_en_tiempo_real_metodos_de_interpolacion">Generacion y evaluacion del modelo en tiempo real</string>
+    <string name="metodos_de_interpolacion">Metodos de Interpolacion</string>
+    <string name="sympylogo">sympyLogo</string>
+    <string name="copyright_c_2006_2019_sympy_development_team">Copyright © 2006–2019 SymPy Development Team</string>
+    <string name="all_rights_reserved">All rights reserved</string>
+    <string name="chaquopylogo">chaquopylogo</string>
+    <string name="copyright_2018_chaquo_ltd">Copyright © 2018 Chaquo Ltd</string>
+    <string name="chaquopy">Chaquopy</string>
+    <string name="sympy">SymPy</string>
+    <string name="gracias_por_participar_en_nuestro_progama_de_acceso_temprano">Gracias por participar</string>
+    <string name="durante_la_duracion_del_programa_de_acceso_temprano_podras">Durante la ejecucion del programa de acceso temprano podrian existir errores, por favor te pedimos los reportes a la direccion de correo electronico ivan.montiel.c@gmail.com</string>
+    <string name="esta_aplicacion_no_es_transferible_hasta_su_fecha_de_lanzamiento_oficial_programada_el_dia_19_de_septiembre_de_2019_a_las_9_30_horas">Esta aplicacion no es transferible hasta su fecha de lanzamiento oficial programada el dia 19 de septiembre de 2019 a las 9:30 horas</string>
+    <string name="aceptar">Aceptar</string>
 </resources>
