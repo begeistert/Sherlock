@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.CompoundButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -17,7 +18,6 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_configuration.*
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.sdk27.coroutines.onClick
-
 
 class ConfigurationFragment : Fragment() {
 
@@ -29,6 +29,8 @@ class ConfigurationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_configuration, container, false)
     }
 
+
+
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -39,6 +41,7 @@ class ConfigurationFragment : Fragment() {
 
         value.text = prefs.getInt("Decimales",16).toString()
         seekBar.progress = prefs.getInt("Decimales",16)
+        realtime.isChecked = prefs.getBoolean("RealTime",false)
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
@@ -59,6 +62,14 @@ class ConfigurationFragment : Fragment() {
                 // Do something
             }
         })
+
+        realtime.setOnCheckedChangeListener { _, isChecked ->
+
+
+            editor.putBoolean("RealTime",isChecked)
+            editor.apply()
+
+        }
 
         about.onClick {
 

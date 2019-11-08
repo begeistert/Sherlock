@@ -31,6 +31,7 @@ import mx.brennen.sherlock.res.Item
 import mx.brennen.sherlock.res.PersonalAdapter
 import mx.brennen.sherlock.res.misc.OnNoteLister
 import mx.brennen.sherlock.res.misc.TypefaceUtil
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
 import java.io.BufferedReader
@@ -104,6 +105,18 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
             }
 
+            "Metodos de Interpolación" ->{
+
+                views.clear()
+                itemList.clear()
+                itemList.add(Item("Metodo de Interpolacion Lineal", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de Interpolacion Cuadratica", "Metodo de Interpolacion Cuadratica",R.drawable.graph))
+
+                personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
+                recyclerView.adapter = personalAdapter
+
+            }
+
             "Método de Falsa posicion" -> {
 
                 /*val extras = FragmentNavigatorExtras(
@@ -168,16 +181,37 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
             }
 
-        }
+            "Metodo de Interpolacion Lineal" ->{
 
-        toast("Hola")
+                homeAct.closeDrawers()
+                val newFragment = LinearInterpolationFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
+            "Metodo de Interpolacion Cuadratica" -> {
+
+                homeAct.closeDrawers()
+                val newFragment = CuadraticInterpolationFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
+        }
 
     }
 
     private lateinit var googleApiClient : GoogleSignInClient
     private lateinit var personalAdapter : PersonalAdapter
     private val SIGN_IN_CODE = 909
-    private lateinit var signInIntent : Intent
     private var itemList : ArrayList<Item> = ArrayList()
     private var views : ArrayList<ImageView> = ArrayList()
     private lateinit var recyclerView : RecyclerView
@@ -204,12 +238,16 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
         actionBar?.hide()
 
-        if(!Python.isStarted()) {
+        doAsync {
 
-            Python.start(AndroidPlatform(applicationContext))
-            //Precarga de librerias
-            val py: Python = Python.getInstance()
-            val mathFunctions = py.getModule("MathFunctions")
+            if(!Python.isStarted()) {
+
+                Python.start(AndroidPlatform(applicationContext))
+                //Precarga de librerias
+                val py: Python = Python.getInstance()
+                val mathFunctions = py.getModule("MathFunctions")
+
+            }
 
         }
 
@@ -258,6 +296,20 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
         homeAct.addDrawerListener(drawerToggle)
 
+        closemenu.onClick {
+
+            homeAct.closeDrawers()
+
+        }
+
+        backmenubutton.onClick {
+
+            itemList.clear()
+
+            createList()
+
+        }
+
         configuration.onClick {
 
             homeAct.closeDrawers()
@@ -298,6 +350,7 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
             }catch (e : Exception){
 
+                finishAffinity()
                 val mess = e.message
                 toast(mess.toString())
 

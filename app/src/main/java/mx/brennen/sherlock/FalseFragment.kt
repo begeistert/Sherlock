@@ -11,6 +11,7 @@ import android.text.Html
 import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
@@ -26,16 +27,15 @@ import org.jetbrains.anko.textColor
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
-@TargetApi(Build.VERSION_CODES.N)
 @Suppress("UNCHECKED_CAST")
 class FalseFragment : Fragment() {
 
     private var variable = ' '
     private var iterations : ArrayList<IteracionVI> = ArrayList()
-    private var header = arrayOf("Iter.",Html.fromHtml("A<sub>i\n</sub>",
-        Html.FROM_HTML_MODE_LEGACY),Html.fromHtml("B<sub>i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
-        Html.fromHtml("P<sub>i\n</sub>",Html.FROM_HTML_MODE_LEGACY),
-        Html.fromHtml("F(P<sub>i\n</sub>)",Html.FROM_HTML_MODE_LEGACY))
+    private var header = arrayOf("Iter.",HtmlCompat.fromHtml("A<sub><small>i\n</small></sub>",
+        HtmlCompat.FROM_HTML_MODE_LEGACY),HtmlCompat.fromHtml("B<sub><small>i\n</small></sub>",HtmlCompat.FROM_HTML_MODE_LEGACY),
+        HtmlCompat.fromHtml("P<sub><small>i\n</small></sub>",HtmlCompat.FROM_HTML_MODE_LEGACY),
+        HtmlCompat.fromHtml("F(P<sub><small>i\n</small></sub>)",HtmlCompat.FROM_HTML_MODE_LEGACY))
     private var rows: ArrayList<Array<String>> = ArrayList()
     private lateinit var df : DecimalFormat
 
@@ -55,8 +55,6 @@ class FalseFragment : Fragment() {
 
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.slide_top).setDuration(350)
 
-        itemImage.image = context!!.getDrawable(R.drawable.bucle)
-
         editvarInput.gravity = Gravity.CENTER
 
         editvarInput.addTextChangedListener {
@@ -71,13 +69,13 @@ class FalseFragment : Fragment() {
 
                         if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
 
-                            editFunctionInput.setTextColor(Color.parseColor("#000000"))
+                            editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                             text_input_layout_email.error = "Sintaxis Incorrrecta"
                             text_input_layout_email.isErrorEnabled = true
 
                         } else {
 
-                            editFunctionInput.setTextColor(Color.parseColor("#008000"))
+                            editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                             text_input_layout_email.isErrorEnabled = false
 
                         }
@@ -110,12 +108,12 @@ class FalseFragment : Fragment() {
 
                     if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
 
-                        editFunctionInput.setTextColor(Color.parseColor("#000000"))
+                        editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                         text_input_layout_email.error = "Sintaxis Incorrrecta"
                         text_input_layout_email.isErrorEnabled = true
 
                     } else {
-                        editFunctionInput.setTextColor(Color.parseColor("#008000"))
+                        editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                         text_input_layout_email.isErrorEnabled = false
 
                     }

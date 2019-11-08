@@ -82,4 +82,14 @@
     <string name="durante_la_duracion_del_programa_de_acceso_temprano_podras">Durante la ejecucion del programa de acceso temprano podrian existir errores, por favor te pedimos los reportes a la direccion de correo electronico ivan.montiel.c@gmail.com</string>
     <string name="esta_aplicacion_no_es_transferible_hasta_su_fecha_de_lanzamiento_oficial_programada_el_dia_19_de_septiembre_de_2019_a_las_9_30_horas">Esta aplicacion no es transferible hasta su fecha de lanzamiento oficial programada el dia 19 de septiembre de 2019 a las 9:30 horas</string>
     <string name="aceptar">Aceptar</string>
+    <string name="valor">Valor</string>
+    <string name="x1">x1</string>
+    <string name="el_modelo_matematico_resultante_es">El modelo matematico resultante es:</string>
+    <string name="evaluar">Evaluar</string>
+    <string name="close">close</string>
+    <string name="xs">X=</string>
+    <string name="back">back</string>
+    <string name="interpolacion_cuadratica">Interpolacion Cuadratica</string>
+    <string name="interpolacion">Interpolacion</string>
+    <string name="cuadratica">Cuadratica</string>
 </resources>

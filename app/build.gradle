@@ -12,10 +12,10 @@ android {
     buildToolsVersion "29.0.1"
     defaultConfig {
         applicationId "mx.brennen.sherlock"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 29
-        versionCode 6
-        versionName "1.1.0-alpha01"
+        versionCode 7
+        versionName "1.1.0-alpha02"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -30,8 +30,8 @@ android {
 
             pip {
 
-                install "mpmath"
-                install "/Users/ivanmontielcardona/downloads/sympy-1.4-py2.py3-none-any.whl"
+                install "sympy"
+                //install "/Users/ivanmontielcardona/downloads/sympy-1.4-py2.py3-none-any.whl"
 
             }
 

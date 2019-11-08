@@ -12,6 +12,7 @@ import android.text.Html
 import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
@@ -28,13 +29,12 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 @Suppress("UNCHECKED_CAST")
-@TargetApi(Build.VERSION_CODES.N)
 class NewtonFragment : Fragment() {
 
     private var variable = ""
     private var iterations : ArrayList<Iteracion> = ArrayList()
-    private var header = arrayOf("Iteracion", Html.fromHtml("X<sub>n\n</sub>",
-        Html.FROM_HTML_MODE_LEGACY), Html.fromHtml("F(X<sub>n\n</sub>)", Html.FROM_HTML_MODE_LEGACY))
+    private var header = arrayOf("Iteracion", HtmlCompat.fromHtml("X<sub><small>n\n</small></sub>",
+        HtmlCompat.FROM_HTML_MODE_LEGACY), HtmlCompat.fromHtml("F(X<sub><small>n\n</small></sub>)", HtmlCompat.FROM_HTML_MODE_LEGACY))
     private var rows: ArrayList<Array<String>> = ArrayList()
     private lateinit var df : DecimalFormat
 
@@ -52,8 +52,6 @@ class NewtonFragment : Fragment() {
 
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.slide_top).setDuration(350)
 
-        itemImage.image = context!!.getDrawable(R.drawable.bucle)
-
         editvarInput.gravity = Gravity.CENTER
 
         editvarInput.addTextChangedListener {
@@ -67,13 +65,13 @@ class NewtonFragment : Fragment() {
 
                     if (CoreServices().isFunction(editFunctionInput.text.toString(), variable.toCharArray()[0],1.0)){
 
-                        editFunctionInput.setTextColor(Color.parseColor("#000000"))
+                        editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                         text_input_layout_email.error = "Sintaxis Incorrrecta"
                         text_input_layout_email.isErrorEnabled = true
 
                     } else {
 
-                        editFunctionInput.setTextColor(Color.parseColor("#008000"))
+                        editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                         text_input_layout_email.isErrorEnabled = false
 
                     }
@@ -105,12 +103,12 @@ class NewtonFragment : Fragment() {
 
                     if (CoreServices().isFunction(editFunctionInput.text.toString(), variable.toCharArray()[0],1.0)){
 
-                        editFunctionInput.setTextColor(Color.parseColor("#000000"))
+                        editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                         text_input_layout_email.error = "Sintaxis Incorrrecta"
                         text_input_layout_email.isErrorEnabled = true
 
                     } else {
-                        editFunctionInput.setTextColor(Color.parseColor("#008000"))
+                        editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                         text_input_layout_email.isErrorEnabled = false
 
                     }

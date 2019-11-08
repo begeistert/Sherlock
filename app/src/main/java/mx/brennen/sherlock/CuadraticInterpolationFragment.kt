@@ -3,6 +3,7 @@ package mx.brennen.sherlock
 
 import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_linear_interpolation.*
+import kotlinx.android.synthetic.main.fragment_cuadratic_interpolation.*
 import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -21,14 +21,14 @@ import org.jetbrains.anko.support.v4.toast
 /**
  * A simple [Fragment] subclass.
  */
-class LinearInterpolationFragment : Fragment() {
+class CuadraticInterpolationFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_linear_interpolation, container, false)
+        return inflater.inflate(R.layout.fragment_cuadratic_interpolation, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -96,11 +96,25 @@ class LinearInterpolationFragment : Fragment() {
                         }
                     }
 
+                    val thirdIntervals = DoubleArray(2).apply {
+
+                        if(x3.text.toString() != ""){
+                            set(0,x3.text.toString().toDouble())
+                        }else{
+                            set(0, 0.0)
+                        }
+                        if(y3.text.toString() != ""){
+                            set(1,y3.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+
+                    }
+
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().linearInterpolation(firstIntervals,secondIntervals)
+                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
                         rellay.visibility = View.VISIBLE
-
                         if(value.text.toString() != ""){
 
                             try {
@@ -159,9 +173,24 @@ class LinearInterpolationFragment : Fragment() {
                         }
                     }
 
+                    val thirdIntervals = DoubleArray(2).apply {
+
+                        if(x3.text.toString() != ""){
+                            set(0,x3.text.toString().toDouble())
+                        }else{
+                            set(0, 0.0)
+                        }
+                        if(y3.text.toString() != ""){
+                            set(1,y3.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+
+                    }
+
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().linearInterpolation(firstIntervals,secondIntervals)
+                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
                         rellay.visibility = View.VISIBLE
                         if(value.text.toString() != ""){
 
@@ -221,9 +250,24 @@ class LinearInterpolationFragment : Fragment() {
                         }
                     }
 
+                    val thirdIntervals = DoubleArray(2).apply {
+
+                        if(x3.text.toString() != ""){
+                            set(0,x3.text.toString().toDouble())
+                        }else{
+                            set(0, 0.0)
+                        }
+                        if(y3.text.toString() != ""){
+                            set(1,y3.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+
+                    }
+
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().linearInterpolation(firstIntervals,secondIntervals)
+                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
                         rellay.visibility = View.VISIBLE
                         if(value.text.toString() != ""){
 
@@ -283,9 +327,178 @@ class LinearInterpolationFragment : Fragment() {
                         }
                     }
 
+                    val thirdIntervals = DoubleArray(2).apply {
+
+                        if(x3.text.toString() != ""){
+                            set(0,x3.text.toString().toDouble())
+                        }else{
+                            set(0, 0.0)
+                        }
+                        if(y3.text.toString() != ""){
+                            set(1,y3.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+
+                    }
+
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().linearInterpolation(firstIntervals,secondIntervals)
+                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
+                        rellay.visibility = View.VISIBLE
+                        if(value.text.toString() != ""){
+
+                            try {
+
+                                val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                                val mess = "El resultado de la evaluacion es: $valueOf"
+                                valueofecuation.text = mess
+
+                            } catch (e : Exception){
+
+
+                            }
+
+                        }
+
+                    }
+
+                }catch (e : Exception){
+
+                    toast("Comprueba tus datos de entrada")
+
+                }
+
+            }
+
+            x3.addTextChangedListener{
+
+                try {
+
+                    val firstIntervals = DoubleArray(2).apply {
+
+                        if(x1.text.toString() != ""){
+                            set(0,x1.text.toString().toDouble())
+                        }else{
+                            set(0, 0.0)
+                        }
+                        if(y1.text.toString() != ""){
+                            set(1,y1.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+
+                    }
+
+                    val secondIntervals = DoubleArray(2).apply {
+
+                        if(x2.text.toString() != ""){
+                            set(0,x2.text.toString().toDouble())
+                        }else{
+                            set(0,0.0)
+                        }
+                        if(y2.text.toString() != ""){
+                            set(1,y2.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+                    }
+
+                    val thirdIntervals = DoubleArray(2).apply {
+
+                        if(x3.text.toString() != ""){
+                            set(0,x3.text.toString().toDouble())
+                        }else{
+                            set(0, 0.0)
+                        }
+                        if(y3.text.toString() != ""){
+                            set(1,y3.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+
+                    }
+
+                    if (!firstIntervals[0].isNaN()){
+
+                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
+                        rellay.visibility = View.VISIBLE
+                        if(value.text.toString() != ""){
+
+                            try {
+
+                                val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                                val mess = "El resultado de la evaluacion es: $valueOf"
+                                valueofecuation.text = mess
+
+                            } catch (e : Exception){
+
+
+                            }
+
+                        }
+
+                    }
+
+                }catch (e : Exception){
+
+                    toast("Comprueba tus datos de entrada")
+
+                }
+
+            }
+
+            y3.addTextChangedListener{
+
+                try {
+
+                    val firstIntervals = DoubleArray(2).apply {
+
+                        if(x1.text.toString() != ""){
+                            set(0,x1.text.toString().toDouble())
+                        }else{
+                            set(0, 0.0)
+                        }
+                        if(y1.text.toString() != ""){
+                            set(1,y1.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+
+                    }
+
+                    val secondIntervals = DoubleArray(2).apply {
+
+                        if(x2.text.toString() != ""){
+                            set(0,x2.text.toString().toDouble())
+                        }else{
+                            set(0,0.0)
+                        }
+                        if(y2.text.toString() != ""){
+                            set(1,y2.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+                    }
+
+                    val thirdIntervals = DoubleArray(2).apply {
+
+                        if(x3.text.toString() != ""){
+                            set(0,x3.text.toString().toDouble())
+                        }else{
+                            set(0, 0.0)
+                        }
+                        if(y3.text.toString() != ""){
+                            set(1,y3.text.toString().toDouble())
+                        }else{
+                            set(1,0.0)
+                        }
+
+                    }
+
+                    if (!firstIntervals[0].isNaN()){
+
+                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
                         rellay.visibility = View.VISIBLE
                         if(value.text.toString() != ""){
 
@@ -348,7 +561,14 @@ class LinearInterpolationFragment : Fragment() {
 
                     }
 
-                    math_model.text = CoreServices().linearInterpolation(firstIntervals,secondIntervals)
+                    val thirdIntervals = DoubleArray(2).apply {
+
+                        set(0,x3.text.toString().toDouble())
+                        set(1,y3.text.toString().toDouble())
+
+                    }
+
+                    math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
                     rellay.visibility = View.VISIBLE
                     toast(math_model.text)
 
@@ -385,6 +605,8 @@ class LinearInterpolationFragment : Fragment() {
         y_1.text = HtmlCompat.fromHtml("F(X<sub><small>1</sub></small>)", HtmlCompat.FROM_HTML_MODE_LEGACY)
         x_2.text = HtmlCompat.fromHtml("X<sub><small>2</sub></small>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         y_2.text = HtmlCompat.fromHtml("F(X<sub><small>2</sub></small>)", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        x_3.text = HtmlCompat.fromHtml("X<sub><small>3</sub></small>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        y_3.text = HtmlCompat.fromHtml("F(X<sub><small>3</sub></small>)", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
         menicon.onClick {
 

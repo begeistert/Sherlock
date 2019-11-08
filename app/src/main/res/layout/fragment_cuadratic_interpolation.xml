@@ -5,8 +5,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".LinearInterpolationFragment">
+    tools:context=".CuadraticInterpolationFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,10 +31,10 @@
 
             <TextView
                 android:layout_centerInParent="true"
-                android:layout_marginTop="30sp"
+                android:layout_marginTop="20sp"
                 android:fontFamily="@font/arciform"
                 android:textSize="30sp"
-                android:text="@string/interpolacion_lineal"
+                android:text="@string/interpolacion"
                 android:textColor="#fff"
                 android:id="@+id/title"
                 android:layout_alignParentTop="true"
@@ -41,10 +42,21 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/title2"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/title"
+                android:text="@string/cuadratica"
+                android:fontFamily="@font/arciform"
+                android:textColor="#ffffff"
+                android:textSize="30sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
                 android:id="@+id/pares"
                 android:layout_marginBottom="10sp"
                 android:layout_centerInParent="true"
-                android:layout_below="@id/title"
+                android:layout_below="@id/title2"
                 android:text="@string/inserta_los_valores_de_los_pares_ordenados"
                 android:fontFamily="@font/arciform"
                 android:layout_width="wrap_content"
@@ -142,6 +154,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/scd"
                     android:layout_below="@id/fst"
                     android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
@@ -207,6 +220,84 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/y2"
+                            android:textColor="#ffffff"
+                            android:layout_width="match_parent"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/arciform"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                            android:theme="@style/EditText"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_below="@id/scd"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/x_3"
+                        android:textSize="18sp"
+                        android:layout_marginTop="27sp"
+                        android:padding="5sp"
+                        android:text="@string/x1"
+                        android:fontFamily="@font/arciform"
+                        android:textColor="#ffffff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputA2"
+                        android:layout_width="60sp"
+                        android:padding="5sp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/valor"
+                        android:textColorHint="#ffffff"
+                        android:fontFamily="@font/arciform"
+                        app:hintTextAppearance="@style/AppTheme.FloatingLabel"
+                        app:errorTextAppearance="@style/AppTheme.EditTextError"
+                        tools:ignore="RtlSymmetry">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/x3"
+                            android:textColor="#ffffff"
+                            android:layout_width="match_parent"
+                            android:textAlignment="center"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arciform"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                            android:theme="@style/EditText"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/y_3"
+                        android:textSize="18sp"
+                        android:layout_marginTop="27sp"
+                        android:padding="5sp"
+                        android:text="@string/x1"
+                        android:fontFamily="@font/arciform"
+                        android:textColor="#ffffff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputB3l1"
+                        android:padding="5sp"
+                        android:layout_width="60sp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arciform"
+                        android:hint="@string/valor"
+                        android:textColorHint="#ffffff"
+                        app:hintTextAppearance="@style/AppTheme.FloatingLabel"
+                        app:errorTextAppearance="@style/AppTheme.EditTextError"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/y3"
                             android:textColor="#ffffff"
                             android:layout_width="match_parent"
                             android:textAlignment="center"
