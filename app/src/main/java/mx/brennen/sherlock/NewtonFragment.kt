@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.*
+import android.webkit.WebView
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
@@ -21,6 +22,7 @@ import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.TableDynamic
 import mx.brennen.sherlock.res.misc.Iteracion
 import mx.brennen.sherlock.res.misc.TypefaceUtil
+import org.jetbrains.anko.find
 import org.jetbrains.anko.image
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.toast
@@ -241,6 +243,26 @@ class NewtonFragment : Fragment() {
             createSingleListDialog()
 
         }
+
+        /*infoicon.onClick {
+
+            val builderSymLegal = AlertDialog.Builder(context!!)
+            val viewSymLegal = layoutInflater.inflate(R.layout.web_dialog,null)
+            val webView = viewSymLegal.find(R.id.loadWeb) as WebView
+
+            builderSymLegal.setView(viewSymLegal)
+            TypefaceUtil().overrideFont(builderSymLegal.context,"SERIF","fonts/arciform.otf")
+            val dialogSymLegal = builderSymLegal.create()
+            dialogSymLegal.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialogSymLegal.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+
+            val webSettings = webView.settings
+            webSettings.javaScriptEnabled = true
+            webView.loadUrl("file:///android_asset/pages/Newton Raphson.htm")
+
+            dialogSymLegal.show()
+
+        }*/
 
         menicon.onClick {
 

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient"
+    tools:context=".LeastSquareFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessLeaf">
+
+            <ImageView
+                android:layout_marginTop="25sp"
+                android:layout_marginStart="10sp"
+                android:layout_alignParentStart="true"
+                android:id="@+id/menicon"
+                android:src="@drawable/ic_menu"
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:padding="5sp"
+                android:contentDescription="@string/menuicon"/>
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:layout_marginTop="30sp"
+                android:fontFamily="@font/arciform"
+                android:textSize="30sp"
+                android:text="@string/minimos_cuadrados"
+                android:textColor="#fff"
+                android:id="@+id/title"
+                android:layout_alignParentTop="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:id="@+id/container1"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/hhg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:layout_marginTop="34sp"
+                        android:fontFamily="@font/arciform"
+                        android:text="@string/cantindad_de_pares"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputpairs"
+                        android:padding="5sp"
+                        android:layout_width="80sp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/arciform"
+                        android:hint="@string/numero"
+                        android:textColorHint= "#ffffff"
+                        app:hintTextAppearance="@style/AppTheme.FloatingLabel"
+                        app:errorTextAppearance="@style/AppTheme.EditTextError"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/pairs_number"
+                            android:textColor="#ffffff"
+                            android:layout_width="match_parent"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/arciform"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                            android:theme="@style/EditText"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/aceptar"
+                    android:text="@string/aceptar"
+                    android:fontFamily="@font/arciform"
+                    android:textSize="15sp"
+                    android:textColor="#ffffff"
+                    android:padding="15sp"
+                    android:layout_below="@id/hhg"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/pares"
+                android:layout_marginBottom="10sp"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/container1"
+                android:text="@string/inserta_los_valores_de_los_pares_ordenados"
+                android:fontFamily="@font/arciform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cont"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/pares"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/calculate"
+                android:visibility="gone"
+                android:layout_below="@id/cont"
+                android:text="@string/calcular"
+                android:padding="20sp"
+                android:textColor="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/arciform"/>
+
+            <RelativeLayout
+                android:id="@+id/rellay"
+                android:visibility="gone"
+                android:layout_marginTop="18sp"
+                android:layout_below="@id/calculate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/math"
+                    android:padding="5sp"
+                    android:textSize="15sp"
+                    android:textColor="#ffffff"
+                    android:fontFamily="@font/arciform"
+                    android:layout_centerInParent="true"
+                    android:text="@string/el_modelo_matematico_resultante_con_respecto_a_x_es"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/math"
+                    android:padding="8sp"
+                    android:layout_marginTop="22sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp"
+                    android:id="@+id/math_modelx"
+                    android:text="@string/newton_raphson"
+                    android:fontFamily="@font/arciform"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/math_modelx"
+                    android:id="@+id/containers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:text="@string/xs"
+                        android:textColor="#ffffff"
+                        android:fontFamily="@font/arciform"
+                        android:textSize="15sp"
+                        android:layout_marginTop="35sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputvalue"
+                        android:padding="5sp"
+                        android:layout_width="60sp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arciform"
+                        android:hint="@string/valor"
+                        android:textColorHint= "#ffffff"
+                        app:hintTextAppearance="@style/AppTheme.FloatingLabel"
+                        app:errorTextAppearance="@style/AppTheme.EditTextError"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/value"
+                            android:textColor="#ffffff"
+                            android:layout_width="match_parent"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/arciform"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                            android:theme="@style/EditText"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tity"
+                    android:padding="8sp"
+                    android:fontFamily="@font/arciform"
+                    android:text="@string/el_modelo_matematico_resultante_con_respecto_a_y_es"
+                    android:textColor="#ffffff"
+                    android:layout_marginTop="22sp"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/containers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/tity"
+                    android:padding="8sp"
+                    android:layout_marginTop="22sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp"
+                    android:id="@+id/math_modely"
+                    android:text="@string/newton_raphson"
+                    android:fontFamily="@font/arciform"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/math_modely"
+                    android:id="@+id/containersy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:text="@string/y"
+                        android:textColor="#ffffff"
+                        android:fontFamily="@font/arciform"
+                        android:textSize="15sp"
+                        android:layout_marginTop="35sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputvaluey"
+                        android:padding="5sp"
+                        android:layout_width="60sp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arciform"
+                        android:hint="@string/valor"
+                        android:textColorHint= "#ffffff"
+                        app:hintTextAppearance="@style/AppTheme.FloatingLabel"
+                        app:errorTextAppearance="@style/AppTheme.EditTextError"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/valuey"
+                            android:textColor="#ffffff"
+                            android:layout_width="match_parent"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/arciform"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                            android:theme="@style/EditText"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/evaluate"
+                    android:layout_marginTop="5sp"
+                    android:layout_centerInParent="true"
+                    android:textSize="18sp"
+                    android:padding="15sp"
+                    android:textColor="#ffffff"
+                    android:fontFamily="@font/arciform"
+                    android:layout_below="@id/containersy"
+                    android:text="@string/evaluar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginBottom="200sp"
+                    android:id="@+id/valueofecuation"
+                    android:padding="5sp"
+                    android:textSize="15sp"
+                    android:textColor="#ffffff"
+                    android:fontFamily="@font/arciform"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/evaluate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</FrameLayout>

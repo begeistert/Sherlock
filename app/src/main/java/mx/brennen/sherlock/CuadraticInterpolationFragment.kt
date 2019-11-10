@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
@@ -568,6 +569,9 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     }
 
+                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+
                     math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
                     rellay.visibility = View.VISIBLE
                     toast(math_model.text)
@@ -584,6 +588,8 @@ class CuadraticInterpolationFragment : Fragment() {
 
                 try {
 
+                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
                     val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
                     val mess = "El resultado de la evaluacion es: $valueOf"
                     valueofecuation.text = mess

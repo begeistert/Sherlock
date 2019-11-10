@@ -14,8 +14,8 @@ android {
         applicationId "mx.brennen.sherlock"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 7
-        versionName "1.1.0-alpha02"
+        versionCode 10
+        versionName "1.1.0-beta03"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 

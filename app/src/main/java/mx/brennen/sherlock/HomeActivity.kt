@@ -94,7 +94,7 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
                 views.clear()
                 itemList.clear()
-                itemList.add(Item("Metodo de Valor Intermedio", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de Biseccion", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
                 itemList.add(Item("Metodo de Newton-Raphson", "Metodo de Interpolacion Lineal",R.drawable.graph))
                 itemList.add(Item("Metodo de la Secante", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
                 itemList.add(Item("Método de Falsa posicion", "Metodo de Interpolacion Lineal",R.drawable.bucle))
@@ -111,7 +111,9 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
                 itemList.clear()
                 itemList.add(Item("Metodo de Interpolacion Lineal", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
                 itemList.add(Item("Metodo de Interpolacion Cuadratica", "Metodo de Interpolacion Cuadratica",R.drawable.graph))
-
+                itemList.add(Item("Metodo de Interpolacion de Newton","todo",R.drawable.square_brackets))
+                itemList.add(Item("Metodo de Interpolacion de Lagrange", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de Minimos Cuadrados", "Metodo de Interpolacion Cuadratica",R.drawable.graph))
                 personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
                 recyclerView.adapter = personalAdapter
 
@@ -205,6 +207,42 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
             }
 
+            "Metodo de Interpolacion de Newton" -> {
+
+                homeAct.closeDrawers()
+                val newFragment = NewtonInterpolationFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
+            "Metodo de Interpolacion de Lagrange" -> {
+
+                homeAct.closeDrawers()
+                val newFragment = LagrangeInterpolationFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
+            "Metodo de Minimos Cuadrados" -> {
+
+                homeAct.closeDrawers()
+                val newFragment = LeastSquareFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
         }
 
     }
@@ -253,7 +291,7 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
         TypefaceUtil().overrideFont(baseContext,"SERIF","fonts/arciform.otf")
 
-        val newFragment = LinearInterpolationFragment()
+        val newFragment = IntermediateFragment()
         var transaction = supportFragmentManager.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.replace(R.id.FragmentHost, newFragment)

@@ -21,125 +21,54 @@ class CoreServices{
         var fa1 = Intervalos[0]
         var fb = Intervalos[1]
 
-        val pn1 = (Intervalos[0] + Intervalos[1]) / 2
-        var iteration1 = 1
+        var pn1 = (Intervalos[0] + Intervalos[1]) / 2
+        if(evaluate(function,`var`, fa1) * evaluate(function,`var`, fb)<0){
 
-        while (true) {
+            var iteration1 = 1
 
-            var fn1 = 0.0
-            val iter = IteracionVI()
+            while (true) {
 
-            if (iteration1 == 1) {
+                val iter = IteracionVI()
 
-                iter.apply {
+                if (iteration1 == 1) {
 
-                    iteracion = iteration1
-                    an = Intervalos[0]
-                    bn = Intervalos[1]
-                    pn = pn1
-                    fn = (evaluate(function, `var`, pn1) * 1000000.0).roundToInt() / 1000000.0
+                    val fn1 = evaluate(function,`var`,pn1)
+                    var fx1 = evaluate(function,`var`,fa1) * fn1
 
-                }
+                    iter.apply {
 
-                iterations.add(iter)
-
-                val fa = evaluate(function, `var`, Intervalos[0]) * fn1
-
-                if (fa > 0) {
-
-                    if (fn1 < 0) {
-
-                        fn1 *= -1.0
-                        if (fn1 < Tolerancia) {
-
-                            break
-
-                        }
-
-
-                    } else {
-
-                        if (fn1 < Tolerancia) {
-
-                            break
-
-                        }
-
+                        iteracion = iteration1
+                        an = Intervalos[0]
+                        bn = Intervalos[1]
+                        pn = pn1
+                        fn = (evaluate(function, `var`, pn1))
 
                     }
 
-                } else {
+                    iterations.add(iter)
 
-                    if (fn1 < 0) {
+                    if (fx1 < 0) {
 
-                        fn1 *= -1.0
-                        if (fn1 < Tolerancia) {
+                        fx1 *= -1.0
+                        if (fx1 < Tolerancia) {
 
                             break
 
-                        } else {
+                        }else{
 
                             fb = pn1
 
+
                         }
+
 
                     } else {
 
-                        if (fn1 < Tolerancia) {
+                        if (fx1 < Tolerancia) {
 
                             break
 
-                        } else {
-
-                            fb = pn1
-
-                        }
-
-
-                    }
-
-
-                }
-
-                iteration1++
-
-            } else {
-
-                iter.apply {
-
-                    iteracion = iteration1
-                    an = fa1
-                    bn = fb
-                    pn = ((fa1 + fb) / 2 * 1000000.0).roundToInt() / 1000000.0
-                    fn = (evaluate(function, `var`, pn1) * 1000000.0).roundToInt() / 1000000.0
-
-                }
-                iterations.add(iter)
-
-                val fa = evaluate(function, `var`, fa1) * fn1
-
-                if (fa > 0) {
-
-                    if (fn1 < 0) {
-
-                        fn1 *= -1.0
-                        if (fn1 < Tolerancia) {
-
-                            break
-
-                        } else {
-
-                            fa1 = pn1
-
-                        }
-
-                    } else {
-
-                        if (fn1 < Tolerancia) {
-
-                            break
-
-                        } else {
+                        }else{
 
                             fa1 = pn1
 
@@ -148,45 +77,69 @@ class CoreServices{
 
                     }
 
+                    iteration1++
+
                 } else {
 
-                    if (fn1 < 0) {
+                    pn1 = (fa1+fb)/2
 
-                        fn1 *= -1.0
-                        if (fn1 < Tolerancia) {
+                    val fn1 = evaluate(function,`var`,pn1)
+                    var fx1 = evaluate(function,`var`,fa1) * fn1
+
+                    iter.apply {
+
+                        iteracion = iteration1
+                        an = fa1
+                        bn = fb
+                        pn = (fa1 + fb) / 2
+                        fn = evaluate(function, `var`, pn1)
+
+                    }
+                    iterations.add(iter)
+
+                    if (fx1 < 0) {
+
+                        fx1 *= -1.0
+                        if (fx1 < Tolerancia) {
 
                             break
 
-                        } else {
+                        }else{
 
                             fb = pn1
+
 
                         }
 
+
                     } else {
 
-                        if (fn1 < Tolerancia) {
+                        if (fx1 < Tolerancia) {
 
                             break
 
-                        } else {
+                        }else{
 
-                            fb = pn1
+                            fa1 = pn1
 
                         }
 
 
                     }
 
+                    iteration1++
 
                 }
-                iteration1++
 
-            }
+                if (limit>0){
 
-            if (limit>0){
+                    if (iteration1>limit){
 
-                if (iteration1>limit){
+                        break
+
+                    }
+
+                } else if (iteration1 > 1000){
 
                     break
 
@@ -194,8 +147,10 @@ class CoreServices{
 
             }
 
+            return iterations
+
         }
-        
+
         return iterations
 
     }
@@ -350,7 +305,11 @@ class CoreServices{
                 val fxn = evaluate(function, variable, x0)
                 val xx0 = x - x0
 
-                xx = ((x - fxn1 * xx0 / (fxn1 - fxn)) * 1000000.0).roundToInt() / 1000000.0
+                xx = (x - fxn1 * xx0 / (fxn1 - fxn))
+
+                if (x.isNaN()){
+                    break
+                }
 
                 it.apply {
 
@@ -435,8 +394,8 @@ class CoreServices{
         iteration.apply {
 
             ni = niter
-            setValueOf((x0 * 1000000.0).roundToInt().toDouble() / 1000000.0)
-            ev = ((xn) * 1000000.0).roundToInt().toDouble() / 1000000.0
+            setValueOf(x0)
+            ev = xn
 
         }
 
@@ -461,8 +420,8 @@ class CoreServices{
             val iterationNew = IteracionPF().apply {
 
                 ni = niter
-                setValueOf((x0 * 1000000.0).roundToInt().toDouble() / 1000000.0)
-                ev = ((xn) * 1000000.0).roundToInt().toDouble() / 1000000.0
+                setValueOf(x0)
+                ev = xn
 
             }
             listIteration.add(iterationNew)
@@ -494,13 +453,14 @@ class CoreServices{
 
     fun falsePosition(function:String, variable :String, intervals:DoubleArray, tolerance:Double, limit:Int) : ArrayList<IteracionVI> {
 
-        var x0 = 0.0
-        var x = 0.0
+        var x0 = intervals[0]
+        var x = intervals[1]
         var xx:Double
         var tr:Double
         var ex:Double
         var niteration = 1
         val iterations = ArrayList<IteracionVI>()
+        var condition  = 0.0
 
         val stop = false
 
@@ -510,13 +470,12 @@ class CoreServices{
 
             if (niteration == 1) {
 
-                x0 = intervals[0]
-                x = intervals[1]
+
                 val fxn1 = evaluate(function, variable, x)
                 val fxn = evaluate(function, variable, x0)
                 val xx0 = x - x0
 
-                xx = ((x - fxn1 * xx0 / (fxn1 - fxn)) * 1000000.0).roundToInt() / 1000000.0
+                xx = (x - fxn1 * xx0 / (fxn1 - fxn))
                 val fpn = evaluate(function, variable, xx)
 
                 it.apply {
@@ -629,7 +588,7 @@ class CoreServices{
                 val fxn = evaluate(function, variable, x0)
                 val xx0 = x - x0
 
-                xx = ((x - fxn1 * xx0 / (fxn1 - fxn)) * 1000000.0).roundToInt() / 1000000.0
+                xx = (x - fxn1 * xx0 / (fxn1 - fxn))
                 val fpn = evaluate(function, variable, xx)
 
                 it.apply {
@@ -642,15 +601,13 @@ class CoreServices{
 
                 }
 
-                iterations.add(it)
-
                 ex = fpn
 
                 if (ex < 0) {
 
                     tr = ex * -1.0
 
-                    if (tr < tolerance) {
+                    if (tr < tolerance || condition == ex) {
 
                         break
 
@@ -665,12 +622,14 @@ class CoreServices{
                             x0 = xx
 
                         }
+
+                        condition = ex
 
                     }
 
                 } else {
 
-                    if (ex < tolerance) {
+                    if (ex < tolerance || condition == ex) {
 
                         break
 
@@ -686,9 +645,13 @@ class CoreServices{
 
                         }
 
+                        condition = ex
+
                     }
 
                 }
+
+                iterations.add(it)
 
                 niteration++
 
@@ -702,7 +665,7 @@ class CoreServices{
 
                 } else {
 
-                    if (niteration > 1000) {
+                    if (niteration > 500) {
 
                         break
 

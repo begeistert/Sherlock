@@ -10,7 +10,10 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.*
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
@@ -21,10 +24,14 @@ import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.TableDynamic
 import mx.brennen.sherlock.res.misc.IteracionVI
 import mx.brennen.sherlock.res.misc.TypefaceUtil
+import org.jetbrains.anko.find
 import org.jetbrains.anko.image
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.textColor
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -225,7 +232,7 @@ class IntermediateFragment : Fragment() {
 
                     "Tolerancia" -> {
 
-                        iterations = CoreServices().falsePosition(editFunctionInput.text.toString(),
+                        iterations = CoreServices().intermediateValue(editFunctionInput.text.toString(),
                             editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^"+edittoleranceInput.text.toString())
                             ,0).clone() as ArrayList<IteracionVI>
 
@@ -254,6 +261,26 @@ class IntermediateFragment : Fragment() {
         menicon.onClick {
 
             (activity as HomeActivity).menu()
+
+        }
+
+        infoicon.onClick {
+
+            val builderSymLegal = AlertDialog.Builder(context!!)
+            val viewSymLegal = layoutInflater.inflate(R.layout.web_dialog,null)
+            val webView = viewSymLegal.find(R.id.loadWeb) as WebView
+
+            builderSymLegal.setView(viewSymLegal)
+            TypefaceUtil().overrideFont(builderSymLegal.context,"SERIF","fonts/arciform.otf")
+            val dialogSymLegal = builderSymLegal.create()
+            dialogSymLegal.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialogSymLegal.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+
+            val webSettings = webView.settings
+            webSettings.javaScriptEnabled = true
+            webView.loadUrl("file:///android_asset/pages/Biseccion.htm")
+
+            dialogSymLegal.show()
 
         }
 

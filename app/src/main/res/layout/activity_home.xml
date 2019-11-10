@@ -28,19 +28,21 @@
                     android:layout_height="wrap_content">
 
                 <ImageView
+                    android:padding="10sp"
                     android:id="@+id/backmenubutton"
                     android:src="@drawable/ic_backmenu"
-                    android:layout_width="40sp"
-                    android:layout_height="40sp"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
                     android:contentDescription="@string/back" />
 
                 <ImageView
+                    android:padding="10sp"
                     android:id="@+id/closemenu"
                     android:src="@drawable/ic_close"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_width="40sp"
-                    android:layout_height="40sp"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
                     android:contentDescription="@string/close" />
 
                 <RelativeLayout

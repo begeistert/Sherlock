@@ -11,11 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.CompoundButton
+import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_configuration.*
+import kotlinx.android.synthetic.main.legal_dialog.*
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
@@ -108,6 +110,8 @@ class ConfigurationFragment : Fragment() {
 
                 val iconurl = v1.findViewById(R.id.matematicas) as TextView
 
+                val sympylogo = v1.findViewById(R.id.sympylogo) as ImageView
+
                 builder1!!.setView(v1)
                 TypefaceUtil().overrideFont(builder1.context,"SERIF","fonts/arciform.otf")
                 val dialog1 = builder1.create()
@@ -128,6 +132,28 @@ class ConfigurationFragment : Fragment() {
                     val uri = Uri.parse("https://www.behance.net/matt_ellis/")
                     val intent = Intent(Intent.ACTION_VIEW, uri)
                     startActivity(intent)
+
+                }
+
+                sympylogo.onClick {
+
+                    val builderSymLegal = AlertDialog.Builder(context!!)
+                    val viewSymLegal = layoutInflater.inflate(R.layout.sympy_legal_dialog,null)
+                    val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
+
+                    builderSymLegal.setView(viewSymLegal)
+                    TypefaceUtil().overrideFont(builderSymLegal.context,"SERIF","fonts/arciform.otf")
+                    val dialogSymLegal = builderSymLegal.create()
+                    dialogSymLegal.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    dialogSymLegal.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+
+                    areeButton.onClick {
+
+                        dialogSymLegal.dismiss()
+
+                    }
+
+                    dialogSymLegal.show()
 
                 }
 
