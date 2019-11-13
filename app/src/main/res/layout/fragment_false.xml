@@ -29,6 +29,17 @@
                 android:padding="5sp"
                 android:contentDescription="@string/menuicon"/>
 
+            <ImageView
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="10sp"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/infoicon"
+                android:src="@drawable/ic_infomethod"
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:padding="5sp"
+                android:contentDescription="@string/menuicon"/>
+
             <TextView
                 android:layout_centerInParent="true"
                 android:layout_marginTop="30sp"

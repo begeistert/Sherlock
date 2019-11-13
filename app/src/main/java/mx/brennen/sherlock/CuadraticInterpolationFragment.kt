@@ -1,9 +1,10 @@
 package mx.brennen.sherlock
 
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Point
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +14,20 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_cuadratic_interpolation.*
 import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.misc.TypefaceUtil
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.windowManager
 
-/**
- * A simple [Fragment] subclass.
- */
 class CuadraticInterpolationFragment : Fragment() {
+
+    private var width = 0f
+    private var DESMOS_STATE = false
+    private var FUNCTION = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +37,24 @@ class CuadraticInterpolationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_cuadratic_interpolation, container, false)
     }
 
+    @SuppressLint("SetJavaScriptEnabled", "InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        super.onViewCreated(view, savedInstanceState).doAsync {
+
+            val size = Point()
+
+            context!!.windowManager.defaultDisplay.getSize(size)
+
+            val scale: Float = resources.displayMetrics.density
+
+            width = ((size.x-(50*scale))/scale)
+
+        }
+
         val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+
+        DESMOS_STATE = prefs.getBoolean("desmosApi",false)
 
         if(prefs.getInt("Autorizado",0) == 0){
 
@@ -114,15 +134,46 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
+                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
+                        FUNCTION = arryFunctions[0]
+                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
                         rellay.visibility = View.VISIBLE
                         if(value.text.toString() != ""){
 
                             try {
 
-                                val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
                                 valueofecuation.text = mess
+
+                                if (DESMOS_STATE){
+
+                                    val html = "<!DOCTYPE html>\n" +
+                                            "<html lang=\"en\">\n" +
+                                            "<head>\n" +
+                                            "    <meta charset=\"UTF-8\">\n" +
+                                            "    <title>Title</title>\n" +
+                                            "</head>\n" +
+                                            "<body>\n" +
+                                            "\n" +
+                                            "<script src=\"file:///android_asset/pages/calculator.js\"></script>\n" +
+                                            "  <div id=\"calculator\" style=\"width: ${width}px; height: 500px;\"></div>\n" +
+                                            "  <script>\n" +
+                                            "    var elt = document.getElementById('calculator');\n" +
+                                            "    var calculator = Desmos.GraphingCalculator(elt,{keyboard:false,expressions:false});\n" +
+                                            "    calculator.setExpression({id:'graph1', latex:'y=${FUNCTION}'});\n" +
+                                            "    calculator.setExpression({id:'point', latex:'(${value.text},${valueOf})'});\n" +
+                                            "  </script>\n" +
+                                            "\n" +
+                                            "</body>\n" +
+                                            "</html>\n"
+
+                                    val webSettings = desmos.settings
+                                    webSettings.javaScriptEnabled = true
+                                    desmos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                                    desmos.loadDataWithBaseURL("file:///android_asset/pages/main.html",html,"text/html", "UTF-8", null)
+
+                                }
 
                             } catch (e : Exception){
 
@@ -191,15 +242,46 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
+                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
+                        FUNCTION = arryFunctions[0]
+                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
                         rellay.visibility = View.VISIBLE
                         if(value.text.toString() != ""){
 
                             try {
 
-                                val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
                                 valueofecuation.text = mess
+
+                                if (DESMOS_STATE){
+
+                                    val html = "<!DOCTYPE html>\n" +
+                                            "<html lang=\"en\">\n" +
+                                            "<head>\n" +
+                                            "    <meta charset=\"UTF-8\">\n" +
+                                            "    <title>Title</title>\n" +
+                                            "</head>\n" +
+                                            "<body>\n" +
+                                            "\n" +
+                                            "<script src=\"file:///android_asset/pages/calculator.js\"></script>\n" +
+                                            "  <div id=\"calculator\" style=\"width: ${width}px; height: 500px;\"></div>\n" +
+                                            "  <script>\n" +
+                                            "    var elt = document.getElementById('calculator');\n" +
+                                            "    var calculator = Desmos.GraphingCalculator(elt,{keyboard:false,expressions:false});\n" +
+                                            "    calculator.setExpression({id:'graph1', latex:'y=${FUNCTION}'});\n" +
+                                            "    calculator.setExpression({id:'point', latex:'(${value.text},${valueOf})'});\n" +
+                                            "  </script>\n" +
+                                            "\n" +
+                                            "</body>\n" +
+                                            "</html>\n"
+
+                                    val webSettings = desmos.settings
+                                    webSettings.javaScriptEnabled = true
+                                    desmos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                                    desmos.loadDataWithBaseURL("file:///android_asset/pages/main.html",html,"text/html", "UTF-8", null)
+
+                                }
 
                             } catch (e : Exception){
 
@@ -268,15 +350,46 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
+                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
+                        FUNCTION = arryFunctions[0]
+                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
                         rellay.visibility = View.VISIBLE
                         if(value.text.toString() != ""){
 
                             try {
 
-                                val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
                                 valueofecuation.text = mess
+
+                                if (DESMOS_STATE){
+
+                                    val html = "<!DOCTYPE html>\n" +
+                                            "<html lang=\"en\">\n" +
+                                            "<head>\n" +
+                                            "    <meta charset=\"UTF-8\">\n" +
+                                            "    <title>Title</title>\n" +
+                                            "</head>\n" +
+                                            "<body>\n" +
+                                            "\n" +
+                                            "<script src=\"file:///android_asset/pages/calculator.js\"></script>\n" +
+                                            "  <div id=\"calculator\" style=\"width: ${width}px; height: 500px;\"></div>\n" +
+                                            "  <script>\n" +
+                                            "    var elt = document.getElementById('calculator');\n" +
+                                            "    var calculator = Desmos.GraphingCalculator(elt,{keyboard:false,expressions:false});\n" +
+                                            "    calculator.setExpression({id:'graph1', latex:'y=${FUNCTION}'});\n" +
+                                            "    calculator.setExpression({id:'point', latex:'(${value.text},${valueOf})'});\n" +
+                                            "  </script>\n" +
+                                            "\n" +
+                                            "</body>\n" +
+                                            "</html>\n"
+
+                                    val webSettings = desmos.settings
+                                    webSettings.javaScriptEnabled = true
+                                    desmos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                                    desmos.loadDataWithBaseURL("file:///android_asset/pages/main.html",html,"text/html", "UTF-8", null)
+
+                                }
 
                             } catch (e : Exception){
 
@@ -345,15 +458,46 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
+                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
+                        FUNCTION = arryFunctions[0]
+                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
                         rellay.visibility = View.VISIBLE
                         if(value.text.toString() != ""){
 
                             try {
 
-                                val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
                                 valueofecuation.text = mess
+
+                                if (DESMOS_STATE){
+
+                                    val html = "<!DOCTYPE html>\n" +
+                                            "<html lang=\"en\">\n" +
+                                            "<head>\n" +
+                                            "    <meta charset=\"UTF-8\">\n" +
+                                            "    <title>Title</title>\n" +
+                                            "</head>\n" +
+                                            "<body>\n" +
+                                            "\n" +
+                                            "<script src=\"file:///android_asset/pages/calculator.js\"></script>\n" +
+                                            "  <div id=\"calculator\" style=\"width: ${width}px; height: 500px;\"></div>\n" +
+                                            "  <script>\n" +
+                                            "    var elt = document.getElementById('calculator');\n" +
+                                            "    var calculator = Desmos.GraphingCalculator(elt,{keyboard:false,expressions:false});\n" +
+                                            "    calculator.setExpression({id:'graph1', latex:'y=${FUNCTION}'});\n" +
+                                            "    calculator.setExpression({id:'point', latex:'(${value.text},${valueOf})'});\n" +
+                                            "  </script>\n" +
+                                            "\n" +
+                                            "</body>\n" +
+                                            "</html>\n"
+
+                                    val webSettings = desmos.settings
+                                    webSettings.javaScriptEnabled = true
+                                    desmos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                                    desmos.loadDataWithBaseURL("file:///android_asset/pages/main.html",html,"text/html", "UTF-8", null)
+
+                                }
 
                             } catch (e : Exception){
 
@@ -422,15 +566,46 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
+                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
+                        FUNCTION = arryFunctions[0]
+                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
                         rellay.visibility = View.VISIBLE
                         if(value.text.toString() != ""){
 
                             try {
 
-                                val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
                                 valueofecuation.text = mess
+
+                                if (DESMOS_STATE){
+
+                                    val html = "<!DOCTYPE html>\n" +
+                                            "<html lang=\"en\">\n" +
+                                            "<head>\n" +
+                                            "    <meta charset=\"UTF-8\">\n" +
+                                            "    <title>Title</title>\n" +
+                                            "</head>\n" +
+                                            "<body>\n" +
+                                            "\n" +
+                                            "<script src=\"file:///android_asset/pages/calculator.js\"></script>\n" +
+                                            "  <div id=\"calculator\" style=\"width: ${width}px; height: 500px;\"></div>\n" +
+                                            "  <script>\n" +
+                                            "    var elt = document.getElementById('calculator');\n" +
+                                            "    var calculator = Desmos.GraphingCalculator(elt,{keyboard:false,expressions:false});\n" +
+                                            "    calculator.setExpression({id:'graph1', latex:'y=${FUNCTION}'});\n" +
+                                            "    calculator.setExpression({id:'point', latex:'(${value.text},${valueOf})'});\n" +
+                                            "  </script>\n" +
+                                            "\n" +
+                                            "</body>\n" +
+                                            "</html>\n"
+
+                                    val webSettings = desmos.settings
+                                    webSettings.javaScriptEnabled = true
+                                    desmos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                                    desmos.loadDataWithBaseURL("file:///android_asset/pages/main.html",html,"text/html", "UTF-8", null)
+
+                                }
 
                             } catch (e : Exception){
 
@@ -499,15 +674,46 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     if (!firstIntervals[0].isNaN()){
 
-                        math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
+                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
+                        FUNCTION = arryFunctions[0]
+                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
                         rellay.visibility = View.VISIBLE
                         if(value.text.toString() != ""){
 
                             try {
 
-                                val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
                                 valueofecuation.text = mess
+
+                                if (DESMOS_STATE){
+
+                                    val html = "<!DOCTYPE html>\n" +
+                                            "<html lang=\"en\">\n" +
+                                            "<head>\n" +
+                                            "    <meta charset=\"UTF-8\">\n" +
+                                            "    <title>Title</title>\n" +
+                                            "</head>\n" +
+                                            "<body>\n" +
+                                            "\n" +
+                                            "<script src=\"file:///android_asset/pages/calculator.js\"></script>\n" +
+                                            "  <div id=\"calculator\" style=\"width: ${width}px; height: 500px;\"></div>\n" +
+                                            "  <script>\n" +
+                                            "    var elt = document.getElementById('calculator');\n" +
+                                            "    var calculator = Desmos.GraphingCalculator(elt,{keyboard:false,expressions:false});\n" +
+                                            "    calculator.setExpression({id:'graph1', latex:'y=${FUNCTION}'});\n" +
+                                            "    calculator.setExpression({id:'point', latex:'(${value.text},${valueOf})'});\n" +
+                                            "  </script>\n" +
+                                            "\n" +
+                                            "</body>\n" +
+                                            "</html>\n"
+
+                                    val webSettings = desmos.settings
+                                    webSettings.javaScriptEnabled = true
+                                    desmos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                                    desmos.loadDataWithBaseURL("file:///android_asset/pages/main.html",html,"text/html", "UTF-8", null)
+
+                                }
 
                             } catch (e : Exception){
 
@@ -530,10 +736,37 @@ class CuadraticInterpolationFragment : Fragment() {
 
                 try {
 
-                    val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                    val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                     val mess = "El resultado de la evaluacion es: $valueOf"
                     valueofecuation.text = mess
-                    toast(mess)
+                    if (DESMOS_STATE){
+
+                        val html = "<!DOCTYPE html>\n" +
+                                "<html lang=\"en\">\n" +
+                                "<head>\n" +
+                                "    <meta charset=\"UTF-8\">\n" +
+                                "    <title>Title</title>\n" +
+                                "</head>\n" +
+                                "<body>\n" +
+                                "\n" +
+                                "<script src=\"file:///android_asset/pages/calculator.js\"></script>\n" +
+                                "  <div id=\"calculator\" style=\"width: ${width}px; height: 500px;\"></div>\n" +
+                                "  <script>\n" +
+                                "    var elt = document.getElementById('calculator');\n" +
+                                "    var calculator = Desmos.GraphingCalculator(elt,{keyboard:false,expressions:false});\n" +
+                                "    calculator.setExpression({id:'graph1', latex:'y=${FUNCTION}'});\n" +
+                                "    calculator.setExpression({id:'point', latex:'(${value.text},${valueOf})'});\n" +
+                                "  </script>\n" +
+                                "\n" +
+                                "</body>\n" +
+                                "</html>\n"
+
+                        val webSettings = desmos.settings
+                        webSettings.javaScriptEnabled = true
+                        desmos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                        desmos.loadDataWithBaseURL("file:///android_asset/pages/main.html",html,"text/html", "UTF-8", null)
+
+                    }
 
                 } catch (e : Exception){
 
@@ -571,10 +804,11 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
-
-                    math_model.text = CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals)
+                    val funtions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
+                    FUNCTION = funtions[0]
+                    math_model.setDisplayText(funtions[1])
                     rellay.visibility = View.VISIBLE
-                    toast(math_model.text)
+                    toast(math_model.toString())
 
                 }catch (e : Exception){
 
@@ -590,7 +824,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
-                    val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                    val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                     val mess = "El resultado de la evaluacion es: $valueOf"
                     valueofecuation.text = mess
                     toast(mess)
@@ -604,8 +838,6 @@ class CuadraticInterpolationFragment : Fragment() {
             }
 
         }
-
-        super.onViewCreated(view, savedInstanceState)
 
         x_1.text = HtmlCompat.fromHtml("X<sub><small>1</sub></small>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         y_1.text = HtmlCompat.fromHtml("F(X<sub><small>1</sub></small>)", HtmlCompat.FROM_HTML_MODE_LEGACY)

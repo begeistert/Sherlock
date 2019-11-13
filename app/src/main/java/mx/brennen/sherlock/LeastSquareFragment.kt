@@ -283,6 +283,19 @@ class LeastSquareFragment : Fragment() {
                     math_modely.text = ecuations[1]
                     rellay.visibility = View.VISIBLE
 
+                    try {
+
+                        val valueOfx = CoreServices().evaluate(math_modelx.text.toString(),"x",value.text.toString().toDouble())
+                        val valueOfy = CoreServices().evaluate(math_modely.text.toString(),"y",valuey.text.toString().toDouble())
+                        val mess = "El resultado de la evaluacion en x es: $valueOfx\nEl resultado de la evaluacion en y es: $valueOfy"
+                        valueofecuation.text = mess
+                        toast(mess)
+
+                    } catch (e : Exception){
+
+
+                    }
+
                 }
 
                 field.findViewById<TextInputEditText>(R.id.y).addTextChangedListener{
@@ -328,6 +341,19 @@ class LeastSquareFragment : Fragment() {
                     math_modelx.text = ecuations[0]
                     math_modely.text = ecuations[1]
                     rellay.visibility = View.VISIBLE
+
+                    try {
+
+                        val valueOfx = CoreServices().evaluate(math_modelx.text.toString(),"x",value.text.toString().toDouble())
+                        val valueOfy = CoreServices().evaluate(math_modely.text.toString(),"y",valuey.text.toString().toDouble())
+                        val mess = "El resultado de la evaluacion en x es: $valueOfx\nEl resultado de la evaluacion en y es: $valueOfy"
+                        valueofecuation.text = mess
+                        toast(mess)
+
+                    } catch (e : Exception){
+
+
+                    }
 
                 }
 

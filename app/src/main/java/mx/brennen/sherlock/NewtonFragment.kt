@@ -244,7 +244,7 @@ class NewtonFragment : Fragment() {
 
         }
 
-        /*infoicon.onClick {
+        infoicon.onClick {
 
             val builderSymLegal = AlertDialog.Builder(context!!)
             val viewSymLegal = layoutInflater.inflate(R.layout.web_dialog,null)
@@ -258,11 +258,12 @@ class NewtonFragment : Fragment() {
 
             val webSettings = webView.settings
             webSettings.javaScriptEnabled = true
-            webView.loadUrl("file:///android_asset/pages/Newton Raphson.htm")
+            //webView.loadUrl("file:///android_asset/pages/Newton Raphson.htm")
+            webView.loadUrl("https://www.geogebra.org/m/XCrwWHzy")
 
             dialogSymLegal.show()
 
-        }*/
+        }
 
         menicon.onClick {
 

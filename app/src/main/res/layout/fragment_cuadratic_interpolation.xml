@@ -29,6 +29,17 @@
                 android:padding="5sp"
                 android:contentDescription="@string/menuicon"/>
 
+            <ImageView
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="10sp"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/infoicon"
+                android:src="@drawable/ic_infomethod"
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:padding="5sp"
+                android:contentDescription="@string/menuicon"/>
+
             <TextView
                 android:layout_centerInParent="true"
                 android:layout_marginTop="20sp"
@@ -343,16 +354,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <TextView
+                <katex.hourglass.in.mathlib.MathView
                     android:layout_centerInParent="true"
                     android:layout_below="@id/math"
-                    android:padding="8sp"
+                    android:padding="20sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:setTextSize="14sp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="22sp"
                     android:id="@+id/math_model"
-                    android:text="@string/newton_raphson"
-                    android:fontFamily="@font/arciform"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -425,6 +436,18 @@
                     android:layout_height="wrap_content"/>
 
             </RelativeLayout>
+
+            <WebView
+                android:layout_marginTop="30sp"
+                android:layout_marginBottom="40sp"
+                android:layout_marginStart="20sp"
+                android:layout_marginEnd="20sp"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/rellay"
+                android:id="@+id/desmos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="WebViewLayout" />
 
         </RelativeLayout>
 

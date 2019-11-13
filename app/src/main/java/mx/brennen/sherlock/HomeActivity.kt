@@ -1,18 +1,16 @@
 package mx.brennen.sherlock
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
-import android.view.Window
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
@@ -20,12 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.internal.ApiExceptionUtil
 import kotlinx.android.synthetic.main.activity_home.*
 import mx.brennen.sherlock.res.Item
 import mx.brennen.sherlock.res.PersonalAdapter
@@ -257,8 +256,54 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
     @SuppressLint("CommitPrefEdits", "InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState).doAsync {
+
+            if(!Python.isStarted()) {
+
+                Python.start(AndroidPlatform(applicationContext))
+                //Precarga de librerias
+                val py: Python = Python.getInstance()
+                val mathFunctions = py.getModule("MathFunctions")
+
+            }
+
+        }
+
+        actionBar?.hide()
+
         setContentView(R.layout.activity_home)
+
+        Handler().postDelayed({
+
+            splash.animate().alpha(0.0f).apply {
+
+                duration = 3000
+                setListener(object : Animator.AnimatorListener {
+
+                    override fun onAnimationStart(animation: Animator) {
+
+                        FragmentHost.alpha = 0f
+                        FragmentHost.visibility = View.VISIBLE
+                        FragmentHost.animate().alpha(1.0f).duration = 4000
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animator) {
+
+                        menula.visibility = View.VISIBLE
+
+                    }
+
+                    override fun onAnimationCancel(animation: Animator) {}
+
+                    override fun onAnimationRepeat(animation: Animator) {}
+                })
+
+            }
+
+
+        },1000)
+
 
         val prefs = baseContext.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         val account = GoogleSignIn.getLastSignedInAccount(applicationContext)
@@ -271,21 +316,6 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
             val intent = googleApiClient.signInIntent
             startActivityForResult(intent, SIGN_IN_CODE)
-
-        }
-
-        actionBar?.hide()
-
-        doAsync {
-
-            if(!Python.isStarted()) {
-
-                Python.start(AndroidPlatform(applicationContext))
-                //Precarga de librerias
-                val py: Python = Python.getInstance()
-                val mathFunctions = py.getModule("MathFunctions")
-
-            }
 
         }
 

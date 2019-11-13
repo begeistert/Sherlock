@@ -31,8 +31,6 @@ class ConfigurationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_configuration, container, false)
     }
 
-
-
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -44,6 +42,7 @@ class ConfigurationFragment : Fragment() {
         value.text = prefs.getInt("Decimales",16).toString()
         seekBar.progress = prefs.getInt("Decimales",16)
         realtime.isChecked = prefs.getBoolean("RealTime",false)
+        desmosActived.isChecked = prefs.getBoolean("desmosApi",false)
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
@@ -69,6 +68,14 @@ class ConfigurationFragment : Fragment() {
 
 
             editor.putBoolean("RealTime",isChecked)
+            editor.apply()
+
+        }
+
+        desmosActived.setOnCheckedChangeListener { _, isChecked ->
+
+
+            editor.putBoolean("desmosApi",isChecked)
             editor.apply()
 
         }

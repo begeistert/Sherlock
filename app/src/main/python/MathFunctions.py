@@ -1,6 +1,5 @@
 from sympy import *
 
-
 class MathFunctions:
     var = Symbol('')
     value = 0

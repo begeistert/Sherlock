@@ -261,6 +261,21 @@ class LagrangeInterpolationFragment : Fragment() {
                     math_model.text = CoreServices().lagrangeInterpolation(X_VALUES,Y_VALUES)
                     rellay.visibility = View.VISIBLE
 
+                    if(value.text.toString() != ""){
+
+                        try {
+
+                            val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                            val mess = "El resultado de la evaluacion es: $valueOf"
+                            valueofecuation.text = mess
+
+                        } catch (e : Exception){
+
+
+                        }
+
+                    }
+
                 }
 
                 field.findViewById<TextInputEditText>(R.id.y).addTextChangedListener{
@@ -304,6 +319,21 @@ class LagrangeInterpolationFragment : Fragment() {
 
                     math_model.text = CoreServices().lagrangeInterpolation(X_VALUES,Y_VALUES)
                     rellay.visibility = View.VISIBLE
+
+                    if(value.text.toString() != ""){
+
+                        try {
+
+                            val valueOf = CoreServices().evaluate(math_model.text.toString(),"x",value.text.toString().toDouble())
+                            val mess = "El resultado de la evaluacion es: $valueOf"
+                            valueofecuation.text = mess
+
+                        } catch (e : Exception){
+
+
+                        }
+
+                    }
 
                 }
 

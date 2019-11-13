@@ -694,7 +694,7 @@ class CoreServices{
 
         val div = sup / inf
 
-        return ("$fx0+$div*(x-$x0)")
+        return simplify("$fx0+$div*(x-$x0)")
 
     }
 
@@ -765,7 +765,7 @@ class CoreServices{
 
         }
 
-        return function
+        return simplify(function)
 
     }
 
@@ -881,7 +881,7 @@ class CoreServices{
 
         }
 
-        return fx.toString()
+        return simplify(fx.toString())
 
     }
 
@@ -900,8 +900,8 @@ class CoreServices{
         val aux1 = (fx1 - b0) / (x1 - x0)
         val b2 = (aux0 - aux1) / (x2 - x0)
 
-        return (b0.toString() + "+" + b1.toString() + "*(x-" + x0.toString() + ")+" + b2.toString() + "*(x-" +
-                x0.toString() + ")*(x-" + x1.toString() + ")")
+        return simplify((b0.toString() + "+" + b1.toString() + "*(x-" + x0.toString() + ")+" + b2.toString() + "*(x-" +
+                x0.toString() + ")*(x-" + x1.toString() + ")"))
     }
 
     fun evaluate(function: String, variable: String, value : Double) : Double {
@@ -911,6 +911,8 @@ class CoreServices{
             val py: Python = Python.getInstance()
             val mathFunctions = py.getModule("MathFunctions")
             val x = mathFunctions.callAttr("Symbol", variable)
+            val functionSymPy = mathFunctions.callAttr("sympify", function)
+            val mathml = mathFunctions.callAttr("mathml",functionSymPy) to String()
             val functionParced = mathFunctions.callAttr("sympify", function).callAttr("subs", x,value) to Double
             val function2 = functionParced.first.repr()
             function2.toDouble()
@@ -918,6 +920,57 @@ class CoreServices{
         } catch (e : java.lang.Exception){
 
             NaN
+
+        }
+
+    }
+
+    fun mathml(function: String) : ArrayList<String>{
+
+        val ecuations : ArrayList<String> = ArrayList()
+
+        return try{
+
+            val py: Python = Python.getInstance()
+            val mathFunctions = py.getModule("MathFunctions")
+            val functionSymPy = mathFunctions.callAttr("sympify", function)
+            val mathml = mathFunctions.callAttr("latex",functionSymPy) to String()
+            var repr = mathml.first.repr()
+            var cutted = repr.split("\\\\")
+            repr = ""
+            var i = 0
+            for (part in cutted){
+
+                if (i == cutted.size-1){
+
+                    repr += part
+
+                }else{
+
+                    repr += "$part\\"
+                    i++
+
+                }
+
+            }
+            cutted = repr.split("'")
+            repr = ""
+            i = 0
+            for (part in cutted){
+
+                repr += part
+
+            }
+            ecuations.apply {
+
+                add(0,function)
+                add(1,repr)
+
+            }
+
+        } catch (e : Exception){
+
+            ecuations
 
         }
 
@@ -938,6 +991,46 @@ class CoreServices{
             ""
 
         }
+
+    }
+
+    fun simplify(function : String) : String{
+
+        return try{
+
+            val py: Python = Python.getInstance()
+            val mathFunctions = py.getModule("MathFunctions")
+            val derivative = mathFunctions.callAttr("simplify",function) to String()
+            exponentiation(derivative.first.repr())
+
+        }catch (e: Exception){
+
+            function
+
+        }
+
+    }
+
+    fun exponentiation(function: String) : String{
+
+        val splitedFunction = function.split("**")
+        var correctFunction = ""
+        var i = 0
+        for (part in splitedFunction){
+
+            if (i == splitedFunction.size-1){
+
+                correctFunction += part
+
+            }else{
+
+                correctFunction += "$part^"
+                i++
+
+            }
+
+        }
+        return correctFunction
 
     }
 
@@ -1117,7 +1210,7 @@ class CoreServices{
         val fx = "$m*x+$b"
         val fy = "(y-$b)/($m)"
 
-        return arrayOf(fx,fy)
+        return arrayOf(simplify(fx),simplify(fy))
 
     }
 
