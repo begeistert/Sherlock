@@ -9,6 +9,7 @@
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
+        android:id="@+id/generalScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UselessParent">
@@ -180,24 +181,66 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:layout_centerInParent="true"
+                <ScrollView
+                    android:layout_marginTop="-10sp"
+                    android:padding="20sp"
+                    android:layout_marginBottom="10sp"
+                    android:id="@+id/scrollmath"
                     android:layout_below="@id/math"
-                    android:padding="8sp"
-                    android:layout_marginTop="22sp"
-                    android:layout_marginStart="20sp"
-                    android:layout_marginEnd="20sp"
-                    android:id="@+id/math_model"
-                    android:text="@string/newton_raphson"
-                    android:fontFamily="@font/arciform"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="NestedScrolling">
+
+                    <katex.hourglass.in.mathlib.MathView
+                        app:setTextSize="10sp"
+                        android:layout_gravity="center"
+                        android:id="@+id/math_model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </ScrollView>
+
+                <RelativeLayout
+                    android:layout_marginTop="-80sp"
+                    android:id="@+id/sol"
+                    android:layout_below="@id/scrollmath"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <TextView
+                        android:text="@string/las_soluciones_de_la_ecuacion_son"
+                        android:id="@+id/textsol"
+                        android:textSize="15sp"
+                        android:textColor="#ffffff"
+                        android:layout_marginBottom="30sp"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <ScrollView
+                        android:layout_marginTop="10sp"
+                        android:padding="20sp"
+                        android:layout_below="@id/textsol"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="NestedScrolling">
+
+                        <katex.hourglass.in.mathlib.MathView
+                            android:layout_gravity="center"
+                            android:id="@+id/solutions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </ScrollView>
+
+                </RelativeLayout>
 
                 <LinearLayout
+                    android:layout_marginTop="-50sp"
                     android:layout_centerInParent="true"
-                    android:layout_below="@id/math_model"
+                    android:layout_below="@id/sol"
                     android:id="@+id/containers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -236,6 +279,7 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+
                 </LinearLayout>
 
                 <TextView
@@ -252,7 +296,6 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:layout_marginBottom="200sp"
                     android:id="@+id/valueofecuation"
                     android:padding="5sp"
                     android:textSize="15sp"
@@ -264,6 +307,19 @@
                     android:layout_height="wrap_content"/>
 
             </RelativeLayout>
+
+            <WebView
+                android:layout_below="@id/rellay"
+                android:visibility="gone"
+                android:layout_marginTop="30sp"
+                android:layout_marginBottom="40sp"
+                android:layout_marginStart="20sp"
+                android:layout_marginEnd="20sp"
+                android:layout_centerInParent="true"
+                android:id="@+id/desmos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="WebViewLayout" />
 
         </RelativeLayout>
 

@@ -22,6 +22,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
+import katex.hourglass.`in`.mathlib.MathView
 import kotlinx.android.synthetic.main.fragment_intermediate.*
 import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.TableDynamic
@@ -29,6 +30,7 @@ import mx.brennen.sherlock.res.misc.IteracionVI
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onTouch
 import org.jetbrains.anko.support.v4.toast
 import java.io.BufferedReader
 import java.io.InputStream
@@ -74,6 +76,18 @@ class IntermediateFragment : Fragment() {
             width = ((size.x-(50*scale))/scale)
             DESMOS_STATE = prefs.getBoolean("desmosApi",false)
 
+            desmos.onTouch { _, _ ->
+
+                generalScroll.requestDisallowInterceptTouchEvent(true)
+
+            }
+
+            generalScroll.onTouch { _, _ ->
+
+                generalScroll.requestDisallowInterceptTouchEvent(false)
+
+            }
+
             if(DESMOS_STATE){
 
                 uiThread {
@@ -118,6 +132,40 @@ class IntermediateFragment : Fragment() {
             }
 
         }
+
+        if(prefs.getBoolean("firstTime",true)){
+
+            val builderSymLegal = AlertDialog.Builder(context!!)
+            val viewSymLegal = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
+            val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
+            val mathView = viewSymLegal.findViewById(R.id.interpeter) as MathView
+            val function = viewSymLegal.findViewById(R.id.cuar) as TextView
+
+            mathView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+            builderSymLegal.setView(viewSymLegal)
+            TypefaceUtil().overrideFont(builderSymLegal.context,"SERIF","fonts/arciform.otf")
+            val dialogSymLegal = builderSymLegal.create()
+            dialogSymLegal.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialogSymLegal.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+
+            areeButton.onClick {
+
+                dialogSymLegal.dismiss()
+                val editor = prefs.edit()
+                editor.putBoolean("firstTime",false)
+                editor.apply()
+
+            }
+
+            mathView.setDisplayText("$${CoreServices().mathml(function.text.toString())[1]}$")
+
+            dialogSymLegal.show()
+
+        }
+
+        val editor = prefs.edit()
+        editor.putBoolean("firstTime",false)
+        editor.apply()
 
         context?.let { TypefaceUtil().overrideFont(it,"SERIF","fonts/arciform.otf") }
 
@@ -347,6 +395,36 @@ class IntermediateFragment : Fragment() {
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
             (activity as HomeActivity).menu()
+
+        }
+
+        infoicon.onClick {
+
+            val builderSymLegal = AlertDialog.Builder(context!!)
+            val viewSymLegal = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
+            val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
+            val mathView = viewSymLegal.findViewById(R.id.interpeter) as MathView
+            val function = viewSymLegal.findViewById(R.id.cuar) as TextView
+
+            mathView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+            builderSymLegal.setView(viewSymLegal)
+            TypefaceUtil().overrideFont(builderSymLegal.context,"SERIF","fonts/arciform.otf")
+            val dialogSymLegal = builderSymLegal.create()
+            dialogSymLegal.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialogSymLegal.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+
+            areeButton.onClick {
+
+                dialogSymLegal.dismiss()
+                val editor = prefs.edit()
+                editor.putBoolean("firstTime",false)
+                editor.apply()
+
+            }
+
+            mathView.setDisplayText("$${CoreServices().mathml(function.text.toString())[1]}$")
+
+            dialogSymLegal.show()
 
         }
 

@@ -73,11 +73,8 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
         homeAct.addDrawerListener(drawerToggle)
 
         itemList.clear()
-        itemList.add(Item("Metodos de Intervalo", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
-        itemList.add(Item("Metodos de Interpolación", "Metodo de Interpolacion Lineal",R.drawable.graph))
-        itemList.add(Item("Métodos Iterativos", "Metodo de Interpolacion Lineal",R.drawable.bucle))
-        itemList.add(Item("Diferenciacion Numérica", "Metodo de Interpolacion Lineal",R.drawable.partialderivative))
-        itemList.add(Item("Integración Numérica", "Metodo de Interpolacion Lineal",R.drawable.integral))
+        itemList.add(Item("Metodos Iterativos", "",R.drawable.curlybrackets))
+        itemList.add(Item("Metodos de Interpolación", "",R.drawable.graph))
         personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
         recyclerView.adapter = personalAdapter
 
@@ -90,15 +87,15 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
         when(itemList[position].title){
 
-            "Metodos de Intervalo" -> {
+            "Metodos Iterativos" -> {
 
                 views.clear()
                 itemList.clear()
-                itemList.add(Item("Metodo de Biseccion", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
-                itemList.add(Item("Metodo de Newton-Raphson", "Metodo de Interpolacion Lineal",R.drawable.graph))
-                itemList.add(Item("Metodo de la Secante", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
-                itemList.add(Item("Método de Falsa posicion", "Metodo de Interpolacion Lineal",R.drawable.bucle))
-                itemList.add(Item("Metodo de Punto Fijo", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de Biseccion", "",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de Newton-Raphson", "",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de la Secante", "",R.drawable.curlybrackets))
+                itemList.add(Item("Método de Falsa posicion", "",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de Punto Fijo", "",R.drawable.curlybrackets))
 
                 personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
                 recyclerView.adapter = personalAdapter
@@ -109,11 +106,11 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
                 views.clear()
                 itemList.clear()
-                itemList.add(Item("Metodo de Interpolacion Lineal", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
-                itemList.add(Item("Metodo de Interpolacion Cuadratica", "Metodo de Interpolacion Cuadratica",R.drawable.graph))
-                itemList.add(Item("Metodo de Interpolacion de Newton","todo",R.drawable.square_brackets))
-                itemList.add(Item("Metodo de Interpolacion de Lagrange", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
-                itemList.add(Item("Metodo de Minimos Cuadrados", "Metodo de Interpolacion Cuadratica",R.drawable.graph))
+                itemList.add(Item("Metodo de Interpolacion Lineal", "",R.drawable.graph))
+                itemList.add(Item("Metodo de Interpolacion Cuadratica", "",R.drawable.graph))
+                itemList.add(Item("Metodo de Interpolacion de Newton","",R.drawable.graph))
+                itemList.add(Item("Metodo de Interpolacion de Lagrange", "",R.drawable.graph))
+                itemList.add(Item("Metodo de Minimos Cuadrados", "",R.drawable.graph))
                 personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
                 recyclerView.adapter = personalAdapter
 
@@ -379,11 +376,8 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
     private fun createList() {
 
-        itemList.add(Item("Metodos de Intervalo", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
-        itemList.add(Item("Metodos de Interpolación", "Metodo de Interpolacion Lineal",R.drawable.graph))
-        itemList.add(Item("Métodos Iterativos", "Metodo de Interpolacion Lineal",R.drawable.bucle))
-        itemList.add(Item("Diferenciacion Numérica", "Metodo de Interpolacion Lineal",R.drawable.partialderivative))
-        itemList.add(Item("Integración Numérica", "Metodo de Interpolacion Lineal",R.drawable.integral))
+        itemList.add(Item("Metodos de Iterativos", "",R.drawable.curlybrackets))
+        itemList.add(Item("Metodos de Interpolación", "",R.drawable.graph))
         personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
         recyclerView.adapter = personalAdapter
 

@@ -141,6 +141,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/sec"
             android:layout_below="@id/frst"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -167,6 +168,23 @@
                 android:layout_marginBottom="15sp"
                 android:layout_height="wrap_content"/>
 
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/licences"
+        android:layout_below="@id/sec"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/licencias"
+            android:padding="15dp"
+            android:textColor="#000000"
+            android:text="@string/licencias"
+            android:fontFamily="@font/arciform"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 
     </RelativeLayout>

@@ -8,6 +8,7 @@
     tools:context=".FixedFragment">
 
     <ScrollView
+            android:id="@+id/generalScroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:ignore="UselessParent">
@@ -315,6 +316,7 @@
                 android:id="@+id/txtRaiz"
                 android:visibility="gone"
                 android:padding="10sp"
+                android:textSize="15sp"
                 android:layout_marginStart="10sp"
                 android:layout_below="@id/tablecontainer"
                 android:layout_centerInParent="true"

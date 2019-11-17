@@ -7,21 +7,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.webkit.WebSettings
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
+import katex.hourglass.`in`.mathlib.MathView
 import kotlinx.android.synthetic.main.fragment_newton_interpolation.*
 import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.PersonalAdapterInterpolation
+import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.padding
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onTouch
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.uiThread
 import org.jetbrains.anko.windowManager
@@ -60,6 +65,18 @@ class NewtonInterpolationFragment : Fragment() {
             val scale: Float = resources.displayMetrics.density
             width = ((size.x-(50*scale))/scale)
             DESMOS_STATE = prefs.getBoolean("desmosApi",false)
+
+            desmos.onTouch { _, _ ->
+
+                generalScroll.requestDisallowInterceptTouchEvent(true)
+
+            }
+
+            generalScroll.onTouch { _, _ ->
+
+                generalScroll.requestDisallowInterceptTouchEvent(false)
+
+            }
 
             if(DESMOS_STATE){
 
@@ -120,8 +137,37 @@ class NewtonInterpolationFragment : Fragment() {
 
                     try {
 
-                        generateFields(pairs_number.text.toString().toInt(),true)
-                        cont.visibility = View.VISIBLE
+                        val size = pairs_number.text.toString().toInt()
+                        if (size>15){
+
+                            val builder = AlertDialog.Builder(context!!)
+                            builder.setTitle("Sobrecarga de memoria")
+                            builder.setMessage("El limite de pares manejables en tiempo real son 15, si desea superar ese limite le recomendamos un dispositivo con 4 GB de RAM, si no es el caso y desea continuar esta bajo su propia responsabilidad")
+                            //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+
+                            builder.setPositiveButton("Continuar") { dialog, which ->
+
+                                generateFields(size,true)
+                                cont.visibility = View.VISIBLE
+                                dialog.dismiss()
+
+                            }
+
+                            builder.setNegativeButton("Cancelar") { dialog, which ->
+
+                                dialog.dismiss()
+
+                            }
+
+                            builder.show()
+
+
+                        }else {
+
+                            generateFields(size,true)
+                            cont.visibility = View.VISIBLE
+
+                        }
 
                     }catch (e : Exception){
 
@@ -139,6 +185,7 @@ class NewtonInterpolationFragment : Fragment() {
 
                     val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                     val mess = "El resultado de la evaluacion es: $valueOf"
+                    desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                     valueofecuation.text = mess
                     toast(mess)
 
@@ -194,7 +241,8 @@ class NewtonInterpolationFragment : Fragment() {
 
                     val interpreted = CoreServices().mathml(CoreServices().newtonInterpolation(X_VALUES,Y_VALUES))
                     FUNCTION = interpreted[0]
-                    math_model.setDisplayText(interpreted[1])
+                    math_model.setDisplayText("$${interpreted[1]}$")
+                    solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
                     rellay.visibility = View.VISIBLE
                     val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -225,8 +273,8 @@ class NewtonInterpolationFragment : Fragment() {
                     val mess = "El resultado de la evaluacion es: $valueOf"
                     val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
+                    desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                     valueofecuation.text = mess
-                    toast(mess)
 
                 } catch (e : Exception){
 
@@ -262,8 +310,40 @@ class NewtonInterpolationFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
+        infoicon.onClick {
+
+            val builderSymLegal = AlertDialog.Builder(context!!)
+            val viewSymLegal = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
+            val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
+            val mathView = viewSymLegal.findViewById(R.id.interpeter) as MathView
+            val function = viewSymLegal.findViewById(R.id.cuar) as TextView
+
+            mathView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+            builderSymLegal.setView(viewSymLegal)
+            TypefaceUtil().overrideFont(builderSymLegal.context,"SERIF","fonts/arciform.otf")
+            val dialogSymLegal = builderSymLegal.create()
+            dialogSymLegal.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialogSymLegal.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+
+            areeButton.onClick {
+
+                dialogSymLegal.dismiss()
+                val editor = prefs.edit()
+                editor.putBoolean("firstTime",false)
+                editor.apply()
+
+            }
+
+            mathView.setDisplayText("$${CoreServices().mathml(function.text.toString())[1]}$")
+
+            dialogSymLegal.show()
+
+        }
+
         menicon.onClick {
 
+            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
             (activity as HomeActivity).menu()
 
         }
@@ -333,7 +413,8 @@ class NewtonInterpolationFragment : Fragment() {
 
                     val interpreted = CoreServices().mathml(CoreServices().newtonInterpolation(X_VALUES,Y_VALUES))
                     FUNCTION = interpreted[0]
-                    math_model.setDisplayText(interpreted[1])
+                    solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
+                    math_model.setDisplayText("$${interpreted[1]}$")
                     rellay.visibility = View.VISIBLE
 
                     if (DESMOS_STATE){
@@ -353,6 +434,7 @@ class NewtonInterpolationFragment : Fragment() {
 
                             val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                             val mess = "El resultado de la evaluacion es: $valueOf"
+                            desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                             valueofecuation.text = mess
 
                         } catch (e : Exception){
@@ -405,7 +487,8 @@ class NewtonInterpolationFragment : Fragment() {
 
                     val interpreted = CoreServices().mathml(CoreServices().newtonInterpolation(X_VALUES,Y_VALUES))
                     FUNCTION = interpreted[0]
-                    math_model.setDisplayText(interpreted[1])
+                    solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
+                    math_model.setDisplayText("$${interpreted[1]}$")
                     rellay.visibility = View.VISIBLE
 
                     if (DESMOS_STATE){
@@ -425,6 +508,7 @@ class NewtonInterpolationFragment : Fragment() {
 
                             val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                             val mess = "El resultado de la evaluacion es: $valueOf"
+                            desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                             valueofecuation.text = mess
 
                         } catch (e : Exception){

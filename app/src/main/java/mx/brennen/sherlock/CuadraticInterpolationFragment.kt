@@ -17,11 +17,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import katex.hourglass.`in`.mathlib.MathView
 import kotlinx.android.synthetic.main.fragment_cuadratic_interpolation.*
 import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onTouch
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.uiThread
@@ -56,6 +58,18 @@ class CuadraticInterpolationFragment : Fragment() {
             val scale: Float = resources.displayMetrics.density
             width = ((size.x-(50*scale))/scale)
             DESMOS_STATE = prefs.getBoolean("desmosApi",false)
+
+            desmos.onTouch { _, _ ->
+
+                generalScroll.requestDisallowInterceptTouchEvent(true)
+
+            }
+
+            generalScroll.onTouch { _, _ ->
+
+                generalScroll.requestDisallowInterceptTouchEvent(false)
+
+            }
 
             if(DESMOS_STATE){
 
@@ -99,29 +113,6 @@ class CuadraticInterpolationFragment : Fragment() {
                 }
 
             }
-
-        }
-
-        if(prefs.getInt("Autorizado",0) == 0){
-
-            val builder = context!!.let { AlertDialog.Builder(it) }
-            val v = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
-
-            val agree = v.findViewById<TextView>(R.id.aceptar)
-
-            builder.setView(v)
-            TypefaceUtil().overrideFont(builder.context,"SERIF","fonts/arciform.otf")
-            val dialog = builder.create()
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.window!!.decorView.setBackgroundResource(android.R.color.transparent)
-
-            agree.onClick {
-
-                dialog.dismiss()
-
-            }
-
-            dialog.show()
 
         }
 
@@ -192,6 +183,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
                                 val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
+                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                                 valueofecuation.text = mess
 
                             } catch (e : Exception){
@@ -283,6 +275,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
                                 val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
+                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                                 valueofecuation.text = mess
 
                             } catch (e : Exception){
@@ -374,6 +367,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
                                 val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
+                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                                 valueofecuation.text = mess
 
                             } catch (e : Exception){
@@ -465,6 +459,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
                                 val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
+                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                                 valueofecuation.text = mess
 
                             } catch (e : Exception){
@@ -556,6 +551,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
                                 val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
+                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                                 valueofecuation.text = mess
 
                             } catch (e : Exception){
@@ -647,6 +643,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
                                 val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                                 val mess = "El resultado de la evaluacion es: $valueOf"
+                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                                 valueofecuation.text = mess
 
                             } catch (e : Exception){
@@ -682,19 +679,8 @@ class CuadraticInterpolationFragment : Fragment() {
 
                     val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                     val mess = "El resultado de la evaluacion es: $valueOf"
+                    desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                     valueofecuation.text = mess
-                    if (DESMOS_STATE){
-
-                        desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                        desmos.evaluateJavascript("javascript:setEvaluation('(${value.text},$valueOf)')",null)
-                        if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                            desmos.visibility = View.VISIBLE
-
-                        }
-                        //desmos.loadDataWithBaseURL("file:///android_asset/pages/main.html",html,"text/html", "UTF-8", null)
-
-                    }
 
                 } catch (e : Exception){
 
@@ -734,9 +720,19 @@ class CuadraticInterpolationFragment : Fragment() {
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
                     val funtions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
                     FUNCTION = funtions[0]
+                    solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
                     math_model.setDisplayText(funtions[1])
                     rellay.visibility = View.VISIBLE
-                    toast(math_model.toString())
+                    if (DESMOS_STATE){
+
+                        desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
+                        if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
+
+                            desmos.visibility = View.VISIBLE
+
+                        }
+
+                    }
 
                 }catch (e : Exception){
 
@@ -754,6 +750,7 @@ class CuadraticInterpolationFragment : Fragment() {
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
                     val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
                     val mess = "El resultado de la evaluacion es: $valueOf"
+                    desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
                     valueofecuation.text = mess
                     toast(mess)
 
@@ -773,6 +770,36 @@ class CuadraticInterpolationFragment : Fragment() {
         y_2.text = HtmlCompat.fromHtml("F(X<sub><small>2</sub></small>)", HtmlCompat.FROM_HTML_MODE_LEGACY)
         x_3.text = HtmlCompat.fromHtml("X<sub><small>3</sub></small>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         y_3.text = HtmlCompat.fromHtml("F(X<sub><small>3</sub></small>)", HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+        infoicon.onClick {
+
+            val builderSymLegal = AlertDialog.Builder(context!!)
+            val viewSymLegal = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
+            val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
+            val mathView = viewSymLegal.findViewById(R.id.interpeter) as MathView
+            val function = viewSymLegal.findViewById(R.id.cuar) as TextView
+
+            mathView.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+            builderSymLegal.setView(viewSymLegal)
+            TypefaceUtil().overrideFont(builderSymLegal.context,"SERIF","fonts/arciform.otf")
+            val dialogSymLegal = builderSymLegal.create()
+            dialogSymLegal.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialogSymLegal.window!!.decorView.setBackgroundResource(android.R.color.transparent)
+
+            areeButton.onClick {
+
+                dialogSymLegal.dismiss()
+                val editor = prefs.edit()
+                editor.putBoolean("firstTime",false)
+                editor.apply()
+
+            }
+
+            mathView.setDisplayText("$${CoreServices().mathml(function.text.toString())[1]}$")
+
+            dialogSymLegal.show()
+
+        }
 
         menicon.onClick {
 

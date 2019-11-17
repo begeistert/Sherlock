@@ -8,6 +8,7 @@
     tools:context=".IntermediateFragment">
 
     <ScrollView
+        android:id="@+id/generalScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UselessParent">
@@ -319,6 +320,7 @@
                 android:layout_below="@id/tablecontainer"
                 android:layout_centerInParent="true"
                 android:textColor="#fff"
+                android:textSize="15sp"
                 android:fontFamily="@font/arciform"
                 android:text="@string/la_ra_z_es"
                 />

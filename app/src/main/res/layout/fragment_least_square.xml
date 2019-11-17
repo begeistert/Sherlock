@@ -9,11 +9,13 @@
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
+        android:id="@+id/generalScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UselessParent">
 
         <RelativeLayout
+            android:id="@+id/generals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="UselessLeaf">
@@ -169,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <TextView
+                <katex.hourglass.in.mathlib.MathView
                     android:layout_centerInParent="true"
                     android:layout_below="@id/math"
                     android:padding="8sp"
@@ -239,7 +241,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-                <TextView
+                <katex.hourglass.in.mathlib.MathView
                     android:layout_centerInParent="true"
                     android:layout_below="@id/tity"
                     android:padding="8sp"
@@ -248,9 +250,6 @@
                     android:layout_marginEnd="20sp"
                     android:id="@+id/math_modely"
                     android:text="@string/newton_raphson"
-                    android:fontFamily="@font/arciform"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -311,7 +310,6 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:layout_marginBottom="200sp"
                     android:id="@+id/valueofecuation"
                     android:padding="5sp"
                     android:textSize="15sp"
@@ -323,6 +321,19 @@
                     android:layout_height="wrap_content"/>
 
             </RelativeLayout>
+
+            <WebView
+                android:layout_below="@id/rellay"
+                android:visibility="gone"
+                android:layout_marginTop="30sp"
+                android:layout_marginBottom="40sp"
+                android:layout_marginStart="20sp"
+                android:layout_marginEnd="20sp"
+                android:layout_centerInParent="true"
+                android:id="@+id/desmos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="WebViewLayout" />
 
         </RelativeLayout>
 
