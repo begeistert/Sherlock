@@ -21,125 +21,54 @@ class CoreServices{
         var fa1 = Intervalos[0]
         var fb = Intervalos[1]
 
-        val pn1 = (Intervalos[0] + Intervalos[1]) / 2
-        var iteration1 = 1
+        var pn1 = (Intervalos[0] + Intervalos[1]) / 2
+        if(evaluate(function,`var`, fa1) * evaluate(function,`var`, fb)<0){
 
-        while (true) {
+            var iteration1 = 1
 
-            var fn1 = 0.0
-            val iter = IteracionVI()
+            while (true) {
 
-            if (iteration1 == 1) {
+                val iter = IteracionVI()
 
-                iter.apply {
+                if (iteration1 == 1) {
 
-                    iteracion = iteration1
-                    an = Intervalos[0]
-                    bn = Intervalos[1]
-                    pn = pn1
-                    fn = (evaluate(function, `var`, pn1) * 1000000.0).roundToInt() / 1000000.0
+                    val fn1 = evaluate(function,`var`,pn1)
+                    var fx1 = evaluate(function,`var`,fa1) * fn1
 
-                }
+                    iter.apply {
 
-                iterations.add(iter)
-
-                val fa = evaluate(function, `var`, Intervalos[0]) * fn1
-
-                if (fa > 0) {
-
-                    if (fn1 < 0) {
-
-                        fn1 *= -1.0
-                        if (fn1 < Tolerancia) {
-
-                            break
-
-                        }
-
-
-                    } else {
-
-                        if (fn1 < Tolerancia) {
-
-                            break
-
-                        }
-
+                        iteracion = iteration1
+                        an = Intervalos[0]
+                        bn = Intervalos[1]
+                        pn = pn1
+                        fn = (evaluate(function, `var`, pn1))
 
                     }
 
-                } else {
+                    iterations.add(iter)
 
-                    if (fn1 < 0) {
+                    if (fx1 < 0) {
 
-                        fn1 *= -1.0
-                        if (fn1 < Tolerancia) {
+                        fx1 *= -1.0
+                        if (fx1 < Tolerancia) {
 
                             break
 
-                        } else {
+                        }else{
 
                             fb = pn1
 
+
                         }
+
 
                     } else {
 
-                        if (fn1 < Tolerancia) {
+                        if (fx1 < Tolerancia) {
 
                             break
 
-                        } else {
-
-                            fb = pn1
-
-                        }
-
-
-                    }
-
-
-                }
-
-                iteration1++
-
-            } else {
-
-                iter.apply {
-
-                    iteracion = iteration1
-                    an = fa1
-                    bn = fb
-                    pn = ((fa1 + fb) / 2 * 1000000.0).roundToInt() / 1000000.0
-                    fn = (evaluate(function, `var`, pn1) * 1000000.0).roundToInt() / 1000000.0
-
-                }
-                iterations.add(iter)
-
-                val fa = evaluate(function, `var`, fa1) * fn1
-
-                if (fa > 0) {
-
-                    if (fn1 < 0) {
-
-                        fn1 *= -1.0
-                        if (fn1 < Tolerancia) {
-
-                            break
-
-                        } else {
-
-                            fa1 = pn1
-
-                        }
-
-                    } else {
-
-                        if (fn1 < Tolerancia) {
-
-                            break
-
-                        } else {
+                        }else{
 
                             fa1 = pn1
 
@@ -148,45 +77,73 @@ class CoreServices{
 
                     }
 
+                    iteration1++
+
                 } else {
 
-                    if (fn1 < 0) {
+                    pn1 = (fa1+fb)/2
 
-                        fn1 *= -1.0
-                        if (fn1 < Tolerancia) {
+                    val fn1 = evaluate(function,`var`,pn1)
+                    var fx1 = evaluate(function,`var`,fa1) * fn1
+
+                    iter.apply {
+
+                        iteracion = iteration1
+                        an = fa1
+                        bn = fb
+                        pn = (fa1 + fb) / 2
+                        fn = evaluate(function, `var`, pn1)
+
+                    }
+                    iterations.add(iter)
+
+                    if (fx1 < 0) {
+
+                        fx1 *= -1.0
+                        if (fx1 < Tolerancia) {
 
                             break
 
-                        } else {
+                        }else{
 
                             fb = pn1
+
 
                         }
 
+
                     } else {
 
-                        if (fn1 < Tolerancia) {
+                        if (fx1 < Tolerancia) {
 
                             break
 
-                        } else {
+                        }else{
 
-                            fb = pn1
+                            fa1 = pn1
 
                         }
 
 
                     }
 
+                    iteration1++
 
                 }
-                iteration1++
 
-            }
+                if (limit>0){
 
-            if (limit>0){
+                    if (iteration1>limit){
 
-                if (iteration1>limit){
+                        break
+
+                    }else if (iteration1>250){
+
+                        break
+
+                    }
+
+                } else if (iteration1 > 250){
 
                     break
 
@@ -194,8 +151,10 @@ class CoreServices{
 
             }
 
+            return iterations
+
         }
-        
+
         return iterations
 
     }
@@ -296,7 +255,7 @@ class CoreServices{
                 val fxn = evaluate(function, variable, x0)
                 val xx0 = x - x0
 
-                xx = ((x - fxn1 * xx0 / (fxn1 - fxn)) * 1000000.0).roundToInt() / 1000000.0
+                xx = (x - fxn1 * xx0) / (fxn1 - fxn)
 
                 it.apply {
 
@@ -350,7 +309,11 @@ class CoreServices{
                 val fxn = evaluate(function, variable, x0)
                 val xx0 = x - x0
 
-                xx = ((x - fxn1 * xx0 / (fxn1 - fxn)) * 1000000.0).roundToInt() / 1000000.0
+                xx = (x - fxn1 * xx0 / (fxn1 - fxn))
+
+                if (x.isNaN()){
+                    break
+                }
 
                 it.apply {
 
@@ -405,7 +368,15 @@ class CoreServices{
 
                     break
 
+                }else if (nIteration>250){
+
+                    break
+
                 }
+
+            }else if (nIteration>250){
+
+                break
 
             }
 
@@ -435,8 +406,8 @@ class CoreServices{
         iteration.apply {
 
             ni = niter
-            setValueOf((x0 * 1000000.0).roundToInt().toDouble() / 1000000.0)
-            ev = ((xn) * 1000000.0).roundToInt().toDouble() / 1000000.0
+            setValueOf(x0)
+            ev = xn
 
         }
 
@@ -461,8 +432,8 @@ class CoreServices{
             val iterationNew = IteracionPF().apply {
 
                 ni = niter
-                setValueOf((x0 * 1000000.0).roundToInt().toDouble() / 1000000.0)
-                ev = ((xn) * 1000000.0).roundToInt().toDouble() / 1000000.0
+                setValueOf(x0)
+                ev = xn
 
             }
             listIteration.add(iterationNew)
@@ -481,7 +452,15 @@ class CoreServices{
 
                     break
 
+                }else if (niter>=250){
+
+                    break
+
                 }
+
+            }else if (niter>=250){
+
+                break
 
             }
 
@@ -494,13 +473,14 @@ class CoreServices{
 
     fun falsePosition(function:String, variable :String, intervals:DoubleArray, tolerance:Double, limit:Int) : ArrayList<IteracionVI> {
 
-        var x0 = 0.0
-        var x = 0.0
+        var x0 = intervals[0]
+        var x = intervals[1]
         var xx:Double
         var tr:Double
         var ex:Double
         var niteration = 1
         val iterations = ArrayList<IteracionVI>()
+        var condition  = 0.0
 
         val stop = false
 
@@ -510,13 +490,12 @@ class CoreServices{
 
             if (niteration == 1) {
 
-                x0 = intervals[0]
-                x = intervals[1]
+
                 val fxn1 = evaluate(function, variable, x)
                 val fxn = evaluate(function, variable, x0)
                 val xx0 = x - x0
 
-                xx = ((x - fxn1 * xx0 / (fxn1 - fxn)) * 1000000.0).roundToInt() / 1000000.0
+                xx = (x - fxn1 * xx0 / (fxn1 - fxn))
                 val fpn = evaluate(function, variable, xx)
 
                 it.apply {
@@ -629,7 +608,7 @@ class CoreServices{
                 val fxn = evaluate(function, variable, x0)
                 val xx0 = x - x0
 
-                xx = ((x - fxn1 * xx0 / (fxn1 - fxn)) * 1000000.0).roundToInt() / 1000000.0
+                xx = (x - fxn1 * xx0 / (fxn1 - fxn))
                 val fpn = evaluate(function, variable, xx)
 
                 it.apply {
@@ -642,15 +621,13 @@ class CoreServices{
 
                 }
 
-                iterations.add(it)
-
                 ex = fpn
 
                 if (ex < 0) {
 
                     tr = ex * -1.0
 
-                    if (tr < tolerance) {
+                    if (tr < tolerance || condition == ex) {
 
                         break
 
@@ -665,12 +642,14 @@ class CoreServices{
                             x0 = xx
 
                         }
+
+                        condition = ex
 
                     }
 
                 } else {
 
-                    if (ex < tolerance) {
+                    if (ex < tolerance || condition == ex) {
 
                         break
 
@@ -686,9 +665,13 @@ class CoreServices{
 
                         }
 
+                        condition = ex
+
                     }
 
                 }
+
+                iterations.add(it)
 
                 niteration++
 
@@ -698,11 +681,15 @@ class CoreServices{
 
                         break
 
+                    }else if (niteration > 250){
+
+                        break
+
                     }
 
                 } else {
 
-                    if (niteration > 1000) {
+                    if (niteration > 250) {
 
                         break
 
@@ -731,7 +718,7 @@ class CoreServices{
 
         val div = sup / inf
 
-        return ("$fx0+$div*(x-$x0)")
+        return simplify("$fx0+$div*(x-$x0)")
 
     }
 
@@ -802,7 +789,7 @@ class CoreServices{
 
         }
 
-        return function
+        return simplify(function)
 
     }
 
@@ -918,7 +905,7 @@ class CoreServices{
 
         }
 
-        return fx.toString()
+        return simplify(fx.toString())
 
     }
 
@@ -937,8 +924,8 @@ class CoreServices{
         val aux1 = (fx1 - b0) / (x1 - x0)
         val b2 = (aux0 - aux1) / (x2 - x0)
 
-        return (b0.toString() + "+" + b1.toString() + "*(x-" + x0.toString() + ")+" + b2.toString() + "*(x-" +
-                x0.toString() + ")*(x-" + x1.toString() + ")")
+        return simplify((b0.toString() + "+" + b1.toString() + "*(x-" + x0.toString() + ")+" + b2.toString() + "*(x-" +
+                x0.toString() + ")*(x-" + x1.toString() + ")"))
     }
 
     fun evaluate(function: String, variable: String, value : Double) : Double {
@@ -948,6 +935,8 @@ class CoreServices{
             val py: Python = Python.getInstance()
             val mathFunctions = py.getModule("MathFunctions")
             val x = mathFunctions.callAttr("Symbol", variable)
+            val functionSymPy = mathFunctions.callAttr("sympify", function)
+            val mathml = mathFunctions.callAttr("mathml",functionSymPy) to String()
             val functionParced = mathFunctions.callAttr("sympify", function).callAttr("subs", x,value) to Double
             val function2 = functionParced.first.repr()
             function2.toDouble()
@@ -955,6 +944,57 @@ class CoreServices{
         } catch (e : java.lang.Exception){
 
             NaN
+
+        }
+
+    }
+
+    fun mathml(function: String) : ArrayList<String>{
+
+        val ecuations : ArrayList<String> = ArrayList()
+
+        return try{
+
+            val py: Python = Python.getInstance()
+            val mathFunctions = py.getModule("MathFunctions")
+            val functionSymPy = mathFunctions.callAttr("sympify", function)
+            val mathml = mathFunctions.callAttr("latex",functionSymPy) to String()
+            var repr = mathml.first.repr()
+            var cutted = repr.split("\\\\")
+            repr = ""
+            var i = 0
+            for (part in cutted){
+
+                if (i == cutted.size-1){
+
+                    repr += part
+
+                }else{
+
+                    repr += "$part\\"
+                    i++
+
+                }
+
+            }
+            cutted = repr.split("'")
+            repr = ""
+            i = 0
+            for (part in cutted){
+
+                repr += part
+
+            }
+            ecuations.apply {
+
+                add(0,function)
+                add(1,repr)
+
+            }
+
+        } catch (e : Exception){
+
+            ecuations
 
         }
 
@@ -978,142 +1018,63 @@ class CoreServices{
 
     }
 
-    fun JacobiMethod(matrix: Array<DoubleArray>, xs: DoubleArray, useAproximations: Boolean) {
+    fun simplify(function : String) : String{
 
-        val matrix: Array<DoubleArray>? = null
-        val nx = 0
-        val AuxXs = ArrayList<Double>()
-        var xs: DoubleArray
-        var oldxs: DoubleArray? = DoubleArray(nx)
+        return try{
 
-        var iter = 0
-        var cont = true
+            val py: Python = Python.getInstance()
+            val mathFunctions = py.getModule("MathFunctions")
+            val derivative = mathFunctions.callAttr("simplify",function) to String()
+            exponentiation(derivative.first.repr())
 
-        while (cont) {
+        }catch (e: Exception){
 
-            xs = DoubleArray(nx)
-
-            for (row in matrix!!.indices) {
-
-                var div = 0.0
-
-                for (column in matrix[row].indices) {
-
-                    div = matrix[row][row] * -1
-
-                    if (column != row) {
-
-                        if (iter != 0) {
-
-                            if (column != matrix[row].size - 1) {
-
-                                xs[row] += matrix[row][column] * oldxs!![column] / div
-
-                            } else {
-
-                                xs[row] += matrix[row][column] / (div * -1)
-
-                            }
-
-                        } else {
-
-                            if (column != matrix[row].size - 1) {
-
-                                xs[row] += matrix[row][column] * xs[column] / div
-
-                            } else {
-
-                                xs[row] += matrix[row][column] / (div * -1)
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-            AuxXs.clear()
-            for (i in xs.indices) {
-
-                AuxXs.add(xs[i])
-
-            }
-
-            if (iter != 0) {
-
-                var isNegative = false
-                var isNegative1 = false
-                val auxiliar = DoubleArray(nx)
-
-                for (i in auxiliar.indices) {
-
-                    auxiliar[i] = xs[i] - oldxs!![i]
-
-                }
-
-                val auxiliar2 = xs
-                Arrays.sort(auxiliar)
-                Arrays.sort(auxiliar2)
-
-                for (i in auxiliar.indices) {
-
-                    isNegative = auxiliar[i] < 0
-
-                }
-
-                for (i in auxiliar2.indices) {
-
-                    isNegative1 = auxiliar2[i] < 0
-
-                }
-
-                var sup = 0.0
-                var inf = 0.0
-
-                sup = if (isNegative) {
-
-                    auxiliar[0]
-
-                } else {
-                    auxiliar[auxiliar.size - 1]
-                }
-
-                inf = if (isNegative1) {
-
-                    auxiliar2[0]
-
-                } else {
-                    auxiliar2[auxiliar2.size - 1]
-                }
-
-                val Condition = sup / inf
-
-                if (Condition == 0.0) {
-
-                    cont = false
-
-                }
-
-            }
-
-            oldxs = DoubleArray(xs.size)
-            for ((j, number) in AuxXs.withIndex()) {
-
-                oldxs[j] = number
-
-            }
-            iter++
+            function
 
         }
 
-        for (i in oldxs!!.indices) {
+    }
 
-            println("El Valor de X" + (i + 1) + " es: " + oldxs[i])
+    fun exponentiation(function: String) : String{
+
+        val splitedFunction = function.split("**")
+        var correctFunction = ""
+        var i = 0
+        for (part in splitedFunction){
+
+            if (i == splitedFunction.size-1){
+
+                correctFunction += part
+
+            }else{
+
+                correctFunction += "$part^"
+                i++
+
+            }
 
         }
+        return correctFunction
+
+    }
+
+    fun solve(function: String, variable: String) : String{
+
+        return try{
+
+            val py: Python = Python.getInstance()
+            val mathFunctions = py.getModule("MathFunctions")
+            val x = mathFunctions.callAttr("Symbol", variable)
+            val derivative = mathFunctions.callAttr("solve",function, x) to String()
+            val fun1 = mathml(exponentiation(derivative.first.repr()))
+            fun1[1]
+
+        }catch (e: Exception){
+
+            function
+
+        }
+
     }
 
     fun leastSquares(Xs: DoubleArray, Ys: DoubleArray) : Array<String>{
@@ -1154,7 +1115,7 @@ class CoreServices{
         val fx = "$m*x+$b"
         val fy = "(y-$b)/($m)"
 
-        return arrayOf(fx,fy)
+        return arrayOf(simplify(fx),simplify(fy))
 
     }
 
@@ -1163,6 +1124,7 @@ class CoreServices{
         var numberIteration = 1
         var xn: Double = 0.toDouble()
         var stop = false
+        var eval = 0.0
         val iteration: ArrayList<Iteracion> = ArrayList()
 
         while (!stop) {
@@ -1176,7 +1138,7 @@ class CoreServices{
                 val functionO = evaluate(function, variable, x)
                 val functionD = evaluate(derive(function, variable), variable, x)
 
-                xn = ((x - functionO / functionD) * 1000000.0).roundToInt().toDouble() / 1000000.0
+                xn = x - functionO / functionD
 
                 var functionR = evaluate(function, variable, xn)
 
@@ -1225,9 +1187,19 @@ class CoreServices{
                 val functionO = evaluate(function, variable, xn)
                 val functionD = evaluate(derive(function, variable), variable, xn)
 
-                xn = ((xn - functionO / functionD) * 1000000.0).roundToInt().toDouble() / 1000000.0
+                xn -= functionO / functionD
 
                 var functionR = evaluate(function, variable, xn)
+
+                if (eval==functionR){
+
+                    break
+
+                }else{
+
+                    eval= functionR
+
+                }
 
                 if (functionR < 0) {
 
@@ -1276,7 +1248,15 @@ class CoreServices{
 
                     break
 
+                }else if (numberIteration>250){
+
+                    break
+
                 }
+
+            }else if (numberIteration>250){
+
+                break
 
             }
 
@@ -1294,9 +1274,8 @@ class CoreServices{
             val py: Python = Python.getInstance()
             val mathFunctions = py.getModule("MathFunctions")
             val x = mathFunctions.callAttr("Symbol", variable)
-            val functionParced = mathFunctions.callAttr("sympify", function).callAttr("subs", x,value) to Double
-            val function2 = functionParced.first.repr()
-            function2.toDouble().isNaN()
+            val functionParced = mathFunctions.callAttr("sympify", function).callAttr("subs", x,value) to String()
+            false
 
         } catch (e : java.lang.Exception){
 
@@ -1306,144 +1285,4 @@ class CoreServices{
 
     }
 
-    fun Taylor(function:String, variable :String, grade:Int, x0:Double, aproximation:Double) {
-
-        var derivada:String?
-        val evO:Double = (evaluate(function, variable, aproximation) * 1000000.0).roundToInt() / 1000000.0
-        val evO2:Double = (evaluate(function, variable, x0) * 1000000.0).roundToInt() / 1000000.0
-        var p = 0.0
-        var e = 0.0
-
-        var grado = grade
-
-        grado -= 1
-        val derivadas = arrayOfNulls<String>(grado + 3)
-        derivadas[0] = function
-        val values = DoubleArray(grado + 1)
-        derivada = derive(function,variable)
-        derivadas[1] = derivada
-
-        for (i in 0 until grado + 1)
-        {
-
-            if (i < grado + 2)
-            {
-
-                values[i] = (derivada?.let { evaluate(it, variable, x0) }!! *(1000000.0)).roundToInt() / 1000000.0
-
-            }
-            derivada = derivada?.let { derive(it,variable) }
-            derivadas[i + 2] = derivada
-
-        }
-
-        for (i in 0 until grado + 3)
-        {
-
-            if (i == 0)
-            {
-
-                p = evO2
-
-            }
-            else if (i == 1)
-            {
-
-                p += (values[i - 1] * (aproximation - x0) * 1000000.0).roundToInt() / 1000000.0
-
-            }
-            else if (i == grado + 2)
-            {
-
-                e = derivadas[i]?.let { evaluate(it, variable, (x0 + aproximation) / 2) }!! * Math.pow(aproximation - x0, i.toDouble()) / factorial(i)
-                break
-
-            }
-            else
-            {
-
-                p += Math.round(values[i - 1] * Math.pow(aproximation - x0, i.toDouble()) / factorial(i) * 1000000.0) / 1000000.0
-
-            }
-
-        }
-
-    }
-
-    private fun factorial(Grad:Int):Double {
-
-        var Factorial = Grad.toDouble()
-        var Result = 1.0
-
-        while (Factorial != 0.0)
-        {
-
-            Result = Result * Factorial
-            Factorial--
-
-        }
-
-        return Result
-
-    }
-
-    private fun isCont(xs: DoubleArray, oldxs: DoubleArray, iter: Int, cont: Boolean,nx:Int): Boolean {
-        var cont = cont
-        if (iter != 0) {
-
-            var isNegative = false
-            var isNegative1 = false
-            val auxiliar = DoubleArray(nx)
-
-            for (i in auxiliar.indices) {
-
-                auxiliar[i] = xs[i] - oldxs[i]
-
-            }
-
-            Arrays.sort(auxiliar)
-            Arrays.sort(xs)
-
-            for (i in auxiliar.indices) {
-
-                isNegative = auxiliar[i] < 0
-
-            }
-
-            for (i in xs.indices) {
-
-                isNegative1 = xs[i] < 0
-
-            }
-
-            val sup: Double
-            val inf: Double
-
-            sup = if (isNegative) {
-
-                auxiliar[0]
-
-            } else {
-                auxiliar[auxiliar.size - 1]
-            }
-
-            inf = if (isNegative1) {
-
-                xs[0]
-
-            } else {
-                xs[xs.size - 1]
-            }
-
-            val condition = sup / inf
-
-            if (condition == 0.0) {
-
-                cont = false
-
-            }
-
-        }
-        return cont
-    }
 }

@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/gradient"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".NewtonInterpolationFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:id="@+id/generalScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessLeaf">
+
+            <ImageView
+                android:layout_marginTop="25sp"
+                android:layout_marginStart="10sp"
+                android:layout_alignParentStart="true"
+                android:id="@+id/menicon"
+                android:src="@drawable/ic_menu"
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:padding="5sp"
+                android:contentDescription="@string/menuicon"/>
+
+            <ImageView
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="10sp"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/infoicon"
+                android:src="@drawable/ic_infomethod"
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:padding="5sp"
+                android:contentDescription="@string/menuicon"/>
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/arciform"
+                android:textSize="30sp"
+                android:text="@string/interpolacion"
+                android:textColor="#fff"
+                android:id="@+id/title"
+                android:layout_alignParentTop="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/title2"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/title"
+                android:text="@string/de_newton"
+                android:fontFamily="@font/arciform"
+                android:textColor="#ffffff"
+                android:textSize="30sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:id="@+id/container1"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/title2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/hhg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:layout_marginTop="34sp"
+                        android:fontFamily="@font/arciform"
+                        android:text="@string/cantindad_de_pares"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputpairs"
+                        android:padding="5sp"
+                        android:layout_width="80sp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/arciform"
+                        android:hint="@string/numero"
+                        android:textColorHint= "#ffffff"
+                        app:hintTextAppearance="@style/AppTheme.FloatingLabel"
+                        app:errorTextAppearance="@style/AppTheme.EditTextError"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/pairs_number"
+                            android:textColor="#ffffff"
+                            android:layout_width="match_parent"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/arciform"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                            android:theme="@style/EditText"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/aceptar"
+                    android:text="@string/aceptar"
+                    android:fontFamily="@font/arciform"
+                    android:textSize="15sp"
+                    android:textColor="#ffffff"
+                    android:padding="15sp"
+                    android:layout_below="@id/hhg"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/pares"
+                android:layout_marginBottom="10sp"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/container1"
+                android:text="@string/inserta_los_valores_de_los_pares_ordenados"
+                android:fontFamily="@font/arciform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cont"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/pares"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/calculate"
+                android:visibility="gone"
+                android:layout_below="@id/cont"
+                android:text="@string/calcular"
+                android:padding="20sp"
+                android:textColor="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/arciform"/>
+
+            <RelativeLayout
+                android:id="@+id/rellay"
+                android:visibility="gone"
+                android:layout_marginTop="18sp"
+                android:layout_below="@id/calculate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/math"
+                    android:padding="5sp"
+                    android:textSize="15sp"
+                    android:textColor="#ffffff"
+                    android:fontFamily="@font/arciform"
+                    android:layout_centerInParent="true"
+                    android:text="@string/el_modelo_matematico_resultante_es"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ScrollView
+                    android:layout_marginTop="-10sp"
+                    android:padding="20sp"
+                    android:layout_marginBottom="10sp"
+                    android:id="@+id/scrollmath"
+                    android:layout_below="@id/math"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="NestedScrolling">
+
+                    <katex.hourglass.in.mathlib.MathView
+                        app:setTextSize="10sp"
+                        android:layout_gravity="center"
+                        android:id="@+id/math_model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </ScrollView>
+
+                <RelativeLayout
+                    android:layout_marginTop="-80sp"
+                    android:id="@+id/sol"
+                    android:layout_below="@id/scrollmath"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <TextView
+                        android:text="@string/las_soluciones_de_la_ecuacion_son"
+                        android:id="@+id/textsol"
+                        android:textSize="15sp"
+                        android:textColor="#ffffff"
+                        android:layout_marginBottom="30sp"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <ScrollView
+                        android:layout_marginTop="10sp"
+                        android:padding="20sp"
+                        android:layout_below="@id/textsol"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="NestedScrolling">
+
+                        <katex.hourglass.in.mathlib.MathView
+                            android:layout_gravity="center"
+                            android:id="@+id/solutions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </ScrollView>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/sol"
+                    android:id="@+id/containers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:text="@string/xs"
+                        android:textColor="#ffffff"
+                        android:fontFamily="@font/arciform"
+                        android:textSize="15sp"
+                        android:layout_marginTop="35sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputvalue"
+                        android:padding="5sp"
+                        android:layout_width="60sp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/arciform"
+                        android:hint="@string/valor"
+                        android:textColorHint= "#ffffff"
+                        app:hintTextAppearance="@style/AppTheme.FloatingLabel"
+                        app:errorTextAppearance="@style/AppTheme.EditTextError"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/value"
+                            android:textColor="#ffffff"
+                            android:layout_width="match_parent"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/arciform"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                            android:theme="@style/EditText"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/evaluate"
+                    android:layout_marginTop="5sp"
+                    android:layout_centerInParent="true"
+                    android:textSize="18sp"
+                    android:padding="15sp"
+                    android:textColor="#ffffff"
+                    android:fontFamily="@font/arciform"
+                    android:layout_below="@id/containers"
+                    android:text="@string/evaluar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/valueofecuation"
+                    android:padding="5sp"
+                    android:textSize="15sp"
+                    android:textColor="#ffffff"
+                    android:fontFamily="@font/arciform"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/evaluate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+            <WebView
+                android:layout_below="@id/rellay"
+                android:visibility="gone"
+                android:layout_marginTop="30sp"
+                android:layout_marginBottom="40sp"
+                android:layout_marginStart="20sp"
+                android:layout_marginEnd="20sp"
+                android:layout_centerInParent="true"
+                android:id="@+id/desmos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="WebViewLayout" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</FrameLayout>

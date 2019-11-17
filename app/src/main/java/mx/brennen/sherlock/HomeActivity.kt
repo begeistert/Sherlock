@@ -1,48 +1,116 @@
 package mx.brennen.sherlock
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
-import androidx.multidex.MultiDex
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.GoogleApiClient
 import kotlinx.android.synthetic.main.activity_home.*
 import mx.brennen.sherlock.res.Item
 import mx.brennen.sherlock.res.PersonalAdapter
 import mx.brennen.sherlock.res.misc.OnNoteLister
 import mx.brennen.sherlock.res.misc.TypefaceUtil
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 @Suppress("UNCHECKED_CAST")
-class HomeActivity : FragmentActivity() ,OnNoteLister{
+class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnectionFailedListener{
 
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
-        MultiDex.install(this)
+    override fun onConnectionFailed(p0: ConnectionResult) {
+
+        toast("Conexion Fallida")
+
+    }
+
+    fun menu() {
+
+        val drawerToggle = object : ActionBarDrawerToggle(
+            this,
+            homeAct,0,0) {
+            override fun onDrawerClosed(view: View) {
+
+                itemList.clear()
+                views.clear()
+
+                recyclerView = List
+                recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+
+                createList()
+
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+
+
+
+            }
+        }
+
+        homeAct.addDrawerListener(drawerToggle)
+
+        itemList.clear()
+        itemList.add(Item("Metodos Iterativos", "",R.drawable.curlybrackets))
+        itemList.add(Item("Metodos de Interpolación", "",R.drawable.graph))
+        personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
+        recyclerView.adapter = personalAdapter
+
+        homeAct.openDrawer(GravityCompat.START)
+
+
     }
 
     override fun OnNoteListener(position: Int) {
 
         when(itemList[position].title){
 
-            "Metodos de Intervalo" -> {
+            "Metodos Iterativos" -> {
 
                 views.clear()
                 itemList.clear()
-                itemList.add(Item("Metodo de Valor Intermedio", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
-                itemList.add(Item("Metodo de Newton-Raphson", "Metodo de Interpolacion Lineal",R.drawable.graph))
-                itemList.add(Item("Metodo de la Secante", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
-                itemList.add(Item("Método de Falsa posicion", "Metodo de Interpolacion Lineal",R.drawable.bucle))
-                itemList.add(Item("Metodo de Punto Fijo", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de Biseccion", "",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de Newton-Raphson", "",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de la Secante", "",R.drawable.curlybrackets))
+                itemList.add(Item("Método de Falsa posicion", "",R.drawable.curlybrackets))
+                itemList.add(Item("Metodo de Punto Fijo", "",R.drawable.curlybrackets))
 
+                personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
+                recyclerView.adapter = personalAdapter
+
+            }
+
+            "Metodos de Interpolación" ->{
+
+                views.clear()
+                itemList.clear()
+                itemList.add(Item("Metodo de Interpolacion Lineal", "",R.drawable.graph))
+                itemList.add(Item("Metodo de Interpolacion Cuadratica", "",R.drawable.graph))
+                itemList.add(Item("Metodo de Interpolacion de Newton","",R.drawable.graph))
+                itemList.add(Item("Metodo de Interpolacion de Lagrange", "",R.drawable.graph))
+                itemList.add(Item("Metodo de Minimos Cuadrados", "",R.drawable.graph))
                 personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
                 recyclerView.adapter = personalAdapter
 
@@ -64,7 +132,7 @@ class HomeActivity : FragmentActivity() ,OnNoteLister{
 
             }
 
-            "Metodo de Valor Intermedio" -> {
+            "Metodo de Biseccion" -> {
 
                 homeAct.closeDrawers()
                 val newFragment = IntermediateFragment()
@@ -112,9 +180,67 @@ class HomeActivity : FragmentActivity() ,OnNoteLister{
 
             }
 
-        }
+            "Metodo de Interpolacion Lineal" ->{
 
-        toast("Hola")
+                homeAct.closeDrawers()
+                val newFragment = LinearInterpolationFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
+            "Metodo de Interpolacion Cuadratica" -> {
+
+                homeAct.closeDrawers()
+                val newFragment = CuadraticInterpolationFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
+            "Metodo de Interpolacion de Newton" -> {
+
+                homeAct.closeDrawers()
+                val newFragment = NewtonInterpolationFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
+            "Metodo de Interpolacion de Lagrange" -> {
+
+                homeAct.closeDrawers()
+                val newFragment = LagrangeInterpolationFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
+            "Metodo de Minimos Cuadrados" -> {
+
+                homeAct.closeDrawers()
+                val newFragment = LeastSquareFragment()
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.replace(R.id.FragmentHost, newFragment,"Intermedio")
+                transaction.addToBackStack(null)
+                transaction.commit()
+
+            }
+
+        }
 
     }
 
@@ -123,29 +249,64 @@ class HomeActivity : FragmentActivity() ,OnNoteLister{
     private var views : ArrayList<ImageView> = ArrayList()
     private lateinit var recyclerView : RecyclerView
 
+    @SuppressLint("CommitPrefEdits", "InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
-        MultiDex.install(baseContext)
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
 
-        actionBar?.hide()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        super.onCreate(savedInstanceState).doAsync {
 
-        if(!Python.isStarted()) {
+            if(!Python.isStarted()) {
 
-            Python.start(AndroidPlatform(applicationContext))
-            //Precarga de librerias
-            val py: Python = Python.getInstance()
-            val mathFunctions = py.getModule("MathFunctions")
+                Python.start(AndroidPlatform(applicationContext))
+                //Precarga de librerias
+                val py: Python = Python.getInstance()
+                val mathFunctions = py.getModule("MathFunctions")
+
+            }
 
         }
 
+        actionBar?.hide()
+
+        setContentView(R.layout.activity_home)
+
+        Handler().postDelayed({
+
+            splash.animate().alpha(0.0f).apply {
+
+                duration = 3000
+                setListener(object : Animator.AnimatorListener {
+
+                    override fun onAnimationStart(animation: Animator) {
+
+                        FragmentHost.alpha = 0f
+                        FragmentHost.visibility = View.VISIBLE
+                        FragmentHost.animate().alpha(1.0f).duration = 4000
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animator) {
+
+                        menula.visibility = View.VISIBLE
+
+                    }
+
+                    override fun onAnimationCancel(animation: Animator) {}
+
+                    override fun onAnimationRepeat(animation: Animator) {}
+                })
+
+            }
+
+
+        },1000)
+
         TypefaceUtil().overrideFont(baseContext,"SERIF","fonts/arciform.otf")
 
-        var newFragment = ConfigurationFragment()
+        val newFragment = IntermediateFragment()
         var transaction = supportFragmentManager.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.replace(R.id.FragmentHost, newFragment)
-        transaction.addToBackStack(null)
         transaction.commit()
 
         itemList.clear()
@@ -181,15 +342,31 @@ class HomeActivity : FragmentActivity() ,OnNoteLister{
             }
         }
 
+
+
         homeAct.addDrawerListener(drawerToggle)
+
+        closemenu.onClick {
+
+            homeAct.closeDrawers()
+
+        }
+
+        backmenubutton.onClick {
+
+            itemList.clear()
+
+            createList()
+
+        }
 
         configuration.onClick {
 
             homeAct.closeDrawers()
-            newFragment = ConfigurationFragment()
+            val fragment = ConfigurationFragment()
             transaction = supportFragmentManager.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            transaction.replace(R.id.FragmentHost, newFragment)
+            transaction.replace(R.id.FragmentHost, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
 
@@ -199,14 +376,10 @@ class HomeActivity : FragmentActivity() ,OnNoteLister{
 
     private fun createList() {
 
-        itemList.add(Item("Metodos de Intervalo", "Metodo de Interpolacion Lineal",R.drawable.curlybrackets))
-        itemList.add(Item("Metodos de Interpolación", "Metodo de Interpolacion Lineal",R.drawable.graph))
-        itemList.add(Item("Métodos Iterativos", "Metodo de Interpolacion Lineal",R.drawable.bucle))
-        itemList.add(Item("Diferenciacion Numérica", "Metodo de Interpolacion Lineal",R.drawable.partialderivative))
-        itemList.add(Item("Integración Numérica", "Metodo de Interpolacion Lineal",R.drawable.integral))
+        itemList.add(Item("Metodos de Iterativos", "",R.drawable.curlybrackets))
+        itemList.add(Item("Metodos de Interpolación", "",R.drawable.graph))
         personalAdapter = PersonalAdapter(itemList,this, Typeface.createFromAsset(assets,"fonts/arciform.otf"))
         recyclerView.adapter = personalAdapter
 
     }
-
 }

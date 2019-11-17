@@ -3,17 +3,20 @@
         xmlns:tools="http://schemas.android.com/tools"
         package="mx.brennen.sherlock">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
-            android:name="androidx.multidex.MultiDexApplication"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan"
-            tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        android:usesCleartextTraffic="true"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:screenOrientation="portrait"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Design.Light.NoActionBar"
+        android:windowSoftInputMode="adjustPan"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning"
+        tools:targetApi="m">
         <activity
                 android:name=".HomeActivity"
                 android:windowSoftInputMode="adjustPan">

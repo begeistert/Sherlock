@@ -3,6 +3,7 @@ package mx.brennen.sherlock.res;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -69,12 +70,12 @@ public class TableDynamic {
 
             newCell();
             txtCell.setText(header[indexC++]);
-            txtCell.setBackgroundColor(Color.parseColor("#ffffff"));
-            txtCell.setTextSize(1,10f);
+            txtCell.setTextSize(1,15f);
             txtCell.setTextColor(Color.parseColor("#C81E0A"));
             txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/arciform.otf"));
             txtCell.setBackground(context.getDrawable(R.drawable.cellrectangle));
-            txtCell.setPadding(0,5,0,5);
+            txtCell.setPadding(0,10,0,15);
+            txtCell.setBackgroundColor(Color.parseColor("#78c8ad"));
             tableRow.addView(txtCell,newTableRow());
 
         }
@@ -97,11 +98,11 @@ public class TableDynamic {
                 info = (indexC<Colums.length)?Colums[indexC]:"";
                 txtCell.setText(info);
                 txtCell.setTextColor(Color.parseColor("#000000"));
-                txtCell.setTextSize(1,10f);
+                txtCell.setTextSize(1,15f);
                 txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/arciform.otf"));
-                txtCell.setBackgroundColor(Color.parseColor("#ffffff"));
-                txtCell.setBackground(context.getDrawable(R.drawable.cellrectangle));
-                txtCell.setPadding(0,5,0,5);
+                txtCell.setBackgroundColor(Color.parseColor("#30CFBF"));
+                //txtCell.setBackground(context.getDrawable(R.drawable.cellrectangle));
+                txtCell.setPadding(0,10,0,10);
                 tableRow.addView(txtCell,newTableRow());
 
             }

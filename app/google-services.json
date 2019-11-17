@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "272995153453",
+    "firebase_url": "https://sherlock-e178d.firebaseio.com",
+    "project_id": "sherlock-e178d",
+    "storage_bucket": "sherlock-e178d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272995153453:android:688ceacf593f2ea3702aa4",
+        "android_client_info": {
+          "package_name": "mx.brennen.sherlock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272995153453-bg3iibpmpgn6b2c60r8rkqrd5unhjdeu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mx.brennen.sherlock",
+            "certificate_hash": "9b0dcfc60fb0c19dd5065d91a48aed3a6eb71589"
+          }
+        },
+        {
+          "client_id": "272995153453-ndnjnt734ta103lkv4t2pgid513ltcgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrPy0LriKQYmKaLnwS6KSOTwonPCyrFEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272995153453-ndnjnt734ta103lkv4t2pgid513ltcgj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

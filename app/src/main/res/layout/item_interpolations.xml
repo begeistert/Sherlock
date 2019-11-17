@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/itemInterpolation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/X"
+            android:textSize="18sp"
+            android:layout_marginTop="27sp"
+            android:padding="5sp"
+            android:text="@string/x1"
+            android:fontFamily="@font/arciform"
+            android:textColor="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputA"
+            android:layout_width="60sp"
+            android:padding="5sp"
+            android:layout_height="wrap_content"
+            android:hint="@string/valor"
+            android:textColorHint="#ffffff"
+            android:fontFamily="@font/arciform"
+            app:hintTextAppearance="@style/AppTheme.FloatingLabel"
+            app:errorTextAppearance="@style/AppTheme.EditTextError"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/x"
+                android:textColor="#ffffff"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arciform"
+                android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                android:theme="@style/EditText"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/Y"
+            android:textSize="18sp"
+            android:layout_marginTop="27sp"
+            android:padding="5sp"
+            android:text="@string/x1"
+            android:fontFamily="@font/arciform"
+            android:textColor="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textinputBl"
+            android:padding="5sp"
+            android:layout_width="60sp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arciform"
+            android:hint="@string/valor"
+            android:textColorHint= "#ffffff"
+            app:hintTextAppearance="@style/AppTheme.FloatingLabel"
+            app:errorTextAppearance="@style/AppTheme.EditTextError"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/y"
+                android:textColor="#ffffff"
+                android:layout_width="match_parent"
+                android:textAlignment="center"
+                android:fontFamily="@font/arciform"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                android:theme="@style/EditText"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

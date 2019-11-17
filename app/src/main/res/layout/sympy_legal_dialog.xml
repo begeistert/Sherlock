@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/layout_bounded"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/arciform"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:id="@+id/title"
+                android:text="@string/copyright_c_2006_2019_sympy_development_team"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_below="@id/title"
+                android:layout_centerInParent="true"
+                android:textColor="#000000"
+                android:fontFamily="@font/arciform"
+                android:textStyle="italic"
+                android:layout_marginTop="5sp"
+                android:text="@string/all_rights_reserved"
+                android:gravity="center"
+                android:id="@+id/all"
+                android:layout_width="200sp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/first"
+                android:padding="10sp"
+                android:fontFamily="@font/arciform"
+                android:layout_marginTop="20sp"
+                android:text="@string/redistribution_and_use_in_source_and_binary_forms_with_or_without_modification_are_permitted_provided_that_the_following_conditions_are_met"
+                android:layout_below="@id/all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginStart="15sp"
+                android:fontFamily="@font/arciform"
+                android:layout_marginEnd="10sp"
+                android:text="@string/a_redistributions_of_source_code_must_retain_the_above_copyright_notice_this_list_of_conditions_and_the_following_disclaimer"
+                android:layout_below="@id/first"
+                android:layout_width="wrap_content"
+                android:id="@+id/second"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginStart="15sp"
+                android:fontFamily="@font/arciform"
+                android:layout_marginEnd="10sp"
+                android:layout_marginTop="5sp"
+                android:text="@string/b_redistributions_in_binary_form_must_reproduce_the_above_copyright_notice_this_list_of_conditions_and_the_following_disclaimer_in_the_documentation_and_or_other_materials_provided_with_the_distribution"
+                android:layout_below="@id/second"
+                android:layout_width="wrap_content"
+                android:id="@+id/third"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginStart="15sp"
+                android:fontFamily="@font/arciform"
+                android:layout_marginEnd="10sp"
+                android:layout_marginTop="5sp"
+                android:text="@string/c_neither_the_name_of_sympy_nor_the_names_of_its_contributors_may_be_used_to_endorse_or_promote_products_derived_from_this_software_without_specific_prior_written_permission"
+                android:layout_below="@id/third"
+                android:layout_width="wrap_content"
+                android:id="@+id/fourt"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:padding="10sp"
+                android:fontFamily="@font/arciform"
+                android:layout_marginEnd="10sp"
+                android:layout_marginTop="20sp"
+                android:text="@string/this_software_is_provided_by_the_copyright_holders_and_contributors_as_is_and_any_express_or_implied_warranties_including_but_not_limited_to_the_implied_warranties_of_merchantability_and_fitness_for_a_particular_purpose_are_disclaimed_in_no_event_shall_the_regents_or_contributors_be_liable_for_any_direct_indirect_incidental_special_exemplary_or_consequential_damages_including_but_not_limited_to_procurement_of_substitute_goods_or_services_loss_of_use_data_or_profits_or_business_interruption_however_caused_and_on_any_theory_of_liability_whether_in_contract_strict_liability_or_tort_including_negligence_or_otherwise_arising_in_any_way_out_of_the_use_of_this_software_even_if_advised_of_the_possibility_of_such_damage"
+                android:layout_below="@id/fourt"
+                android:layout_width="wrap_content"
+                android:id="@+id/fivth"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:textColor="#27aac3"
+                android:fontFamily="@font/arciform"
+                android:padding="20sp"
+                android:id="@+id/aceptar"
+                android:text="@string/aceptar"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/fivth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
