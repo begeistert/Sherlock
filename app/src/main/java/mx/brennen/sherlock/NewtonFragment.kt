@@ -6,10 +6,13 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.*
+import android.view.inputmethod.InputMethodManager
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
@@ -22,18 +25,18 @@ import mx.brennen.sherlock.res.CoreServices
 import mx.brennen.sherlock.res.TableDynamic
 import mx.brennen.sherlock.res.misc.Iteracion
 import mx.brennen.sherlock.res.misc.TypefaceUtil
-import org.jetbrains.anko.find
-import org.jetbrains.anko.image
+import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.toast
-import org.jetbrains.anko.textColor
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
 @Suppress("UNCHECKED_CAST")
 class NewtonFragment : Fragment() {
 
-    private var variable = ""
+    private var variable = ' '
+    private var width = 0f
+    private var DESMOS_STATE = false
     private var iterations : ArrayList<Iteracion> = ArrayList()
     private var header = arrayOf("Iteracion", HtmlCompat.fromHtml("X<sub><small>n\n</small></sub>",
         HtmlCompat.FROM_HTML_MODE_LEGACY), HtmlCompat.fromHtml("F(X<sub><small>n\n</small></sub>)", HtmlCompat.FROM_HTML_MODE_LEGACY))
@@ -50,7 +53,66 @@ class NewtonFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        interpeter.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+        desmos.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+
         super.onViewCreated(view, savedInstanceState)
+
+        doAsync {
+
+            val size = Point()
+            context!!.windowManager.defaultDisplay.getSize(size)
+            val scale: Float = resources.displayMetrics.density
+            width = ((size.x-(50*scale))/scale)
+            DESMOS_STATE = prefs.getBoolean("desmosApi",false)
+
+            if(DESMOS_STATE){
+
+                uiThread {
+
+                    if(desmos!=null){
+
+                        desmos.settings.javaScriptEnabled = true
+                        desmos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                        val html = "<!DOCTYPE html>\n" +
+                                "<html lang=\"en\">\n" +
+                                "<head>\n" +
+                                "    <meta charset=\"UTF-8\">\n" +
+                                "    <title>Title</title>\n" +
+                                "</head>\n" +
+                                "<body>\n" +
+                                "\n" +
+                                "<script src=\"file:///android_asset/pages/calculator.js\"></script>\n" +
+                                "  <div id=\"calculator\" style=\"width: ${width}px; height: 500px;\"></div>\n" +
+                                "  <script>\n" +
+                                "    var elt = document.getElementById('calculator');\n" +
+                                "    var calculator = Desmos.GraphingCalculator(elt,{keyboard:false,expressions:false});\n" +
+                                "    function setMathModel(model){\n" +
+                                "\n" +
+                                "      calculator.setExpression({id: 'function', latex: ('y=' + model)});\n" +
+                                "\n" +
+                                "    }" +
+                                "    function setEvaluation(points){\n" +
+                                "\n" +
+                                "      calculator.setExpression({id: 'point', latex: (points)});\n" +
+                                "\n" +
+                                "    }" +
+                                "  </script>\n" +
+                                "\n" +
+                                "</body>\n" +
+                                "</html>\n"
+                        desmos.loadDataWithBaseURL("file:///android_asset/pages/main.html", html, "text/html", "UTF-8", null)
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        context?.let { TypefaceUtil().overrideFont(it,"SERIF","fonts/arciform.otf") }
 
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.slide_top).setDuration(350)
 
@@ -58,32 +120,40 @@ class NewtonFragment : Fragment() {
 
         editvarInput.addTextChangedListener {
 
-            variable = editvarInput.text.toString()
-            textInputvar.isErrorEnabled = false
+            try {
+                variable = editvarInput.text.toString().toCharArray()[0]
+                textInputvar.isErrorEnabled = false
 
-            if(editFunctionInput.text != null){
+                if(editFunctionInput.text != null){
 
-                try {
+                    try {
 
-                    if (CoreServices().isFunction(editFunctionInput.text.toString(), variable.toCharArray()[0],1.0)){
+                        if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
 
-                        editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
-                        text_input_layout_email.error = "Sintaxis Incorrrecta"
-                        text_input_layout_email.isErrorEnabled = true
+                            editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
+                            text_input_layout_function.error = "Sintaxis Incorrrecta"
+                            text_input_layout_function.isErrorEnabled = true
 
-                    } else {
+                        } else {
 
-                        editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
-                        text_input_layout_email.isErrorEnabled = false
+                            editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
+                            text_input_layout_function.isErrorEnabled = false
+                            try {
+
+                                interpeter.foregroundGravity = Gravity.CENTER
+                                interpeter.setDisplayText("\$${CoreServices().mathml(editFunctionInput.text.toString())[1]}\$")
+
+                            }catch (e: Exception){}
+
+                        }
+
+                    } catch (e : Exception){
+
 
                     }
 
-                } catch (e : Exception){
-
-
                 }
-
-            }
+            }catch (e : java.lang.Exception){}
 
         }
 
@@ -99,19 +169,25 @@ class NewtonFragment : Fragment() {
 
             }
 
-            if (variable!=""){
+            if (variable!=' '){
 
                 try {
 
-                    if (CoreServices().isFunction(editFunctionInput.text.toString(), variable.toCharArray()[0],1.0)){
+                    if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
 
                         editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
-                        text_input_layout_email.error = "Sintaxis Incorrrecta"
-                        text_input_layout_email.isErrorEnabled = true
+                        text_input_layout_function.error = "Sintaxis Incorrrecta"
+                        text_input_layout_function.isErrorEnabled = true
 
                     } else {
                         editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
-                        text_input_layout_email.isErrorEnabled = false
+                        text_input_layout_function.isErrorEnabled = false
+                        try {
+
+                            interpeter.foregroundGravity = Gravity.CENTER
+                            interpeter.setDisplayText("\$${CoreServices().mathml(editFunctionInput.text.toString())[1]}\$")
+
+                        }catch (e: Exception){}
 
                     }
 
@@ -182,6 +258,8 @@ class NewtonFragment : Fragment() {
 
         calculate.onClick {
 
+            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
             if(editAInput.text!!.toString() != "" && editBInput.text!!.toString() != ""
                 && editFunctionInput.text!!.toString() != "" &&
                 edittoleranceInput.text!!.toString() != ""
@@ -191,6 +269,17 @@ class NewtonFragment : Fragment() {
                 val b = editBInput.text.toString().toDouble()
 
                 iterations.clear()
+
+                if (DESMOS_STATE){
+
+                    desmos.evaluateJavascript("javascript:setMathModel(\'${CoreServices().simplify(editFunctionInput.text.toString())}\')",null)
+                    if(!CoreServices().isFunction(editFunctionInput.text.toString(),'x',1.0)){
+
+                        desmos.visibility = View.VISIBLE
+
+                    }
+
+                }
 
                 when(aproachOptions.text.toString()){
 
@@ -240,38 +329,19 @@ class NewtonFragment : Fragment() {
 
         aproachOptions.onClick {
 
+            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
             createSingleListDialog()
-
-        }
-
-        infoicon.onClick {
-
-            val builderSymLegal = AlertDialog.Builder(context!!)
-            val viewSymLegal = layoutInflater.inflate(R.layout.web_dialog,null)
-            val webView = viewSymLegal.find(R.id.loadWeb) as WebView
-
-            builderSymLegal.setView(viewSymLegal)
-            TypefaceUtil().overrideFont(builderSymLegal.context,"SERIF","fonts/arciform.otf")
-            val dialogSymLegal = builderSymLegal.create()
-            dialogSymLegal.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialogSymLegal.window!!.decorView.setBackgroundResource(android.R.color.transparent)
-
-            val webSettings = webView.settings
-            webSettings.javaScriptEnabled = true
-            //webView.loadUrl("file:///android_asset/pages/Newton Raphson.htm")
-            webView.loadUrl("https://www.geogebra.org/m/XCrwWHzy")
-
-            dialogSymLegal.show()
 
         }
 
         menicon.onClick {
 
+            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
             (activity as HomeActivity).menu()
 
         }
-
-        val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
 
         var form = "#."
         for ( i in 1..prefs.getInt("Decimales",16)){

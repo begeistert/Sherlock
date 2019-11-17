@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
@@ -134,7 +135,7 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
             }
 
-            "Metodo de Valor Intermedio" -> {
+            "Metodo de Biseccion" -> {
 
                 homeAct.closeDrawers()
                 val newFragment = IntermediateFragment()
@@ -246,9 +247,7 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
     }
 
-    private lateinit var googleApiClient : GoogleSignInClient
     private lateinit var personalAdapter : PersonalAdapter
-    private val SIGN_IN_CODE = 909
     private var itemList : ArrayList<Item> = ArrayList()
     private var views : ArrayList<ImageView> = ArrayList()
     private lateinit var recyclerView : RecyclerView
@@ -256,6 +255,7 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
     @SuppressLint("CommitPrefEdits", "InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         super.onCreate(savedInstanceState).doAsync {
 
             if(!Python.isStarted()) {
@@ -303,21 +303,6 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
 
 
         },1000)
-
-
-        val prefs = baseContext.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
-        val account = GoogleSignIn.getLastSignedInAccount(applicationContext)
-
-        if(prefs.getInt("Autorizado",0) == 0 || account == null){
-
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
-
-            googleApiClient = GoogleSignIn.getClient(applicationContext,gso)
-
-            val intent = googleApiClient.signInIntent
-            startActivityForResult(intent, SIGN_IN_CODE)
-
-        }
 
         TypefaceUtil().overrideFont(baseContext,"SERIF","fonts/arciform.otf")
 
@@ -403,58 +388,4 @@ class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnect
         recyclerView.adapter = personalAdapter
 
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(requestCode == SIGN_IN_CODE){
-
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try{
-
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
-
-            }catch (e : Exception){
-
-                finishAffinity()
-                val mess = e.message
-                toast(mess.toString())
-
-            }
-
-        }
-
-    }
-
-    @SuppressLint("CommitPrefEdits")
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-
-        val fileMails = assets.open("AutorizedAccounts.txt")
-        val bufferMails = BufferedReader(InputStreamReader(fileMails)).readLine()
-        val mails = bufferMails.split("$")
-        for(listedMail in mails){
-
-            if(("$listedMail@gmail.com") == acct.email){
-
-                toast("Autorizado")
-                val prefs = baseContext.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
-                val editor = prefs.edit()
-                editor.putInt("Autorizado",1)
-                editor.apply()
-                break
-
-            }else{
-
-                toast("No Autorizado")
-                finishAffinity()
-
-            }
-
-        }
-
-    }
-
-
 }

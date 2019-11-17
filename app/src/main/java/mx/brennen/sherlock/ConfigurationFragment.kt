@@ -49,7 +49,7 @@ class ConfigurationFragment : Fragment() {
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 // Display the current progress of SeekBar
-                val decimals = i + 1
+                val decimals = i
                 editor.putInt("Decimales", decimals)
                 editor.apply()
                 value.text = "$decimals"

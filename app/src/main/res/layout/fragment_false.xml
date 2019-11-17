@@ -50,7 +50,8 @@
                 android:id="@+id/title"
                 android:layout_alignParentTop="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:ignore="RelativeOverlap" />
 
             <LinearLayout
                 android:id="@+id/linearl"
@@ -89,6 +90,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="#fff"
+                        android:maxLength="1"
                         android:inputType="textNoSuggestions|textVisiblePassword"
                         android:fontFamily="@font/arciform"
                         android:theme="@style/EditText"/>
@@ -105,7 +107,7 @@
                 />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_input_layout_email"
+                    android:id="@+id/text_input_layout_function"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/f_x"
@@ -128,9 +130,27 @@
 
             </LinearLayout>
 
+            <ScrollView
+                android:id="@+id/scrllinterpeter"
+                android:layout_below="@id/linearl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="NestedScrolling">
+
+                <katex.hourglass.in.mathlib.MathView
+                    android:id="@+id/interpeter"
+                    android:padding="20sp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="20dp"
+                    android:foregroundGravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </ScrollView>
+
             <TextView
                 android:id="@+id/descab"
-                android:layout_below="@id/linearl"
+                android:layout_below="@id/scrllinterpeter"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="10sp"
                 android:textColor="#fff"
@@ -252,7 +272,7 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:textColor="#fff"
-                        android:inputType="numberDecimal|numberPassword|textVisiblePassword"
+                        android:inputType="numberDecimal|numberPassword|textVisiblePassword|textNoSuggestions"
                         android:fontFamily="@font/arciform"
                         android:theme="@style/EditText"/>
 
@@ -272,28 +292,50 @@
                 android:text="@string/calcular"
             />
 
-            <TableLayout
+            <ScrollView
+                android:layout_below="@id/calculate"
+                android:id="@+id/tablecontainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="NestedScrolling">
+
+                <TableLayout
                     android:layout_marginTop="10sp"
-                    android:layout_below="@id/calculate"
                     android:layout_marginStart="10sp"
                     android:layout_marginEnd="10sp"
                     android:id="@+id/Table"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-            />
+                    android:layout_height="wrap_content"
+                    />
+
+            </ScrollView>
 
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtRaiz"
-                    android:visibility="gone"
-                    android:padding="10sp"
-                    android:layout_below="@id/Table"
-                    android:layout_centerInParent="true"
-                    android:textColor="#fff"
-                    android:fontFamily="@font/arciform"
-                    android:text="@string/la_ra_z_es"
-                    />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtRaiz"
+                android:visibility="gone"
+                android:padding="10sp"
+                android:layout_marginStart="10sp"
+                android:layout_below="@id/tablecontainer"
+                android:layout_centerInParent="true"
+                android:textColor="#fff"
+                android:fontFamily="@font/arciform"
+                android:text="@string/la_ra_z_es"
+                />
+
+            <WebView
+                android:layout_below="@id/txtRaiz"
+                android:visibility="gone"
+                android:layout_marginTop="30sp"
+                android:layout_marginBottom="40sp"
+                android:layout_marginStart="20sp"
+                android:layout_marginEnd="20sp"
+                android:layout_centerInParent="true"
+                android:id="@+id/desmos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="WebViewLayout" />
 
         </RelativeLayout>
 

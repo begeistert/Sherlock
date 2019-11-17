@@ -36,29 +36,6 @@ class LinearInterpolationFragment : Fragment() {
 
         val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
 
-        if(prefs.getInt("Autorizado",0) == 0){
-
-            val builder = context!!.let { AlertDialog.Builder(it) }
-            val v = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
-
-            val agree = v.findViewById<TextView>(R.id.aceptar)
-
-            builder.setView(v)
-            TypefaceUtil().overrideFont(builder.context,"SERIF","fonts/arciform.otf")
-            val dialog = builder.create()
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.window!!.decorView.setBackgroundResource(android.R.color.transparent)
-
-            agree.onClick {
-
-                dialog.dismiss()
-
-            }
-
-            dialog.show()
-
-        }
-
         if(prefs.getBoolean("RealTime",false)){
 
             evaluate.visibility = View.GONE

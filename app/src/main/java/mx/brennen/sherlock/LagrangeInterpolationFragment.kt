@@ -191,6 +191,8 @@ class LagrangeInterpolationFragment : Fragment() {
 
         menicon.onClick {
 
+            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
             (activity as HomeActivity).menu()
 
         }

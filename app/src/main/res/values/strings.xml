@@ -61,7 +61,7 @@
     <string name="arciform">\"Arciform\"</string>
     <string name="dise_ada_por_matt_ellis">Diseñada por Matt Ellis</string>
     <string name="iconos">Iconos</string>
-    <string name="matem_ticas_hecho_por_freepik_de_www_flaticon_com">Hecho por Freepik de www.flaticon.com</string>
+    <string name="matem_ticas_hecho_por_freepik_de_www_flaticon_com">Obtenidos de www.flaticon.com</string>
     <string name="matem_ticas">\"Matemáticas\"</string>
     <string name="secante">Secante</string>
     <string name="newton_raphson">Newton-Raphson</string>
@@ -108,5 +108,6 @@
     <string name="c_neither_the_name_of_sympy_nor_the_names_of_its_contributors_may_be_used_to_endorse_or_promote_products_derived_from_this_software_without_specific_prior_written_permission">c. Neither the name of SymPy nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</string>
     <string name="this_software_is_provided_by_the_copyright_holders_and_contributors_as_is_and_any_express_or_implied_warranties_including_but_not_limited_to_the_implied_warranties_of_merchantability_and_fitness_for_a_particular_purpose_are_disclaimed_in_no_event_shall_the_regents_or_contributors_be_liable_for_any_direct_indirect_incidental_special_exemplary_or_consequential_damages_including_but_not_limited_to_procurement_of_substitute_goods_or_services_loss_of_use_data_or_profits_or_business_interruption_however_caused_and_on_any_theory_of_liability_whether_in_contract_strict_liability_or_tort_including_negligence_or_otherwise_arising_in_any_way_out_of_the_use_of_this_software_even_if_advised_of_the_possibility_of_such_damage">THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</string>
     <string name="habilitar_graficadora_desmos">Habilitar Graficadora (Desmos)</string>
-    <string name="funcion_experimental">Minimos Cuadrados (Puede ser inestable)</string>
+    <string name="funcion_experimental">Minimos Cuadrados</string>
+    <string name="las_soluciones_de_la_ecuacion_son">Las soluciones de la ecuacion son:</string>
 </resources>
