@@ -1,10 +1,7 @@
 package mx.brennen.sherlock
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.Bundle
@@ -19,13 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.GoogleApiClient
 import kotlinx.android.synthetic.main.activity_home.*
 import mx.brennen.sherlock.res.Item
 import mx.brennen.sherlock.res.PersonalAdapter
@@ -33,18 +23,9 @@ import mx.brennen.sherlock.res.misc.OnNoteLister
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk27.coroutines.onClick
-import org.jetbrains.anko.toast
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
 @Suppress("UNCHECKED_CAST")
-class HomeActivity : FragmentActivity() ,OnNoteLister, GoogleApiClient.OnConnectionFailedListener{
-
-    override fun onConnectionFailed(p0: ConnectionResult) {
-
-        toast("Conexion Fallida")
-
-    }
+class HomeActivity : FragmentActivity() ,OnNoteLister{
 
     fun menu() {
 
