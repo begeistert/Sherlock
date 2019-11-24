@@ -14,8 +14,8 @@ android {
         applicationId "mx.brennen.sherlock"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 13
-        versionName "1.1.0-RTM01"
+        versionCode 15
+        versionName "1.1.0-RTM03"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -87,9 +87,6 @@ dependencies {
     implementation "org.jetbrains.anko:anko:$ankoVersion"
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.google.firebase:firebase-analytics:17.2.1'
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'in.hourglass.mathrender:katexmathview:1.0.2'
-}
 
-apply plugin: 'com.google.gms.google-services'
+}

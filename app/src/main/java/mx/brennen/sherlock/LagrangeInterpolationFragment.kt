@@ -137,11 +137,11 @@ class LagrangeInterpolationFragment : Fragment() {
                     try {
 
                         val size = pairs_number.text.toString().toInt()
-                        if (size>15){
+                        if (size>5){
 
                             val builder = AlertDialog.Builder(context!!)
                             builder.setTitle("Sobrecarga de memoria")
-                            builder.setMessage("El limite de pares manejables en tiempo real son 15, si desea superar ese limite le recomendamos un dispositivo con 4 GB de RAM, si no es el caso y desea continuar esta bajo su propia responsabilidad")
+                            builder.setMessage("El limite de pares manejables en tiempo real son 5, si desea superar ese limite le recomendamos un dispositivo con 4 GB de RAM, si no es el caso y desea continuar esta bajo su propia responsabilidad")
                             //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
 
                             builder.setPositiveButton("Continuar") { dialog, which ->
@@ -240,7 +240,16 @@ class LagrangeInterpolationFragment : Fragment() {
                     val interpreted = CoreServices().mathml(CoreServices().lagrangeInterpolation(X_VALUES,Y_VALUES))
                     FUNCTION = interpreted[0]
                     math_model.setDisplayText("$${interpreted[1]}$")
-                    solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
+                    if(X_FIELDS.size<5){
+
+                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
+                        sol.visibility = View.VISIBLE
+
+                    }else{
+
+                        sol.visibility = View.GONE
+
+                    }
                     rellay.visibility = View.VISIBLE
                     val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -411,7 +420,16 @@ class LagrangeInterpolationFragment : Fragment() {
 
                     val interpreted = CoreServices().mathml(CoreServices().lagrangeInterpolation(X_VALUES,Y_VALUES))
                     FUNCTION = interpreted[0]
-                    solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
+                    if(X_FIELDS.size<5){
+
+                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
+                        sol.visibility = View.VISIBLE
+
+                    }else{
+
+                        sol.visibility = View.GONE
+
+                    }
                     math_model.setDisplayText("$${interpreted[1]}$")
                     rellay.visibility = View.VISIBLE
 
@@ -485,7 +503,16 @@ class LagrangeInterpolationFragment : Fragment() {
 
                     val interpreted = CoreServices().mathml(CoreServices().lagrangeInterpolation(X_VALUES,Y_VALUES))
                     FUNCTION = interpreted[0]
-                    solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
+                    if(X_FIELDS.size<5){
+
+                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
+                        sol.visibility = View.VISIBLE
+
+                    }else{
+
+                        sol.visibility = View.GONE
+
+                    }
                     math_model.setDisplayText("$${interpreted[1]}$")
                     rellay.visibility = View.VISIBLE
 

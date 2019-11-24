@@ -98,7 +98,15 @@ public class TableDynamic {
                 info = (indexC<Colums.length)?Colums[indexC]:"";
                 txtCell.setText(info);
                 txtCell.setTextColor(Color.parseColor("#000000"));
-                txtCell.setTextSize(1,15f);
+                if(data.size()>10){
+
+                    txtCell.setTextSize(1,10f);
+
+                }else{
+
+                    txtCell.setTextSize(1,15f);
+
+                }
                 txtCell.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/arciform.otf"));
                 txtCell.setBackgroundColor(Color.parseColor("#30CFBF"));
                 //txtCell.setBackground(context.getDrawable(R.drawable.cellrectangle));

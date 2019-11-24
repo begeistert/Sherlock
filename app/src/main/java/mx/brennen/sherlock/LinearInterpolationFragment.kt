@@ -465,7 +465,7 @@ class LinearInterpolationFragment : Fragment() {
                     val funtions = CoreServices().mathml(CoreServices().linearInterpolation(firstIntervals,secondIntervals))
                     FUNCTION = funtions[0]
                     solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                    math_model.setDisplayText(funtions[1])
+                    math_model.setDisplayText("$${funtions[1]}$")
                     rellay.visibility = View.VISIBLE
                     if (DESMOS_STATE){
 

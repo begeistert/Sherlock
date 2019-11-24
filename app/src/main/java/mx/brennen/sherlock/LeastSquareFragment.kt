@@ -144,11 +144,11 @@ class LeastSquareFragment : Fragment() {
                     try {
 
                         val size = pairs_number.text.toString().toInt()
-                        if (size>15){
+                        if (size>5){
 
                             val builder = AlertDialog.Builder(context!!)
                             builder.setTitle("Sobrecarga de memoria")
-                            builder.setMessage("El limite de pares manejables en tiempo real son 15, si desea superar ese limite le recomendamos un dispositivo con 4 GB de RAM, si no es el caso y desea continuar esta bajo su propia responsabilidad")
+                            builder.setMessage("El limite de pares manejables en tiempo real son 5, si desea superar ese limite le recomendamos un dispositivo con 4 GB de RAM, si no es el caso y desea continuar esta bajo su propia responsabilidad")
                             //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
 
                             builder.setPositiveButton("Continuar") { dialog, which ->

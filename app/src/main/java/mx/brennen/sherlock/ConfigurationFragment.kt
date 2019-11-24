@@ -63,9 +63,38 @@ class ConfigurationFragment : Fragment() {
 
         realtime.setOnCheckedChangeListener { _, isChecked ->
 
+            if(isChecked){
 
-            editor.putBoolean("RealTime",isChecked)
-            editor.apply()
+                val builder = AlertDialog.Builder(context!!)
+                builder.setTitle("Sobrecarga de memoria")
+                builder.setMessage("Desaconsejamos encarecidamente el uso de esta propiedad si su dispositivo tiene menos de 4GB de RAM, pero si desea utilizarla considere que podria resultar extremadamente inestable")
+                //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+
+                builder.setPositiveButton("Continuar") { dialog, which ->
+
+
+                    editor.putBoolean("RealTime",isChecked)
+                    editor.apply()
+                    dialog.dismiss()
+
+                }
+
+                builder.setNegativeButton("Cancelar") { dialog, which ->
+
+                    realtime.isChecked = false
+                    dialog.dismiss()
+
+                }
+
+                builder.show()
+
+            }else{
+
+                editor.putBoolean("RealTime",isChecked)
+                editor.apply()
+
+            }
+
 
         }
 
