@@ -1,6 +1,9 @@
 package mx.brennen.sherlock.res
 
+import android.annotation.SuppressLint
 import android.content.res.AssetManager
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +13,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import mx.brennen.sherlock.R
 import mx.brennen.sherlock.res.misc.OnNoteLister
@@ -21,6 +25,7 @@ class PersonalAdapter(receivedList : ArrayList<Item>, private val onNoteListener
     private var lastPosition = -1
     val images : ArrayList<ImageView> = ArrayList()
 
+    @SuppressLint("InflateParams")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewItems {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_menu,null,false)
@@ -36,11 +41,11 @@ class PersonalAdapter(receivedList : ArrayList<Item>, private val onNoteListener
 
     override fun onBindViewHolder(holder: ViewItems, position: Int) {
 
-        holder.image.setImageResource(listOfItems.get(position).image)
+        holder.image.setImageResource(listOfItems[position].image)
         images.add(holder.image)
-        holder.title.text = listOfItems.get(position).title
+        holder.title.text = listOfItems[position].title
         holder.title.typeface = typeface
-        holder.info.text = listOfItems.get(position).info
+        holder.info.text = listOfItems[position].info
         holder.info.typeface = typeface
         setAnimation(holder.itemView, position)
 

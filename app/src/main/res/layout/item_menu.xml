@@ -11,6 +11,7 @@
         android:transitionName="card"
         android:theme="@style/Theme.MaterialComponents.Light"
         android:focusable="true"
+        android:backgroundTint="#000000"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -43,6 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/todo"
+                    android:textColor="#ffffff"
                     android:textSize="20sp"
                 />
 
@@ -54,6 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:textSize="15sp"
+                    android:textColor="#b8b8b8"
                     android:text="@string/todo"
                 />
 
