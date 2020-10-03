@@ -2,18 +2,14 @@ package mx.brennen.sherlock
 
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Point
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.webkit.WebSettings
-import android.webkit.WebView
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -23,14 +19,18 @@ import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
 import katex.hourglass.`in`.mathlib.MathView
 import kotlinx.android.synthetic.main.fragment_newton.*
-import mx.brennen.sherlock.res.CoreServices
+import mx.brennen.sherlock.res.Math
+import mx.brennen.sherlock.res.NumericalMethods
 import mx.brennen.sherlock.res.TableDynamic
 import mx.brennen.sherlock.res.misc.Iteracion
 import mx.brennen.sherlock.res.misc.TypefaceUtil
-import org.jetbrains.anko.*
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.sdk27.coroutines.onTouch
 import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.textColor
+import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.windowManager
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -45,6 +45,8 @@ class NewtonFragment : Fragment() {
         HtmlCompat.FROM_HTML_MODE_LEGACY), HtmlCompat.fromHtml("F(X<sub><small>n\n</small></sub>)", HtmlCompat.FROM_HTML_MODE_LEGACY))
     private var rows: ArrayList<Array<String>> = ArrayList()
     private lateinit var df : DecimalFormat
+    private val NM = NumericalMethods()
+    private val math = Math()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,9 +56,10 @@ class NewtonFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_newton, container, false)
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        val prefs = requireContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         interpeter.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         desmos.settings.cacheMode = WebSettings.LOAD_NO_CACHE
 
@@ -65,7 +68,7 @@ class NewtonFragment : Fragment() {
         doAsync {
 
             val size = Point()
-            context!!.windowManager.defaultDisplay.getSize(size)
+            requireContext().windowManager.defaultDisplay.getSize(size)
             val scale: Float = resources.displayMetrics.density
             width = ((size.x-(50*scale))/scale)
             DESMOS_STATE = prefs.getBoolean("desmosApi",false)
@@ -143,7 +146,7 @@ class NewtonFragment : Fragment() {
 
                     try {
 
-                        if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
+                        if (math.isFunction(editFunctionInput.text.toString(), variable,1.0)){
 
                             editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                             text_input_layout_function.error = "Sintaxis Incorrrecta"
@@ -156,7 +159,7 @@ class NewtonFragment : Fragment() {
                             try {
 
                                 interpeter.foregroundGravity = Gravity.CENTER
-                                interpeter.setDisplayText("\$${CoreServices().mathml(editFunctionInput.text.toString())[1]}\$")
+                                interpeter.setDisplayText("\$${math.mathml(editFunctionInput.text.toString())[1]}\$")
 
                             }catch (e: Exception){}
 
@@ -188,7 +191,7 @@ class NewtonFragment : Fragment() {
 
                 try {
 
-                    if (CoreServices().isFunction(editFunctionInput.text.toString(), variable,1.0)){
+                    if (math.isFunction(editFunctionInput.text.toString(), variable,1.0)){
 
                         editFunctionInput.setTextColor(Color.parseColor("#ffffff"))
                         text_input_layout_function.error = "Sintaxis Incorrrecta"
@@ -200,7 +203,7 @@ class NewtonFragment : Fragment() {
                         try {
 
                             interpeter.foregroundGravity = Gravity.CENTER
-                            interpeter.setDisplayText("\$${CoreServices().mathml(editFunctionInput.text.toString())[1]}\$")
+                            interpeter.setDisplayText("\$${math.mathml(editFunctionInput.text.toString())[1]}\$")
 
                         }catch (e: Exception){}
 
@@ -244,7 +247,7 @@ class NewtonFragment : Fragment() {
 
                     try {
 
-                        if(CoreServices().tolerance("10^"+edittoleranceInput.text.toString())>0){
+                        if(math.tolerance("10^"+edittoleranceInput.text.toString())>0){
 
                             edittoleranceInput.textColor = Color.GREEN
                             textInputtolerance.isErrorEnabled = false
@@ -273,7 +276,7 @@ class NewtonFragment : Fragment() {
 
         calculate.onClick {
 
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
             if(editAInput.text!!.toString() != "" && editBInput.text!!.toString() != ""
                 && editFunctionInput.text!!.toString() != "" &&
@@ -287,8 +290,9 @@ class NewtonFragment : Fragment() {
 
                 if (DESMOS_STATE){
 
-                    desmos.evaluateJavascript("javascript:setMathModel(\'${CoreServices().simplify(editFunctionInput.text.toString())}\')",null)
-                    if(!CoreServices().isFunction(editFunctionInput.text.toString(),'x',1.0)){
+                    desmos.evaluateJavascript("javascript:setMathModel" +
+                            "(\'${math.simplify(editFunctionInput.text.toString())}\')",null)
+                    if(!math.isFunction(editFunctionInput.text.toString(),'x',1.0)){
 
                         desmos.visibility = View.VISIBLE
 
@@ -304,10 +308,18 @@ class NewtonFragment : Fragment() {
 
                             if(edittoleranceInput.text.toString().toInt()>1){
 
-                                iterations = CoreServices().newtonRaphson(editFunctionInput.text.toString(),
-                                    editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^-1000"),
-                                    edittoleranceInput.text.toString().toInt()).clone() as ArrayList<Iteracion>
-                                textInputtolerance.isErrorEnabled = false
+                                doAsync {
+
+                                    iterations = NM.newtonRaphson(editFunctionInput.text.toString(),
+                                        editvarInput.text.toString(), doubleArrayOf(a,b), math.tolerance("10^-1000"),
+                                        edittoleranceInput.text.toString().toInt()).clone() as ArrayList<Iteracion>
+                                    textInputtolerance.isErrorEnabled = false
+                                    uiThread {
+                                        createTable()
+                                        toast("Completado")
+                                    }
+
+                                }
 
                             }
 
@@ -322,17 +334,21 @@ class NewtonFragment : Fragment() {
 
                     "Tolerancia" -> {
 
-                        iterations = CoreServices().newtonRaphson(editFunctionInput.text.toString(),
-                            editvarInput.text.toString(), doubleArrayOf(a,b), CoreServices().tolerance("10^"+edittoleranceInput.text.toString())
-                            ,0).clone() as ArrayList<Iteracion>
+                        doAsync {
+
+                            iterations = NM.newtonRaphson(editFunctionInput.text.toString(),
+                                editvarInput.text.toString(), doubleArrayOf(a,b), math.tolerance("10^"+edittoleranceInput.text.toString())
+                                ,0).clone() as ArrayList<Iteracion>
+                            uiThread {
+                                createTable()
+                                toast("Completado")
+                            }
+
+                        }
 
                     }
 
                 }
-
-                createTable()
-
-                toast("correcto")
 
             } else {
 
@@ -344,7 +360,7 @@ class NewtonFragment : Fragment() {
 
         aproachOptions.onClick {
 
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
             createSingleListDialog()
 
@@ -352,7 +368,7 @@ class NewtonFragment : Fragment() {
 
         menicon.onClick {
 
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
             (activity as HomeActivity).menu()
 
@@ -360,7 +376,7 @@ class NewtonFragment : Fragment() {
 
         infoicon.onClick {
 
-            val builderSymLegal = AlertDialog.Builder(context!!)
+            val builderSymLegal = AlertDialog.Builder(requireContext())
             val viewSymLegal = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
             val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
             val mathView = viewSymLegal.findViewById(R.id.interpeter) as MathView
@@ -382,7 +398,7 @@ class NewtonFragment : Fragment() {
 
             }
 
-            mathView.setDisplayText("$${CoreServices().mathml(function.text.toString())[1]}$")
+            mathView.setDisplayText("$${math.mathml(function.text.toString())[1]}$")
 
             dialogSymLegal.show()
 

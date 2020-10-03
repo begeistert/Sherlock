@@ -22,7 +22,9 @@
             android:layout_marginTop="200sp"
             android:src="@drawable/matematicas"
             android:layout_width="130sp"
-            android:layout_height="130sp"/>
+            android:layout_height="130sp"
+            android:contentDescription="TODO"
+            tools:ignore="ContentDescription,HardcodedText" />
 
         <TextView
             android:fontFamily="@font/arciform"
@@ -40,7 +42,9 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_width="100sp"
-            android:layout_height="100sp"/>
+            android:layout_height="100sp"
+            android:contentDescription="TODO"
+            tools:ignore="ContentDescription,HardcodedText" />
 
         <TextView
             android:fontFamily="@font/arciform"
@@ -70,6 +74,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardv"
+            android:theme="@style/Theme.MaterialComponents.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

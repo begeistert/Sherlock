@@ -1,6 +1,7 @@
 package mx.brennen.sherlock
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
@@ -20,7 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
 import katex.hourglass.`in`.mathlib.MathView
 import kotlinx.android.synthetic.main.fragment_least_square.*
-import mx.brennen.sherlock.res.CoreServices
+import mx.brennen.sherlock.res.Math
+import mx.brennen.sherlock.res.NumericalMethods
 import mx.brennen.sherlock.res.PersonalAdapterInterpolation
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.doAsync
@@ -45,6 +47,8 @@ class LeastSquareFragment : Fragment() {
     private val ITEMS : ArrayList<LinearLayout> = ArrayList()
     private lateinit var X_VALUES : DoubleArray
     private lateinit var Y_VALUES : DoubleArray
+    private val NM = NumericalMethods()
+    private val math = Math()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,16 +58,17 @@ class LeastSquareFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_least_square, container, false)
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         math_modely.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         desmos.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         math_modelx.settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        val prefs = requireContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         doAsync {
 
             val size = Point()
-            context!!.windowManager.defaultDisplay.getSize(size)
+            requireContext().windowManager.defaultDisplay.getSize(size)
             val scale: Float = resources.displayMetrics.density
             width = ((size.x-(50*scale))/scale)
             DESMOS_STATE = prefs.getBoolean("desmosApi",false)
@@ -131,180 +136,120 @@ class LeastSquareFragment : Fragment() {
 
         cont.layoutManager = LinearLayoutManager(context)
 
-        if(prefs.getBoolean("RealTime",false)){
+        super.onViewCreated(view, savedInstanceState)
 
-            evaluate.visibility = View.GONE
-            calculate.visibility = View.GONE
-            aceptar.visibility = View.GONE
+        calculate.onClick {
 
-            pairs_number.addTextChangedListener{
+            try {
 
-                if(pairs_number.text.toString() != ""){
+                X_VALUES = DoubleArray(X_FIELDS.size)
+                Y_VALUES = DoubleArray(Y_FIELDS.size)
+                var index = 0
+                for (X in X_FIELDS){
 
                     try {
 
-                        val size = pairs_number.text.toString().toInt()
-                        if (size>5){
-
-                            val builder = AlertDialog.Builder(context!!)
-                            builder.setTitle("Sobrecarga de memoria")
-                            builder.setMessage("El limite de pares manejables en tiempo real son 5, si desea superar ese limite le recomendamos un dispositivo con 4 GB de RAM, si no es el caso y desea continuar esta bajo su propia responsabilidad")
-                            //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
-
-                            builder.setPositiveButton("Continuar") { dialog, which ->
-
-                                generateFields(size,true)
-                                cont.visibility = View.VISIBLE
-                                dialog.dismiss()
-
-                            }
-
-                            builder.setNegativeButton("Cancelar") { dialog, which ->
-
-                                dialog.dismiss()
-
-                            }
-
-                            builder.show()
-
-
-                        }else {
-
-                            generateFields(size,true)
-                            cont.visibility = View.VISIBLE
-
-                        }
+                        X_VALUES[index] = X.text.toString().toDouble()
+                        index++
 
                     }catch (e : Exception){
 
-                        toast("Comprueba tu entrada")
+                        X_VALUES[index] = 0.0
+                        index++
 
                     }
 
                 }
 
-            }
+                index = 0
 
-            value.addTextChangedListener {
+                for (Y in Y_FIELDS){
 
-                try {
+                    try {
 
-                    val valueOfx = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                    val valueOfy = CoreServices().evaluate(FUNCTIONY,"y",valuey.text.toString().toDouble())
-                    val mess = "El resultado de la evaluacion en x es: $valueOfx\nEl resultado de la evaluacion en y es: $valueOfy"
-                    valueofecuation.text = mess
-                    toast(mess)
+                        Y_VALUES[index] = Y.text.toString().toDouble()
+                        index++
 
-                } catch (e : Exception){
+                    }catch (e : Exception){
 
-
-                }
-
-            }
-
-            valuey.addTextChangedListener{
-
-                try {
-
-                    val valueOfx = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                    val valueOfy = CoreServices().evaluate(FUNCTIONY,"y",valuey.text.toString().toDouble())
-                    val mess = "El resultado de la evaluacion en x es: $valueOfx\nEl resultado de la evaluacion en y es: $valueOfy"
-                    valueofecuation.text = mess
-                    toast(mess)
-
-                } catch (e : Exception){
-
-
-                }
-
-            }
-
-        } else {
-
-            calculate.onClick {
-
-                try {
-
-                    X_VALUES = DoubleArray(X_FIELDS.size)
-                    Y_VALUES = DoubleArray(Y_FIELDS.size)
-                    var index = 0
-                    for (X in X_FIELDS){
-
-                        try {
-
-                            X_VALUES[index] = X.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            X_VALUES[index] = 0.0
-                            index++
-
-                        }
+                        Y_VALUES[index] = 0.0
+                        index++
 
                     }
 
-                    index = 0
+                }
 
-                    for (Y in Y_FIELDS){
+                doAsync {
 
-                        try {
-
-                            Y_VALUES[index] = Y.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            Y_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    val ecuations = CoreServices().leastSquares(X_VALUES,Y_VALUES)
-                    val interpretedx = CoreServices().mathml(ecuations[0])
-                    val interpretedy = CoreServices().mathml(ecuations[1])
+                    val ecuations = NM.leastSquares(X_VALUES,Y_VALUES)
+                    val interpretedx = math.mathml(ecuations[0])
+                    val interpretedy = math.mathml(ecuations[1])
                     FUNCTION = interpretedx[0]
                     FUNCTIONY = interpretedy [0]
-                    math_modelx.setDisplayText("\$${interpretedx[1]}\$")
-                    math_modely.setDisplayText("\$${interpretedy[1]}\$")
-                    rellay.visibility = View.VISIBLE
-                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
-                    if (DESMOS_STATE){
+                    uiThread {
 
-                        desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                        desmos.evaluateJavascript("javascript:setMathModely('${FUNCTIONY}')",null)
-                        if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
+                        math_modelx.setDisplayText("\$${interpretedx[1]}\$")
+                        math_modely.setDisplayText("\$${interpretedy[1]}\$")
+                        rellay.visibility = View.VISIBLE
+                        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view.windowToken, 0)
+                        if (DESMOS_STATE){
 
-                            desmos.visibility = View.VISIBLE
+                            desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
+                            desmos.evaluateJavascript("javascript:setMathModely('${FUNCTIONY}')",null)
+                            if(!math.isFunction(FUNCTION,'x',1.0)){
+
+                                desmos.visibility = View.VISIBLE
+
+                            }
 
                         }
 
                     }
 
-                }catch (e : Exception){
-
-                    toast("Comprueba tus datos de entrada")
-
                 }
+
+            }catch (e : Exception){
+
+                toast("Comprueba tus datos de entrada")
 
             }
 
-            evaluate.onClick {
+        }
 
-                try {
+        evaluate.onClick {
 
-                    val valueOfx = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                    val valueOfy = CoreServices().evaluate(FUNCTIONY,"y",valuey.text.toString().toDouble())
-                    val mess = "El resultado de la evaluacion en x es: $valueOfx\nEl resultado de la evaluacion en y es: $valueOfy"
-                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            try {
+
+                val valueOfx = math.evaluate(FUNCTION,"x",value.text.toString().toDouble())
+                val valueOfy = math.evaluate(FUNCTIONY,"y",valuey.text.toString().toDouble())
+                val mess = "El resultado de la evaluacion en x es: $valueOfx\nEl resultado de la evaluacion en y es: $valueOfy"
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                valueofecuation.text = mess
+                toast(mess)
+
+            } catch (e : Exception){
+
+                toast("Comprueba tu entrada")
+
+            }
+
+        }
+
+        aceptar.onClick {
+
+            if(pairs_number.text.toString() != ""){
+
+                try{
+
+                    generateFields(pairs_number.text.toString().toInt())
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
-                    valueofecuation.text = mess
-                    toast(mess)
+                    cont.visibility = View.VISIBLE
+                    calculate.visibility = View.VISIBLE
 
-                } catch (e : Exception){
+                }catch (e : Exception){
 
                     toast("Comprueba tu entrada")
 
@@ -312,35 +257,11 @@ class LeastSquareFragment : Fragment() {
 
             }
 
-            aceptar.onClick {
-
-                if(pairs_number.text.toString() != ""){
-
-                    try{
-
-                        generateFields(pairs_number.text.toString().toInt(), false)
-                        val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
-                        cont.visibility = View.VISIBLE
-                        calculate.visibility = View.VISIBLE
-
-                    }catch (e : Exception){
-
-                        toast("Comprueba tu entrada")
-
-                    }
-
-                }
-
-            }
-
         }
-
-        super.onViewCreated(view, savedInstanceState)
 
         infoicon.onClick {
 
-            val builderSymLegal = AlertDialog.Builder(context!!)
+            val builderSymLegal = AlertDialog.Builder(requireContext())
             val viewSymLegal = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
             val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
             val mathView = viewSymLegal.findViewById(R.id.interpeter) as MathView
@@ -362,7 +283,7 @@ class LeastSquareFragment : Fragment() {
 
             }
 
-            mathView.setDisplayText("$${CoreServices().mathml(function.text.toString())[1]}$")
+            mathView.setDisplayText("$${math.mathml(function.text.toString())[1]}$")
 
             dialogSymLegal.show()
 
@@ -370,7 +291,7 @@ class LeastSquareFragment : Fragment() {
 
         menicon.onClick {
 
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
             (activity as HomeActivity).menu()
 
@@ -378,7 +299,8 @@ class LeastSquareFragment : Fragment() {
 
     }
 
-    private fun generateFields(size : Int, realTime : Boolean) {
+    @SuppressLint("InflateParams")
+    private fun generateFields(size : Int) {
 
         X_FIELDS.clear()
         Y_FIELDS.clear()
@@ -397,156 +319,6 @@ class LeastSquareFragment : Fragment() {
             X_FIELDS.add(field.findViewById(R.id.x))
 
             ITEMS.add(field)
-
-            if(realTime){
-
-                field.findViewById<TextInputEditText>(R.id.x).addTextChangedListener{
-
-                    X_VALUES = DoubleArray(X_FIELDS.size)
-                    Y_VALUES = DoubleArray(Y_FIELDS.size)
-                    var index = 0
-                    for (X in X_FIELDS){
-
-                        try {
-
-                            X_VALUES[index] = X.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            X_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-                    index = 0
-                    for (Y in Y_FIELDS){
-
-                        try {
-
-                            Y_VALUES[index] = Y.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            Y_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    val ecuations = CoreServices().leastSquares(X_VALUES,Y_VALUES)
-                    val interpretedx = CoreServices().mathml(ecuations[0])
-                    val interpretedy = CoreServices().mathml(ecuations[1])
-                    FUNCTION = interpretedx[0]
-                    FUNCTIONY = interpretedy[0]
-                    math_modelx.setDisplayText("$${interpretedx[1]}$")
-                    math_modely.setDisplayText("$${interpretedy[1]}$")
-                    rellay.visibility = View.VISIBLE
-                    if (DESMOS_STATE){
-
-                        desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                        desmos.evaluateJavascript("javascript:setMathModely('${FUNCTIONY}')",null)
-                        if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                            desmos.visibility = View.VISIBLE
-
-                        }
-
-                    }
-
-                    try {
-
-                        val valueOfx = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                        val valueOfy = CoreServices().evaluate(FUNCTIONY,"y",valuey.text.toString().toDouble())
-                        val mess = "El resultado de la evaluacion en x es: $valueOfx\nEl resultado de la evaluacion en y es: $valueOfy"
-                        valueofecuation.text = mess
-                        toast(mess)
-
-                    } catch (e : Exception){
-
-
-                    }
-
-                }
-
-                field.findViewById<TextInputEditText>(R.id.y).addTextChangedListener{
-
-                    Y_VALUES = DoubleArray(Y_FIELDS.size)
-                    X_VALUES = DoubleArray(X_FIELDS.size)
-                    var index = 0
-                    for (X in X_FIELDS){
-
-                        try {
-
-                            X_VALUES[index] = X.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            X_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    index = 0
-
-                    for (Y in Y_FIELDS){
-
-                        try {
-
-                            Y_VALUES[index] = Y.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            Y_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    val ecuations = CoreServices().leastSquares(X_VALUES,Y_VALUES)
-                    val interpretedx = CoreServices().mathml(ecuations[0])
-                    val interpretedy = CoreServices().mathml(ecuations[1])
-                    FUNCTION = interpretedx[0]
-                    FUNCTIONY = interpretedy [0]
-                    math_modelx.setDisplayText("$${interpretedx[1]}$")
-                    math_modely.setDisplayText("$${interpretedy[1]}$")
-                    rellay.visibility = View.VISIBLE
-                    if (DESMOS_STATE){
-
-                        desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                        desmos.evaluateJavascript("javascript:setMathModely('${FUNCTIONY}')",null)
-                        if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                            desmos.visibility = View.VISIBLE
-
-                        }
-
-                    }
-
-                    try {
-
-                        val valueOfx = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                        val valueOfy = CoreServices().evaluate(FUNCTIONY,"y",valuey.text.toString().toDouble())
-                        val mess = "El resultado de la evaluacion en x es: $valueOfx\nEl resultado de la evaluacion en y es: $valueOfy"
-                        valueofecuation.text = mess
-                        toast(mess)
-
-                    } catch (e : Exception){
-
-
-                    }
-
-                }
-
-            }
 
         }
 

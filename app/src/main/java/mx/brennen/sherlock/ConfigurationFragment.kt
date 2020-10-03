@@ -33,7 +33,7 @@ class ConfigurationFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        val prefs = context!!.getSharedPreferences("Preferences", MODE_PRIVATE)
+        val prefs = requireContext().getSharedPreferences("Preferences", MODE_PRIVATE)
         val editor = prefs.edit()
 
         value.text = prefs.getInt("Decimales",16).toString()
@@ -65,12 +65,12 @@ class ConfigurationFragment : Fragment() {
 
             if(isChecked){
 
-                val builder = AlertDialog.Builder(context!!)
+                val builder = AlertDialog.Builder(requireContext())
                 builder.setTitle("Sobrecarga de memoria")
                 builder.setMessage("Desaconsejamos encarecidamente el uso de esta propiedad si su dispositivo tiene menos de 4GB de RAM, pero si desea utilizarla considere que podria resultar extremadamente inestable")
                 //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
 
-                builder.setPositiveButton("Continuar") { dialog, which ->
+                builder.setPositiveButton("Continuar") { dialog, _ ->
 
 
                     editor.putBoolean("RealTime",isChecked)
@@ -79,7 +79,7 @@ class ConfigurationFragment : Fragment() {
 
                 }
 
-                builder.setNegativeButton("Cancelar") { dialog, which ->
+                builder.setNegativeButton("Cancelar") { dialog, _ ->
 
                     realtime.isChecked = false
                     dialog.dismiss()
@@ -169,7 +169,7 @@ class ConfigurationFragment : Fragment() {
 
                 sympylogo.onClick {
 
-                    val builderSymLegal = AlertDialog.Builder(context!!)
+                    val builderSymLegal = AlertDialog.Builder(requireContext())
                     val viewSymLegal = layoutInflater.inflate(R.layout.sympy_legal_dialog,null)
                     val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
 
@@ -191,7 +191,7 @@ class ConfigurationFragment : Fragment() {
 
                 licences.onClick {
 
-                    val builderSymLegal = AlertDialog.Builder(context!!)
+                    val builderSymLegal = AlertDialog.Builder(requireContext())
                     val viewSymLegal = layoutInflater.inflate(R.layout.dialog_licences,null)
                     val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
 

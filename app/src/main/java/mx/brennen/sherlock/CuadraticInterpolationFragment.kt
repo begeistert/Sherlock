@@ -1,6 +1,5 @@
 package mx.brennen.sherlock
 
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Point
@@ -11,20 +10,18 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.webkit.WebSettings
-import android.webkit.WebView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import katex.hourglass.`in`.mathlib.MathView
 import kotlinx.android.synthetic.main.fragment_cuadratic_interpolation.*
-import mx.brennen.sherlock.res.CoreServices
+import mx.brennen.sherlock.res.Math
+import mx.brennen.sherlock.res.NumericalMethods
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.sdk27.coroutines.onTouch
-import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.uiThread
 import org.jetbrains.anko.windowManager
@@ -34,6 +31,8 @@ class CuadraticInterpolationFragment : Fragment() {
     private var width = 0f
     private var DESMOS_STATE = false
     private var FUNCTION = ""
+    private val NM = NumericalMethods()
+    private val math = Math()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,11 +49,11 @@ class CuadraticInterpolationFragment : Fragment() {
         math_model.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         desmos.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         solutions.settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        val prefs = requireContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         doAsync {
 
             val size = Point()
-            context!!.windowManager.defaultDisplay.getSize(size)
+            requireContext().windowManager.defaultDisplay.getSize(size)
             val scale: Float = resources.displayMetrics.density
             width = ((size.x-(50*scale))/scale)
             DESMOS_STATE = prefs.getBoolean("desmosApi",false)
@@ -116,649 +115,82 @@ class CuadraticInterpolationFragment : Fragment() {
 
         }
 
-        if(prefs.getBoolean("RealTime",false)){
+        calculate.onClick {
 
-            evaluate.visibility = View.GONE
-            calculate.visibility = View.GONE
+            try {
 
-            x1.addTextChangedListener{
+                val firstIntervals = DoubleArray(2).apply {
 
-                try {
-
-                    val firstIntervals = DoubleArray(2).apply {
-
-                        if(x1.text.toString() != ""){
-                            set(0,x1.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y1.text.toString() != ""){
-                            set(1,y1.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    val secondIntervals = DoubleArray(2).apply {
-
-                        if(x2.text.toString() != ""){
-                            set(0,x2.text.toString().toDouble())
-                        }else{
-                            set(0,0.0)
-                        }
-                        if(y2.text.toString() != ""){
-                            set(1,y2.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-                    }
-
-                    val thirdIntervals = DoubleArray(2).apply {
-
-                        if(x3.text.toString() != ""){
-                            set(0,x3.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y3.text.toString() != ""){
-                            set(1,y3.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    if (!firstIntervals[0].isNaN()){
-
-                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
-                        FUNCTION = arryFunctions[0]
-                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
-                        rellay.visibility = View.VISIBLE
-                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                        sol.visibility = View.VISIBLE
-                        if(value.text.toString() != ""){
-
-                            try {
-
-                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                                val mess = "El resultado de la evaluacion es: $valueOf"
-                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                                valueofecuation.text = mess
-
-                            } catch (e : Exception){
-
-
-                            }
-
-                        }
-                        if (DESMOS_STATE){
-
-                            desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                            if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                                desmos.visibility = View.VISIBLE
-
-                            }
-
-                        }
-
-                    }
-
-                }catch (e : Exception){
-
-                    toast("Comprueba tus datos de entrada")
+                    set(0,x1.text.toString().toDouble())
+                    set(1,y1.text.toString().toDouble())
 
                 }
 
-            }
+                val secondIntervals = DoubleArray(2).apply {
 
-            y1.addTextChangedListener{
-
-                try {
-
-                    val firstIntervals = DoubleArray(2).apply {
-
-                        if(x1.text.toString() != ""){
-                            set(0,x1.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y1.text.toString() != ""){
-                            set(1,y1.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    val secondIntervals = DoubleArray(2).apply {
-
-                        if(x2.text.toString() != ""){
-                            set(0,x2.text.toString().toDouble())
-                        }else{
-                            set(0,0.0)
-                        }
-                        if(y2.text.toString() != ""){
-                            set(1,y2.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-                    }
-
-                    val thirdIntervals = DoubleArray(2).apply {
-
-                        if(x3.text.toString() != ""){
-                            set(0,x3.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y3.text.toString() != ""){
-                            set(1,y3.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    if (!firstIntervals[0].isNaN()){
-
-                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
-                        FUNCTION = arryFunctions[0]
-                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
-                        rellay.visibility = View.VISIBLE
-                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                        sol.visibility = View.VISIBLE
-                        if(value.text.toString() != ""){
-
-                            try {
-
-                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                                val mess = "El resultado de la evaluacion es: $valueOf"
-                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                                valueofecuation.text = mess
-
-                            } catch (e : Exception){
-
-
-                            }
-
-                        }
-                        if (DESMOS_STATE){
-
-                            desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                            if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                                desmos.visibility = View.VISIBLE
-
-                            }
-
-                        }
-
-                    }
-
-                }catch (e : Exception){
-
-                    toast("Comprueba tus datos de entrada")
+                    set(0,x2.text.toString().toDouble())
+                    set(1,y2.text.toString().toDouble())
 
                 }
 
-            }
+                val thirdIntervals = DoubleArray(2).apply {
 
-            x2.addTextChangedListener{
-
-                try {
-
-                    val firstIntervals = DoubleArray(2).apply {
-
-                        if(x1.text.toString() != ""){
-                            set(0,x1.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y1.text.toString() != ""){
-                            set(1,y1.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    val secondIntervals = DoubleArray(2).apply {
-
-                        if(x2.text.toString() != ""){
-                            set(0,x2.text.toString().toDouble())
-                        }else{
-                            set(0,0.0)
-                        }
-                        if(y2.text.toString() != ""){
-                            set(1,y2.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-                    }
-
-                    val thirdIntervals = DoubleArray(2).apply {
-
-                        if(x3.text.toString() != ""){
-                            set(0,x3.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y3.text.toString() != ""){
-                            set(1,y3.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    if (!firstIntervals[0].isNaN()){
-
-                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
-                        FUNCTION = arryFunctions[0]
-                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
-                        rellay.visibility = View.VISIBLE
-                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                        sol.visibility = View.VISIBLE
-                        if(value.text.toString() != ""){
-
-                            try {
-
-                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                                val mess = "El resultado de la evaluacion es: $valueOf"
-                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                                valueofecuation.text = mess
-
-                            } catch (e : Exception){
-
-
-                            }
-
-                        }
-                        if (DESMOS_STATE){
-
-                            desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                            if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                                desmos.visibility = View.VISIBLE
-
-                            }
-
-                        }
-
-                    }
-
-                }catch (e : Exception){
-
-                    toast("Comprueba tus datos de entrada")
+                    set(0,x3.text.toString().toDouble())
+                    set(1,y3.text.toString().toDouble())
 
                 }
 
-            }
-
-            y2.addTextChangedListener{
-
-                try {
-
-                    val firstIntervals = DoubleArray(2).apply {
-
-                        if(x1.text.toString() != ""){
-                            set(0,x1.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y1.text.toString() != ""){
-                            set(1,y1.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    val secondIntervals = DoubleArray(2).apply {
-
-                        if(x2.text.toString() != ""){
-                            set(0,x2.text.toString().toDouble())
-                        }else{
-                            set(0,0.0)
-                        }
-                        if(y2.text.toString() != ""){
-                            set(1,y2.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-                    }
-
-                    val thirdIntervals = DoubleArray(2).apply {
-
-                        if(x3.text.toString() != ""){
-                            set(0,x3.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y3.text.toString() != ""){
-                            set(1,y3.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    if (!firstIntervals[0].isNaN()){
-
-                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
-                        FUNCTION = arryFunctions[0]
-                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
-                        rellay.visibility = View.VISIBLE
-                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                        sol.visibility = View.VISIBLE
-                        if(value.text.toString() != ""){
-
-                            try {
-
-                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                                val mess = "El resultado de la evaluacion es: $valueOf"
-                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                                valueofecuation.text = mess
-
-                            } catch (e : Exception){
-
-
-                            }
-
-                        }
-                        if (DESMOS_STATE){
-
-                            desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                            if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                                desmos.visibility = View.VISIBLE
-
-                            }
-
-                        }
-
-                    }
-
-                }catch (e : Exception){
-
-                    toast("Comprueba tus datos de entrada")
-
-                }
-
-            }
-
-            x3.addTextChangedListener{
-
-                try {
-
-                    val firstIntervals = DoubleArray(2).apply {
-
-                        if(x1.text.toString() != ""){
-                            set(0,x1.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y1.text.toString() != ""){
-                            set(1,y1.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    val secondIntervals = DoubleArray(2).apply {
-
-                        if(x2.text.toString() != ""){
-                            set(0,x2.text.toString().toDouble())
-                        }else{
-                            set(0,0.0)
-                        }
-                        if(y2.text.toString() != ""){
-                            set(1,y2.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-                    }
-
-                    val thirdIntervals = DoubleArray(2).apply {
-
-                        if(x3.text.toString() != ""){
-                            set(0,x3.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y3.text.toString() != ""){
-                            set(1,y3.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    if (!firstIntervals[0].isNaN()){
-
-                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
-                        FUNCTION = arryFunctions[0]
-                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
-                        rellay.visibility = View.VISIBLE
-                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                        sol.visibility = View.VISIBLE
-                        if(value.text.toString() != ""){
-
-                            try {
-
-                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                                val mess = "El resultado de la evaluacion es: $valueOf"
-                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                                valueofecuation.text = mess
-
-                            } catch (e : Exception){
-
-
-                            }
-
-                        }
-                        if (DESMOS_STATE){
-
-                            desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                            if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                                desmos.visibility = View.VISIBLE
-
-                            }
-
-                        }
-
-                    }
-
-                }catch (e : Exception){
-
-                    toast("Comprueba tus datos de entrada")
-
-                }
-
-            }
-
-            y3.addTextChangedListener{
-
-                try {
-
-                    val firstIntervals = DoubleArray(2).apply {
-
-                        if(x1.text.toString() != ""){
-                            set(0,x1.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y1.text.toString() != ""){
-                            set(1,y1.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    val secondIntervals = DoubleArray(2).apply {
-
-                        if(x2.text.toString() != ""){
-                            set(0,x2.text.toString().toDouble())
-                        }else{
-                            set(0,0.0)
-                        }
-                        if(y2.text.toString() != ""){
-                            set(1,y2.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-                    }
-
-                    val thirdIntervals = DoubleArray(2).apply {
-
-                        if(x3.text.toString() != ""){
-                            set(0,x3.text.toString().toDouble())
-                        }else{
-                            set(0, 0.0)
-                        }
-                        if(y3.text.toString() != ""){
-                            set(1,y3.text.toString().toDouble())
-                        }else{
-                            set(1,0.0)
-                        }
-
-                    }
-
-                    if (!firstIntervals[0].isNaN()){
-
-                        val arryFunctions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
-                        FUNCTION = arryFunctions[0]
-                        math_model.setDisplayText("\$${arryFunctions[1]}\$")
-                        rellay.visibility = View.VISIBLE
-                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                        sol.visibility = View.VISIBLE
-                        if(value.text.toString() != ""){
-
-                            try {
-
-                                val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                                val mess = "El resultado de la evaluacion es: $valueOf"
-                                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                                valueofecuation.text = mess
-
-                            } catch (e : Exception){
-
-
-                            }
-
-                        }
-                        if (DESMOS_STATE){
-
-                            desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                            if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                                desmos.visibility = View.VISIBLE
-
-                            }
-
-                        }
-
-                    }
-
-                }catch (e : Exception){
-
-                    toast("Comprueba tus datos de entrada")
-
-                }
-
-            }
-
-            value.addTextChangedListener {
-
-                try {
-
-                    val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                    val mess = "El resultado de la evaluacion es: $valueOf"
-                    desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                    valueofecuation.text = mess
-
-                } catch (e : Exception){
-
-
-                }
-
-            }
-
-        } else {
-
-            calculate.onClick {
-
-                try {
-
-                    val firstIntervals = DoubleArray(2).apply {
-
-                        set(0,x1.text.toString().toDouble())
-                        set(1,y1.text.toString().toDouble())
-
-                    }
-
-                    val secondIntervals = DoubleArray(2).apply {
-
-                        set(0,x2.text.toString().toDouble())
-                        set(1,y2.text.toString().toDouble())
-
-                    }
-
-                    val thirdIntervals = DoubleArray(2).apply {
-
-                        set(0,x3.text.toString().toDouble())
-                        set(1,y3.text.toString().toDouble())
-
-                    }
-
-                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
-                    val funtions = CoreServices().mathml(CoreServices().quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                doAsync {
+
+                    val funtions = math.mathml(NM.quadraticInterpolation(firstIntervals,secondIntervals,thirdIntervals))
                     FUNCTION = funtions[0]
-                    solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                    math_model.setDisplayText("$${funtions[1]}$")
-                    rellay.visibility = View.VISIBLE
-                    if (DESMOS_STATE){
 
-                        desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                        if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
+                    uiThread {
 
-                            desmos.visibility = View.VISIBLE
+                        solutions.setDisplayText("$${math.solve(FUNCTION,"x")}$")
+                        math_model.setDisplayText("$${funtions[1]}$")
+                        rellay.visibility = View.VISIBLE
+                        if (DESMOS_STATE){
+
+                            desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
+                            if(!math.isFunction(FUNCTION,'x',1.0)){
+
+                                desmos.visibility = View.VISIBLE
+
+                            }
 
                         }
 
                     }
 
-                }catch (e : Exception){
-
-                    toast("Comprueba tus datos de entrada")
-
                 }
+
+            }catch (e : Exception){
+
+                toast("Comprueba tus datos de entrada")
 
             }
 
-            evaluate.onClick {
+        }
 
-                try {
+        evaluate.onClick {
 
-                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
-                    val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                    val mess = "El resultado de la evaluacion es: $valueOf"
-                    desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                    valueofecuation.text = mess
-                    toast(mess)
+            try {
 
-                } catch (e : Exception){
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                val valueOf = math.evaluate(FUNCTION,"x",value.text.toString().toDouble())
+                val mess = "El resultado de la evaluacion es: $valueOf"
+                desmos.evaluateJavascript("javascript:setEvaluation(\'(" +
+                        "${value.text.toString()},${valueOf})\')",null)
+                valueofecuation.text = mess
+                toast(mess)
 
-                    toast("Comprueba tu entrada")
+            } catch (e : Exception){
 
-                }
+                toast("Comprueba tu entrada")
 
             }
 
@@ -773,7 +205,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
         infoicon.onClick {
 
-            val builderSymLegal = AlertDialog.Builder(context!!)
+            val builderSymLegal = AlertDialog.Builder(requireContext())
             val viewSymLegal = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
             val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
             val mathView = viewSymLegal.findViewById(R.id.interpeter) as MathView
@@ -795,7 +227,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
             }
 
-            mathView.setDisplayText("$${CoreServices().mathml(function.text.toString())[1]}$")
+            mathView.setDisplayText("$${math.mathml(function.text.toString())[1]}$")
 
             dialogSymLegal.show()
 
@@ -803,7 +235,7 @@ class CuadraticInterpolationFragment : Fragment() {
 
         menicon.onClick {
 
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
             (activity as HomeActivity).menu()
 

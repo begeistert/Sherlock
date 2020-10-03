@@ -5,14 +5,13 @@ import mx.brennen.sherlock.res.misc.Iteracion
 import mx.brennen.sherlock.res.misc.IteracionPF
 import mx.brennen.sherlock.res.misc.IteracionS
 import mx.brennen.sherlock.res.misc.IteracionVI
-import java.lang.Double.NaN
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.roundToInt
 
 @Suppress("NAME_SHADOWING")
 
-class CoreServices{
+class NumericalMethods{
+
+    private val math = Math()
 
     fun intermediateValue(function: String, `var`: String, Intervalos: DoubleArray, Tolerancia: Double, limit: Int) : ArrayList<IteracionVI>{
 
@@ -22,7 +21,7 @@ class CoreServices{
         var fb = Intervalos[1]
 
         var pn1 = (Intervalos[0] + Intervalos[1]) / 2
-        if(evaluate(function,`var`, fa1) * evaluate(function,`var`, fb)<0){
+        if(math.evaluate(function,`var`, fa1) * math.evaluate(function,`var`, fb)<0){
 
             var iteration1 = 1
 
@@ -32,8 +31,8 @@ class CoreServices{
 
                 if (iteration1 == 1) {
 
-                    val fn1 = evaluate(function,`var`,pn1)
-                    var fx1 = evaluate(function,`var`,fa1) * fn1
+                    val fn1 = math.evaluate(function,`var`,pn1)
+                    var fx1 = math.evaluate(function,`var`,fa1) * fn1
 
                     iter.apply {
 
@@ -41,7 +40,7 @@ class CoreServices{
                         an = Intervalos[0]
                         bn = Intervalos[1]
                         pn = pn1
-                        fn = (evaluate(function, `var`, pn1))
+                        fn = (math.evaluate(function, `var`, pn1))
 
                     }
 
@@ -83,8 +82,8 @@ class CoreServices{
 
                     pn1 = (fa1+fb)/2
 
-                    val fn1 = evaluate(function,`var`,pn1)
-                    var fx1 = evaluate(function,`var`,fa1) * fn1
+                    val fn1 = math.evaluate(function,`var`,pn1)
+                    var fx1 = math.evaluate(function,`var`,fa1) * fn1
 
                     iter.apply {
 
@@ -92,7 +91,7 @@ class CoreServices{
                         an = fa1
                         bn = fb
                         pn = (fa1 + fb) / 2
-                        fn = evaluate(function, `var`, pn1)
+                        fn = math.evaluate(function, `var`, pn1)
 
                     }
                     iterations.add(iter)
@@ -159,82 +158,10 @@ class CoreServices{
 
     }
 
-    fun tolerance(tolerance: String) : Double{
-
-        var potence: Double = 0.toDouble()
-        val notacion = tolerance.split("\\^".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val caracteres = notacion[1].toCharArray()
-        if (caracteres[0] == '-') {
-
-            var value = ""
-            for (i in 1 until caracteres.size) {
-
-                value += Character.toString(caracteres[i])
-
-            }
-
-            try {
-
-                potence = -java.lang.Double.valueOf(value)
-
-            } catch (e: Exception) {
-
-
-
-            }
-
-        } else {
-
-            val value = notacion[1]
-
-            try {
-
-                potence = Integer.parseInt(value).toDouble()
-
-            } catch (e : Exception){}
-
-        }
-
-        when {
-            potence < 0 -> {
-
-                var valor = 1.0
-                var i = -1
-                while (i >= potence) {
-
-                    valor /= 10.0
-                    i--
-
-                }
-                
-                return valor
-
-            }
-            potence > 0 -> {
-
-                var valor = 1.0
-                var i = 1
-                while (i <= potence) {
-
-                    valor *= 10.0
-                    i++
-
-                }
-                
-                return valor
-
-            }
-            else -> println("La Tolerancia insertada no existe / no es un valor")
-        }
-        
-        return 0.0
-
-    }
-
     fun secant(function: String, variable: String, intervals: DoubleArray, tolerance: Double, limit: Int) : ArrayList<IteracionS> {
 
-        var x0: Double = 0.toDouble()
-        var x: Double = 0.toDouble()
+        var x0 = 0.0
+        var x = 0.0
         var xx: Double
         var tr: Double
         var ex: Double
@@ -251,8 +178,8 @@ class CoreServices{
 
                 x0 = intervals[0]
                 x = intervals[1]
-                val fxn1 = evaluate(function, variable, x)
-                val fxn = evaluate(function, variable, x0)
+                val fxn1 = math.evaluate(function, variable, x)
+                val fxn = math.evaluate(function, variable, x0)
                 val xx0 = x - x0
 
                 xx = (x - fxn1 * xx0) / (fxn1 - fxn)
@@ -305,8 +232,8 @@ class CoreServices{
 
             } else {
 
-                val fxn1 = evaluate(function, variable, x)
-                val fxn = evaluate(function, variable, x0)
+                val fxn1 = math.evaluate(function, variable, x)
+                val fxn = math.evaluate(function, variable, x0)
                 val xx0 = x - x0
 
                 xx = (x - fxn1 * xx0 / (fxn1 - fxn))
@@ -394,14 +321,13 @@ class CoreServices{
         val listIteration = ArrayList<IteracionPF>()
         var niter = 0
 
-        val derive = derive(function, variable)
+        val derive = math.derive(function, variable)
         val x = "x-(($function)/($derive))"
-        val resultFunction = x
 
         val iteration = IteracionPF()
 
         x0 = intervals[0]
-        xn = evaluate(resultFunction, variable, x0)
+        xn = math.evaluate(x, variable, x0)
 
         iteration.apply {
 
@@ -426,7 +352,7 @@ class CoreServices{
         {
 
             x0 = xn
-            xn = evaluate(resultFunction, variable, x0)
+            xn = math.evaluate(x, variable, x0)
 
             niter += 1
             val iterationNew = IteracionPF().apply {
@@ -491,12 +417,12 @@ class CoreServices{
             if (niteration == 1) {
 
 
-                val fxn1 = evaluate(function, variable, x)
-                val fxn = evaluate(function, variable, x0)
+                val fxn1 = math.evaluate(function, variable, x)
+                val fxn = math.evaluate(function, variable, x0)
                 val xx0 = x - x0
 
                 xx = (x - fxn1 * xx0 / (fxn1 - fxn))
-                val fpn = evaluate(function, variable, xx)
+                val fpn = math.evaluate(function, variable, xx)
 
                 it.apply {
 
@@ -508,7 +434,7 @@ class CoreServices{
 
                 }
 
-                val fn = evaluate(function, variable, x0) * fpn
+                val fn = math.evaluate(function, variable, x0) * fpn
 
                 iterations.add(it)
 
@@ -604,12 +530,12 @@ class CoreServices{
 
             } else {
 
-                val fxn1 = evaluate(function, variable, x)
-                val fxn = evaluate(function, variable, x0)
+                val fxn1 = math.evaluate(function, variable, x)
+                val fxn = math.evaluate(function, variable, x0)
                 val xx0 = x - x0
 
                 xx = (x - fxn1 * xx0 / (fxn1 - fxn))
-                val fpn = evaluate(function, variable, xx)
+                val fpn = math.evaluate(function, variable, xx)
 
                 it.apply {
 
@@ -718,7 +644,7 @@ class CoreServices{
 
         val div = sup / inf
 
-        return simplify("$fx0+$div*(x-$x0)")
+        return math.simplify("$fx0+$div*(x-$x0)")
 
     }
 
@@ -728,7 +654,7 @@ class CoreServices{
         var first: DoubleArray?
         var second: DoubleArray?
 
-        val Auxn = ArrayList<DoubleArray>()
+        val auxList = ArrayList<DoubleArray>()
 
         var aux = ""
 
@@ -747,13 +673,13 @@ class CoreServices{
 
                 }
 
-                Auxn.add(first)
-                first = null
+                auxList.add(first)
+                //first = null
                 i++
 
             } else {
 
-                first = Auxn[i - 1]
+                first = auxList[i - 1]
                 second = DoubleArray(first.size - 1)
 
                 for (j in 1 until second.size + 1) {
@@ -762,9 +688,9 @@ class CoreServices{
 
                 }
 
-                Auxn.add(second)
-                first = null
-                second = null
+                auxList.add(second)
+                //first = null
+                //second = null
                 i++
                 se++
 
@@ -783,13 +709,13 @@ class CoreServices{
             } else {
 
                 aux += "(x-" + points[j - 1].toString() + ")*"
-                function += "+" + aux + "(" + Auxn[j - 1][0].toString() + ")"
+                function += "+" + aux + "(" + auxList[j - 1][0].toString() + ")"
 
             }
 
         }
 
-        return simplify(function)
+        return math.simplify(function)
 
     }
 
@@ -835,9 +761,6 @@ class CoreServices{
 
                     }
 
-                } else {
-
-
                 }
 
                 xj++
@@ -882,9 +805,6 @@ class CoreServices{
 
                     xi++
 
-                } else {
-
-
                 }
 
                 xj++
@@ -905,7 +825,7 @@ class CoreServices{
 
         }
 
-        return simplify(fx.toString())
+        return math.simplify(fx.toString())
 
     }
 
@@ -924,157 +844,8 @@ class CoreServices{
         val aux1 = (fx1 - b0) / (x1 - x0)
         val b2 = (aux0 - aux1) / (x2 - x0)
 
-        return simplify((b0.toString() + "+" + b1.toString() + "*(x-" + x0.toString() + ")+" + b2.toString() + "*(x-" +
+        return math.simplify((b0.toString() + "+" + b1.toString() + "*(x-" + x0.toString() + ")+" + b2.toString() + "*(x-" +
                 x0.toString() + ")*(x-" + x1.toString() + ")"))
-    }
-
-    fun evaluate(function: String, variable: String, value : Double) : Double {
-
-        return try {
-
-            val py: Python = Python.getInstance()
-            val mathFunctions = py.getModule("MathFunctions")
-            val x = mathFunctions.callAttr("Symbol", variable)
-            val functionSymPy = mathFunctions.callAttr("sympify", function)
-            val mathml = mathFunctions.callAttr("mathml",functionSymPy) to String()
-            val functionParced = mathFunctions.callAttr("sympify", function).callAttr("subs", x,value) to Double
-            val function2 = functionParced.first.repr()
-            function2.toDouble()
-
-        } catch (e : java.lang.Exception){
-
-            NaN
-
-        }
-
-    }
-
-    fun mathml(function: String) : ArrayList<String>{
-
-        val ecuations : ArrayList<String> = ArrayList()
-
-        return try{
-
-            val py: Python = Python.getInstance()
-            val mathFunctions = py.getModule("MathFunctions")
-            val functionSymPy = mathFunctions.callAttr("sympify", function)
-            val mathml = mathFunctions.callAttr("latex",functionSymPy) to String()
-            var repr = mathml.first.repr()
-            var cutted = repr.split("\\\\")
-            repr = ""
-            var i = 0
-            for (part in cutted){
-
-                if (i == cutted.size-1){
-
-                    repr += part
-
-                }else{
-
-                    repr += "$part\\"
-                    i++
-
-                }
-
-            }
-            cutted = repr.split("'")
-            repr = ""
-            i = 0
-            for (part in cutted){
-
-                repr += part
-
-            }
-            ecuations.apply {
-
-                add(0,function)
-                add(1,repr)
-
-            }
-
-        } catch (e : Exception){
-
-            ecuations
-
-        }
-
-    }
-
-    private fun derive(function: String, respectTo : String) : String {
-
-        return try{
-
-            val py: Python = Python.getInstance()
-            val mathFunctions = py.getModule("MathFunctions")
-            val x = mathFunctions.callAttr("Symbol", respectTo)
-            val derivative = mathFunctions.callAttr("diff",function,x) to String()
-            derivative.first.repr()
-
-        } catch(e : Exception) {
-
-            ""
-
-        }
-
-    }
-
-    fun simplify(function : String) : String{
-
-        return try{
-
-            val py: Python = Python.getInstance()
-            val mathFunctions = py.getModule("MathFunctions")
-            val derivative = mathFunctions.callAttr("simplify",function) to String()
-            exponentiation(derivative.first.repr())
-
-        }catch (e: Exception){
-
-            function
-
-        }
-
-    }
-
-    fun exponentiation(function: String) : String{
-
-        val splitedFunction = function.split("**")
-        var correctFunction = ""
-        var i = 0
-        for (part in splitedFunction){
-
-            if (i == splitedFunction.size-1){
-
-                correctFunction += part
-
-            }else{
-
-                correctFunction += "$part^"
-                i++
-
-            }
-
-        }
-        return correctFunction
-
-    }
-
-    fun solve(function: String, variable: String) : String{
-
-        return try{
-
-            val py: Python = Python.getInstance()
-            val mathFunctions = py.getModule("MathFunctions")
-            val x = mathFunctions.callAttr("Symbol", variable)
-            val derivative = mathFunctions.callAttr("solve",function, x) to String()
-            val fun1 = mathml(exponentiation(derivative.first.repr()))
-            fun1[1]
-
-        }catch (e: Exception){
-
-            function
-
-        }
-
     }
 
     fun leastSquares(Xs: DoubleArray, Ys: DoubleArray) : Array<String>{
@@ -1115,7 +886,7 @@ class CoreServices{
         val fx = "$m*x+$b"
         val fy = "(y-$b)/($m)"
 
-        return arrayOf(simplify(fx),simplify(fy))
+        return arrayOf(math.simplify(fx),math.simplify(fy))
 
     }
 
@@ -1135,12 +906,12 @@ class CoreServices{
 
                 val x = (intervals[0] + intervals[1]) / 2
 
-                val functionO = evaluate(function, variable, x)
-                val functionD = evaluate(derive(function, variable), variable, x)
+                val functionO = math.evaluate(function, variable, x)
+                val functionD = math.evaluate(math.derive(function, variable), variable, x)
 
                 xn = x - functionO / functionD
 
-                var functionR = evaluate(function, variable, xn)
+                var functionR = math.evaluate(function, variable, xn)
 
                 if (functionR < 0) {
 
@@ -1184,12 +955,12 @@ class CoreServices{
 
             } else {
 
-                val functionO = evaluate(function, variable, xn)
-                val functionD = evaluate(derive(function, variable), variable, xn)
+                val functionO = math.evaluate(function, variable, xn)
+                val functionD = math.evaluate(math.derive(function, variable), variable, xn)
 
                 xn -= functionO / functionD
 
-                var functionR = evaluate(function, variable, xn)
+                var functionR = math.evaluate(function, variable, xn)
 
                 if (eval==functionR){
 
@@ -1263,25 +1034,6 @@ class CoreServices{
         }
 
         return iteration
-
-    }
-
-    fun isFunction(function: String, variable: Char, value : Double) : Boolean {
-
-        //Hibridacion Exitosa con Python
-        return try {
-
-            val py: Python = Python.getInstance()
-            val mathFunctions = py.getModule("MathFunctions")
-            val x = mathFunctions.callAttr("Symbol", variable)
-            val functionParced = mathFunctions.callAttr("sympify", function).callAttr("subs", x,value) to String()
-            false
-
-        } catch (e : java.lang.Exception){
-
-            true
-
-        }
 
     }
 

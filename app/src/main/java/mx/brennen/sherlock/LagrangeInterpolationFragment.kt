@@ -1,6 +1,7 @@
 package mx.brennen.sherlock
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle
@@ -20,7 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputEditText
 import katex.hourglass.`in`.mathlib.MathView
 import kotlinx.android.synthetic.main.fragment_lagrange_interpolation.*
-import mx.brennen.sherlock.res.CoreServices
+import mx.brennen.sherlock.res.Math
+import mx.brennen.sherlock.res.NumericalMethods
 import mx.brennen.sherlock.res.PersonalAdapterInterpolation
 import mx.brennen.sherlock.res.misc.TypefaceUtil
 import org.jetbrains.anko.doAsync
@@ -41,6 +43,8 @@ class LagrangeInterpolationFragment : Fragment() {
     private val ITEMS : ArrayList<LinearLayout> = ArrayList()
     private lateinit var X_VALUES : DoubleArray
     private lateinit var Y_VALUES : DoubleArray
+    private val NM = NumericalMethods()
+    private val math = Math()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,9 +54,10 @@ class LagrangeInterpolationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_lagrange_interpolation, container, false)
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val prefs = context!!.getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        val prefs = requireContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         math_model.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         desmos.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         solutions.settings.cacheMode = WebSettings.LOAD_NO_CACHE
@@ -60,7 +65,7 @@ class LagrangeInterpolationFragment : Fragment() {
         doAsync {
 
             val size = Point()
-            context!!.windowManager.defaultDisplay.getSize(size)
+            requireContext().windowManager.defaultDisplay.getSize(size)
             val scale: Float = resources.displayMetrics.density
             width = ((size.x-(50*scale))/scale)
             DESMOS_STATE = prefs.getBoolean("desmosApi",false)
@@ -124,166 +129,127 @@ class LagrangeInterpolationFragment : Fragment() {
 
         cont.layoutManager = LinearLayoutManager(context)
 
-        if(prefs.getBoolean("RealTime",false)){
+        super.onViewCreated(view, savedInstanceState)
 
-            evaluate.visibility = View.GONE
-            calculate.visibility = View.GONE
-            aceptar.visibility = View.GONE
+        calculate.onClick {
 
-            pairs_number.addTextChangedListener{
+            try {
 
-                if(pairs_number.text.toString() != ""){
+                X_VALUES = DoubleArray(X_FIELDS.size)
+                Y_VALUES = DoubleArray(Y_FIELDS.size)
+                var index = 0
+                for (X in X_FIELDS){
 
                     try {
 
-                        val size = pairs_number.text.toString().toInt()
-                        if (size>5){
-
-                            val builder = AlertDialog.Builder(context!!)
-                            builder.setTitle("Sobrecarga de memoria")
-                            builder.setMessage("El limite de pares manejables en tiempo real son 5, si desea superar ese limite le recomendamos un dispositivo con 4 GB de RAM, si no es el caso y desea continuar esta bajo su propia responsabilidad")
-                            //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
-
-                            builder.setPositiveButton("Continuar") { dialog, which ->
-
-                                generateFields(size,true)
-                                cont.visibility = View.VISIBLE
-                                dialog.dismiss()
-
-                            }
-
-                            builder.setNegativeButton("Cancelar") { dialog, which ->
-
-                                dialog.dismiss()
-
-                            }
-
-                            builder.show()
-
-
-                        }else {
-
-                            generateFields(size,true)
-                            cont.visibility = View.VISIBLE
-
-                        }
+                        X_VALUES[index] = X.text.toString().toDouble()
+                        index++
 
                     }catch (e : Exception){
 
-                        toast("Comprueba tu entrada")
+                        X_VALUES[index] = 0.0
+                        index++
 
                     }
 
                 }
 
-            }
+                index = 0
 
-            value.addTextChangedListener {
+                for (Y in Y_FIELDS){
 
-                try {
+                    try {
 
-                    val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                    val mess = "El resultado de la evaluacion es: $valueOf"
-                    desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                    valueofecuation.text = mess
+                        Y_VALUES[index] = Y.text.toString().toDouble()
+                        index++
 
-                } catch (e : Exception){
+                    }catch (e : Exception){
 
+                        Y_VALUES[index] = 0.0
+                        index++
+
+                    }
 
                 }
 
-            }
+                doAsync {
 
-        } else {
-
-            calculate.onClick {
-
-                try {
-
-                    X_VALUES = DoubleArray(X_FIELDS.size)
-                    Y_VALUES = DoubleArray(Y_FIELDS.size)
-                    var index = 0
-                    for (X in X_FIELDS){
-
-                        try {
-
-                            X_VALUES[index] = X.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            X_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    index = 0
-
-                    for (Y in Y_FIELDS){
-
-                        try {
-
-                            Y_VALUES[index] = Y.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            Y_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    val interpreted = CoreServices().mathml(CoreServices().lagrangeInterpolation(X_VALUES,Y_VALUES))
+                    val interpreted = math.mathml(NM.lagrangeInterpolation(X_VALUES,Y_VALUES))
                     FUNCTION = interpreted[0]
-                    math_model.setDisplayText("$${interpreted[1]}$")
-                    if(X_FIELDS.size<5){
 
-                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                        sol.visibility = View.VISIBLE
+                    uiThread {
 
-                    }else{
+                        math_model.setDisplayText("$${interpreted[1]}$")
+                        if(X_FIELDS.size<5){
 
-                        sol.visibility = View.GONE
+                            solutions.setDisplayText("$${math.solve(FUNCTION,"x")}$")
+                            sol.visibility = View.VISIBLE
 
-                    }
-                    rellay.visibility = View.VISIBLE
-                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
-                    if (DESMOS_STATE){
+                        }else{
 
-                        desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                        if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
+                            sol.visibility = View.GONE
 
-                            desmos.visibility = View.VISIBLE
+                        }
+                        rellay.visibility = View.VISIBLE
+                        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view.windowToken, 0)
+                        if (DESMOS_STATE){
+
+                            desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
+                            if(!math.isFunction(FUNCTION,'x',1.0)){
+
+                                desmos.visibility = View.VISIBLE
+
+                            }
 
                         }
 
                     }
+
+
+                }
+
+
+            }catch (e : Exception){
+
+                toast("Comprueba tus datos de entrada")
+
+            }
+
+        }
+
+        evaluate.onClick {
+
+            try {
+
+                val valueOf = math.evaluate(FUNCTION,"x",value.text.toString().toDouble())
+                val mess = "El resultado de la evaluacion es: $valueOf"
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                valueofecuation.text = mess
+                desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
+
+            } catch (e : Exception){
+
+                toast("Comprueba tu entrada")
+
+            }
+
+        }
+
+        aceptar.onClick {
+
+            if(pairs_number.text.toString() != ""){
+
+                try{
+
+                    generateFields(pairs_number.text.toString().toInt())
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+                    cont.visibility = View.VISIBLE
+                    calculate.visibility = View.VISIBLE
 
                 }catch (e : Exception){
-
-                    toast("Comprueba tus datos de entrada")
-
-                }
-
-            }
-
-            evaluate.onClick {
-
-                try {
-
-                    val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                    val mess = "El resultado de la evaluacion es: $valueOf"
-                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
-                    valueofecuation.text = mess
-                    desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-
-                } catch (e : Exception){
 
                     toast("Comprueba tu entrada")
 
@@ -291,35 +257,11 @@ class LagrangeInterpolationFragment : Fragment() {
 
             }
 
-            aceptar.onClick {
-
-                if(pairs_number.text.toString() != ""){
-
-                    try{
-
-                        generateFields(pairs_number.text.toString().toInt(), false)
-                        val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
-                        cont.visibility = View.VISIBLE
-                        calculate.visibility = View.VISIBLE
-
-                    }catch (e : Exception){
-
-                        toast("Comprueba tu entrada")
-
-                    }
-
-                }
-
-            }
-
         }
-
-        super.onViewCreated(view, savedInstanceState)
 
         infoicon.onClick {
 
-            val builderSymLegal = AlertDialog.Builder(context!!)
+            val builderSymLegal = AlertDialog.Builder(requireContext())
             val viewSymLegal = layoutInflater.inflate(R.layout.fragment_intro_alpha,null)
             val areeButton = viewSymLegal.findViewById(R.id.aceptar) as TextView
             val mathView = viewSymLegal.findViewById(R.id.interpeter) as MathView
@@ -341,7 +283,7 @@ class LagrangeInterpolationFragment : Fragment() {
 
             }
 
-            mathView.setDisplayText("$${CoreServices().mathml(function.text.toString())[1]}$")
+            mathView.setDisplayText("$${math.mathml(function.text.toString())[1]}$")
 
             dialogSymLegal.show()
 
@@ -349,7 +291,7 @@ class LagrangeInterpolationFragment : Fragment() {
 
         menicon.onClick {
 
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
             (activity as HomeActivity).menu()
 
@@ -357,7 +299,8 @@ class LagrangeInterpolationFragment : Fragment() {
 
     }
 
-    private fun generateFields(size : Int, realTime : Boolean) {
+    @SuppressLint("InflateParams")
+    private fun generateFields(size : Int) {
 
         X_FIELDS.clear()
         Y_FIELDS.clear()
@@ -376,176 +319,6 @@ class LagrangeInterpolationFragment : Fragment() {
             X_FIELDS.add(field.findViewById(R.id.x))
 
             ITEMS.add(field)
-
-            if(realTime){
-
-                field.findViewById<TextInputEditText>(R.id.x).addTextChangedListener{
-
-                    X_VALUES = DoubleArray(X_FIELDS.size)
-                    Y_VALUES = DoubleArray(Y_FIELDS.size)
-                    var index = 0
-                    for (X in X_FIELDS){
-
-                        try {
-
-                            X_VALUES[index] = X.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            X_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    index = 0
-
-                    for (Y in Y_FIELDS){
-
-                        try {
-
-                            Y_VALUES[index] = Y.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            Y_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    val interpreted = CoreServices().mathml(CoreServices().lagrangeInterpolation(X_VALUES,Y_VALUES))
-                    FUNCTION = interpreted[0]
-                    if(X_FIELDS.size<5){
-
-                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                        sol.visibility = View.VISIBLE
-
-                    }else{
-
-                        sol.visibility = View.GONE
-
-                    }
-                    math_model.setDisplayText("$${interpreted[1]}$")
-                    rellay.visibility = View.VISIBLE
-
-                    if (DESMOS_STATE){
-
-                        desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                        if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                            desmos.visibility = View.VISIBLE
-
-                        }
-
-                    }
-
-                    if(value.text.toString() != ""){
-
-                        try {
-
-                            val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                            val mess = "El resultado de la evaluacion es: $valueOf"
-                            desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                            valueofecuation.text = mess
-
-                        } catch (e : Exception){
-
-
-                        }
-
-                    }
-
-                }
-
-                field.findViewById<TextInputEditText>(R.id.y).addTextChangedListener{
-
-                    Y_VALUES = DoubleArray(Y_FIELDS.size)
-                    X_VALUES = DoubleArray(X_FIELDS.size)
-                    var index = 0
-                    for (X in X_FIELDS){
-
-                        try {
-
-                            X_VALUES[index] = X.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            X_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    index = 0
-
-                    for (Y in Y_FIELDS){
-
-                        try {
-
-                            Y_VALUES[index] = Y.text.toString().toDouble()
-                            index++
-
-                        }catch (e : Exception){
-
-                            Y_VALUES[index] = 0.0
-                            index++
-
-                        }
-
-                    }
-
-                    val interpreted = CoreServices().mathml(CoreServices().lagrangeInterpolation(X_VALUES,Y_VALUES))
-                    FUNCTION = interpreted[0]
-                    if(X_FIELDS.size<5){
-
-                        solutions.setDisplayText("$${CoreServices().solve(FUNCTION,"x")}$")
-                        sol.visibility = View.VISIBLE
-
-                    }else{
-
-                        sol.visibility = View.GONE
-
-                    }
-                    math_model.setDisplayText("$${interpreted[1]}$")
-                    rellay.visibility = View.VISIBLE
-
-                    if (DESMOS_STATE){
-
-                        desmos.evaluateJavascript("javascript:setMathModel(\'${FUNCTION}\')",null)
-                        if(!CoreServices().isFunction(FUNCTION,'x',1.0)){
-
-                            desmos.visibility = View.VISIBLE
-
-                        }
-
-                    }
-
-                    if(value.text.toString() != ""){
-
-                        try {
-
-                            val valueOf = CoreServices().evaluate(FUNCTION,"x",value.text.toString().toDouble())
-                            val mess = "El resultado de la evaluacion es: $valueOf"
-                            desmos.evaluateJavascript("javascript:setEvaluation(\'(${value.text.toString()},${valueOf})\')",null)
-                            valueofecuation.text = mess
-
-                        } catch (e : Exception){
-
-
-                        }
-
-                    }
-
-                }
-
-            }
 
         }
 
