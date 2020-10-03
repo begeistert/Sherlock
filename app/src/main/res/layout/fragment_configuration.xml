@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:background="@drawable/gradient"
+        android:background="#000000"
         android:layout_height="match_parent">
 
     <ScrollView
@@ -24,7 +25,8 @@
                 android:layout_width="45sp"
                 android:layout_height="45sp"
                 android:padding="5sp"
-                android:contentDescription="@string/menuicon"/>
+                android:contentDescription="@string/menuicon"
+                app:tint="#fff" />
 
             <TextView
                     android:layout_centerInParent="true"
@@ -61,6 +63,7 @@
                         android:id="@+id/value"
                         android:textSize="18sp"
                         android:text="@string/x"
+                    android:textColor="#ffffff"
                         android:layout_marginStart="10sp"
                         android:fontFamily="@font/arciform"
                         android:padding="5sp"
@@ -102,6 +105,7 @@
                         android:layout_below="@id/titt"
                         android:fontFamily="@font/arciform"
                         android:layout_marginStart="15sp"
+                        android:textColor="#b8b8b8"
                         android:text="@string/metodos_de_interpolacion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -114,7 +118,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="20sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             </RelativeLayout>
 
@@ -148,7 +153,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="20sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             </RelativeLayout>
 
@@ -160,30 +166,34 @@
                     android:layout_height="wrap_content">
 
                 <ImageView
-                        android:padding="10sp"
-                        android:src="@drawable/ic_info"
-                        android:layout_width="55sp"
-                        android:layout_height="55sp"/>
+                    android:padding="10sp"
+                    android:src="@drawable/ic_info"
+                    android:layout_width="55sp"
+                    android:layout_height="55sp"
+                    app:tint="#ffffff"
+                    android:contentDescription="TODO"
+                    tools:ignore="ContentDescription,HardcodedText" />
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
-                            android:id="@+id/ace"
-                            android:text="@string/acerca_de"
-                            android:textColor="#fff"
-                            android:fontFamily="@font/arciform"
-                            android:textSize="15sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                        android:id="@+id/ace"
+                        android:text="@string/acerca_de"
+                        android:textColor="#fff"
+                        android:fontFamily="@font/arciform"
+                        android:textSize="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                     <TextView
-                            android:layout_below="@id/ace"
-                            android:fontFamily="@font/arciform"
-                            android:text="@string/creado_por_alumnos_del_instituto_tecnologico_de_apizaco"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                        android:layout_below="@id/ace"
+                        android:fontFamily="@font/arciform"
+                        android:textColor="#b8b8b8"
+                        android:text="@string/creado_por_alumnos_del_instituto_tecnologico_de_apizaco"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                 </RelativeLayout>
 

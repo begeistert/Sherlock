@@ -4,7 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@drawable/gradient"
+        android:background="#000000"
              tools:context=".FalseFragment"
         >
 
@@ -28,7 +28,8 @@
                 android:layout_width="45sp"
                 android:layout_height="45sp"
                 android:padding="5sp"
-                android:contentDescription="@string/menuicon"/>
+                android:contentDescription="@string/menuicon"
+                app:tint="#fff"/>
 
             <ImageView
                 android:layout_marginTop="25sp"
@@ -39,7 +40,8 @@
                 android:layout_width="45sp"
                 android:layout_height="45sp"
                 android:padding="5sp"
-                android:contentDescription="@string/menuicon"/>
+                android:contentDescription="@string/menuicon"
+                app:tint="#fff" />
 
             <TextView
                 android:layout_centerInParent="true"
@@ -175,6 +177,7 @@
                     android:padding="5sp"
                     android:layout_height="wrap_content"
                     android:hint="@string/a"
+                    android:textAlignment="center"
                     android:fontFamily="@font/arciform"
                     android:textColorHint="#fff"
                     app:hintTextAppearance="@style/AppTheme.FloatingLabel"
@@ -183,7 +186,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editAInput"
-                        android:layout_width="wrap_content"
+                        android:layout_width="40dp"
                         android:textColor="#fff"
                         android:textAlignment="center"
                         android:layout_height="wrap_content"
@@ -201,13 +204,14 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/arciform"
                     android:hint="@string/b"
+                    android:textAlignment="center"
                     app:hintTextAppearance="@style/AppTheme.FloatingLabel"
                     app:errorTextAppearance="@style/AppTheme.EditTextError"
                 >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editBInput"
-                        android:layout_width="wrap_content"
+                        android:layout_width="40dp"
                         android:textAlignment="center"
                         android:fontFamily="@font/arciform"
                         android:layout_height="wrap_content"

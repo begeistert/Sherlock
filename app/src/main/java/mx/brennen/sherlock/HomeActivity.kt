@@ -240,7 +240,8 @@ class HomeActivity : FragmentActivity() ,OnNoteLister{
 
                 Python.start(AndroidPlatform(applicationContext))
                 //Precarga de librerias
-                Python.getInstance()
+                val python = Python.getInstance()
+                python.getModule("MathFunctions").callAttr("print","Hello World")
 
             }
 

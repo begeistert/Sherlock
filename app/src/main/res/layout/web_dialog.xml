@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout app:layout_collapseMode="none"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    app:layout_collapseMode="none"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@drawable/layout_bounded"
@@ -9,11 +10,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            tools:ignore="WebViewLayout">
 
             <WebView
                 android:id="@+id/loadWeb"
