@@ -16,7 +16,6 @@ android:
     - addon-google_apis-google-19
 before_install:
   - yes | sdkmanager "platforms;android-30"
-  - sudo apt-get uppdate
   - sudo apt-get install software-properties-common
   - sudo add-apt-repository ppa:deadsnakes/ppa
   - sudo apt-get update
