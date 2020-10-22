@@ -13,7 +13,7 @@ Metodos Numéricos (Nombre clave "Sherlock") es una aplicación android, diseña
 * [SymPy](https://github.com/sympy/sympy)
 
 ## Roadmap
-Ver los [problemas abiertos](https://github.com/othneildrew/Best-README-Template/issues) para obtener una lista de características propuestas (y problemas conocidos).
+Ver los [problemas abiertos](https://github.com/begeistert/Sherlock/issues) para obtener una lista de características propuestas (y problemas conocidos).
 
 ## Contribuciones
 Las contribuciones son lo que hacen que la comunidad de código abierto sea un lugar tan increíble para aprender, inspirar y crear. Cualquier contribución que haga es **muy apreciada**. Para cambios importantes, abra un problema primero para discutir qué le gustaría cambiar.
