@@ -15,6 +15,7 @@ env:
     - GRADLE_OPTS='-Dorg.gradle.daemon=false -Dorg.gradle.parallel=false -Dkotlin.incremental=false -DdisablePreDex'
 
 before_install:
+  - touch local.properties
   - sudo service postgresql stop || true
   - sudo service mysql stop || true
   - sudo service memcached stop || true
