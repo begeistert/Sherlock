@@ -13,6 +13,11 @@ android:
     - addon-google_apis-google-19
 before_install:
   - yes | sdkmanager "platforms;android-30"
+  - sudo apt-get -y install python3-pip python-dev
+  - sudo pip3 install -U setuptools
+  - sudo pip3 install -U virtualenvwrapper
+  - python3 -V
+  - pip3 -V
 before_script:
   - touch local.properties
 script:
