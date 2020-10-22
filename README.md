@@ -1,6 +1,6 @@
 # Metodos Numéricos
 
-[![Build Status](https://travis-ci.org/begeistert/Sherlock.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+[![Build Status](https://travis-ci.org/begeistert/Sherlock.svg?branch=master)](https://travis-ci.org/github/begeistert/Sherlock)
 
 ## Acerca del proyecto
 Metodos Numéricos (Nombre clave "Sherlock") es una aplicación android, diseñada para ayudar a estudiantes y cualquier interesado a poder llevar a cabo algunos analisis numéricos, proveyendo de una interfaz simple y fácil de usar, esta es impulsada por [Chaquopy](https://github.com/chaquo/chaquopy), un compilador de Python,diseñado para funcionar bajo la plataforma Android, y a su vez, todas las operaciones matematicas son realizadas con la ayuda de [SymPy](https://github.com/sympy/sympy), una libreria destinada a ser un un sistema de álgebra computacional (CAS), lo que permitio obtener un resultado simplista, pero se espera que cumpla con los siguientes objetivos:
