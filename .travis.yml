@@ -11,13 +11,13 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
     - addon-google_apis-google-19
-  before_install:
-    - yes | sdkmanager "platforms;android-30"
-  before_script:
-    - touch local.properties
-  script:
-     - ./gradlew build connectedCheck
-     - ./gradlew assembleDebug
+before_install:
+  - yes | sdkmanager "platforms;android-30"
+before_script:
+  - touch local.properties
+script:
+   - ./gradlew build connectedCheck
+   - ./gradlew assembleDebug
 
 notifications:
   email:
