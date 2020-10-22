@@ -10,7 +10,7 @@ env:
     - ABI="google_apis;armeabi-v7a"
     - ANDROID_BUILD_TOOLS_VERSION=30.0.2
     - ADB_INSTALL_TIMEOUT=20
-    - PYTHON = 3.6.8
+    - PYTHON=3.6.8
     - QEMU_AUDIO_DRV=none
     - GRADLE_OPTS='-Dorg.gradle.daemon=false -Dorg.gradle.parallel=false -Dkotlin.incremental=false -DdisablePreDex'
 
