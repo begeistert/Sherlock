@@ -1,6 +1,7 @@
 language: android
 jdk: oraclejdk8  
-python: 3.6
+python: 
+  - "3.6"
 android:
   components:
     - platform-tools
