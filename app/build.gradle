@@ -31,7 +31,7 @@ android {
             pip {
 
                 install "sympy"
-                install "IPython"
+                //install "IPython"
                 //install "/Users/ivanmontielcardona/downloads/sympy-1.4-py2.py3-none-any.whl"
 
             }
