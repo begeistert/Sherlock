@@ -27,7 +27,6 @@ before_install:
 before_script:
   - touch local.properties
 script:
-   - ./gradlew build connectedCheck
    - ./gradlew assembleDebug
 
 notifications:
