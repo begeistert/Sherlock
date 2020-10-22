@@ -2,11 +2,7 @@ sudo: required
 dist: trusty
 os: linux
 language: python
-python:
-  - 2.7
-  - 3.5
-  - 3.6
-  - 3.8
+python: 3.6
 env:
   global:
     - EMULATOR_VERSION=18
@@ -14,15 +10,10 @@ env:
     - ABI="google_apis;armeabi-v7a"
     - ANDROID_BUILD_TOOLS_VERSION=30.0.2
     - ADB_INSTALL_TIMEOUT=20
-    - PYTHON=3.6.8
     - QEMU_AUDIO_DRV=none
     - GRADLE_OPTS='-Dorg.gradle.daemon=false -Dorg.gradle.parallel=false -Dkotlin.incremental=false -DdisablePreDex'
 
 before_install:
-  - python --version
-  - pip install -U pip
-  - pip install -U pytest
-  - pip install codecov
   - touch local.properties
   - sudo service postgresql stop || true
   - sudo service mysql stop || true
@@ -57,8 +48,13 @@ before_install:
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
   - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_VERSION;$ABI"
 install:
-    - pip install pipenv --upgrade-strategy=only-if-needed
-    - pipenv install --dev
+
+  - python --version
+  - pip install -U pip
+  - pip install -U pytest
+  - pip install codecov
+  - pip install pipenv --upgrade-strategy=only-if-needed
+  - pipenv install --dev
 script:
   - ./gradlew assembleAndroidTest
   - $ANDROID_HOME/emulator/emulator -avd test -no-window &
