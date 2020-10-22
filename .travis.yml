@@ -21,7 +21,7 @@ matrix:
         - ./gradlew assembleDebug
 
     - language: python
-      python: 3.6
+      python: 3.8
       script:
         - python3 --version
 
