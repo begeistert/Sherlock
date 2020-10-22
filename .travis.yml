@@ -1,8 +1,7 @@
 language: android
-dist: trusty
+dist: xenial
 jdk: oraclejdk8  
-#python: 
-#  - "3.6"
+env: PYTHON=3.6.8
 android:
   components:
     - platform-tools
@@ -13,12 +12,6 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
     - addon-google_apis-google-19
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - python3-3.8
 before_install:
   - yes | sdkmanager "platforms;android-30"
 before_script:
@@ -26,6 +19,3 @@ before_script:
 script:
    - ./gradlew assembleDebug
 
-notifications:
-  email:
-    - ivan.montiel.c@gmail.com
