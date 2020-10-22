@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/begeistert/Sherlock.svg?branch=master)](https://travis-ci.org/github/begeistert/Sherlock)
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
