@@ -19,5 +19,8 @@ android:
 before_install:
   - yes | sdkmanager "platforms;android-30"
 
+before_script:
+  - touch local.properties
+
 script:
     - ./gradlew assembleDebug
