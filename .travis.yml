@@ -57,7 +57,8 @@ before_install:
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
   - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_VERSION;$ABI"
 install:
-  - pip install ".[test]" . # install package + test dependencies
+    - pip install pipenv --upgrade-strategy=only-if-needed
+    - pipenv install --dev
 script:
   - ./gradlew assembleAndroidTest
   - $ANDROID_HOME/emulator/emulator -avd test -no-window &
