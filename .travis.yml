@@ -16,7 +16,7 @@ android:
 addons:
   apt:
     packages:
-    - python
+    - python3.8
 before_install:
   - yes | sdkmanager "platforms;android-30"
 before_script:
