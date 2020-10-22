@@ -1,29 +1,28 @@
-matrix:
-  include:
-    - language: android
-      jdk: oraclejdk8
-      android:
-        components:
-          - platform-tools
-          - tools
-          - build-tools-30.0.2
-          - android-30
-          - extra-google-google_play_services
-          - extra-google-m2repository
-          - extra-android-m2repository
-          - addon-google_apis-google-19
-      before_install:
-        - yes | sdkmanager "platforms;android-30"
-      before_script:
-        - touch local.properties
-      script:
-        - ./gradlew build connectedCheck
-        - ./gradlew assembleDebug
-
-    - language: python
-      python: 3.8
-      script:
-        - python3 --version
+language: android
+jdk: oraclejdk8  
+python: 3.6
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-30.0.2
+    - android-30
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-19
+  before_install:
+    - yes | sdkmanager "platforms;android-30"
+    - sudo apt-get -y install python3-pip python-dev
+    - sudo pip3 install -U setuptools
+    - sudo pip3 install -U virtualenvwrapper
+    - python3 -V
+    - pip3 -V
+  before_script:
+    - touch local.properties
+  script:
+     - ./gradlew build connectedCheck
+     - ./gradlew assembleDebug
 
 notifications:
   email:
