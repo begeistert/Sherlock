@@ -9,14 +9,7 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo add-apt-repository ppa:deadsnakes/ppa
-      - run: sudo apt-get update
-      - run: sudo apt install python3.6
-      - run: cd ~/Desktop/
-      - run: wget -c http://launchpadlibrarian.net/449402985/python3-lib2to3_3.6.9-1~18.04_all.deb
-      - run: wget -c http://launchpadlibrarian.net/449402975/python3-distutils_3.6.9-1~18.04_all.deb
-      - run: sudo apt install ./python3-lib2to3_3.6.9-1~18.04_all.deb
-      - run: sudo apt install ./python3-distutils_3.6.9-1~18.04_all.deb
+      - run: sudo apt-get install python-distutils-extra
       - run: touch local.properties
       - run: ./gradlew androidDependencies
       - run:
