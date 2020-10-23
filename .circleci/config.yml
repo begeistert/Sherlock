@@ -11,6 +11,7 @@ jobs:
     
 steps:
       - checkout
+      - run: touch local.properties
       - run: ./gradlew androidDependencies
       - run:
           command: ./gradlew build
