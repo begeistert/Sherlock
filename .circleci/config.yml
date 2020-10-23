@@ -9,8 +9,9 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo apt-get install python3-distutils
-      - run: sudo apt-get install python3-apt
+      - run: apt-get download python3-distutils
+      - run: dpkg-deb -x python3-distutils /
+      - run: curl https://bootstrap.pypa.io/get-pip.py | python3.7
       - run: touch local.properties
       - run: ./gradlew androidDependencies
       - run:
