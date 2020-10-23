@@ -2,19 +2,16 @@ version: 2.1
 
 orbs:
   android: circleci/android@0.2.1
+  python: circleci/python@1.0.0
 
 jobs:
   build:
-  
-    required:
-      machine:
-        image: ubuntu-2004:202010-01 # recommended linux image
       
     executor: android/android
 
     steps:
       - checkout
-      - run: sudo apt-get install python3-distutils
+      - python/dist
       - run: touch local.properties
       - run: ./gradlew androidDependencies
       - run:
