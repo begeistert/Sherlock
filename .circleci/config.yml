@@ -1,18 +1,30 @@
-version: 2.1
-
-orbs:
-  android: circleci/android@0.2.1
-  python: circleci/python@1.0.0
-
 jobs:
   build:
-      
-    executor: android/android
-
+    executor: python/default
     steps:
       - checkout
-      - python/dist
-      - run: touch local.properties
-      - run: ./gradlew androidDependencies
+      - python/install-packages:
+          args: pytest
+          pkg-manager: pipenv
       - run:
-          command: ./gradlew build
+          command: |
+            pipenv run pytest --version
+          name: Test it
+orbs:
+  python: circleci/python@1.0.0
+  android: circleci/android@0.2.1
+version: 2.1
+workflows:
+  main:
+    jobs:
+      build:
+      
+        executor: android/android
+
+        steps:
+          - checkout
+          - python/dist
+          - run: touch local.properties
+          - run: ./gradlew androidDependencies
+          - run:
+            command: ./gradlew build
