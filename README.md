@@ -22,7 +22,7 @@
 </p>
 
 ## Acerca del proyecto
-Métodos Numéricos (Nombre clave "Sherlock") es una aplicación Android, diseñada para ayudar a estudiantes y cualquier interesado a poder llevar a cabo algunos análisis numéricos, proveyendo de una interfaz simple y fácil de usar, esta es impulsada por [Chaquopy](https://github.com/chaquo/chaquopy), un compilador de Python, diseñado para funcionar bajo la plataforma Android, y a su vez, todas las operaciones matemáticas son realizadas con la ayuda de [SymPy](https://github.com/sympy/sympy), una librería destinada a ser un sistema de álgebra computacional (CAS), lo que permitió obtener un resultado simplista, pero se espera que cumpla con los siguientes objetivos:
+[Métodos Numéricos](https://github.com/begeistert/Sherlock) (Nombre clave: "Sherlock") es una aplicación para Android, diseñada para ayudar a estudiantes y a cualquier interesado a poder llevar a cabo algunos análisis numéricos, proveyendo de una interfaz simple y fácil de usar, esta es impulsada por [Chaquopy](https://github.com/chaquo/chaquopy), un compilador de Python, diseñado para funcionar bajo la plataforma Android, y a su vez, todas las operaciones matemáticas son realizadas con la ayuda de [SymPy](https://github.com/sympy/sympy), una librería destinada a ser un sistema de álgebra computacional (CAS), lo que permitió obtener un resultado simplista, pero se espera que cumpla con los siguientes objetivos:
 * Fácil de usar
 * Una interfaz limpia y sin opciones innecesarias
 * _Nada de anuncios_
@@ -55,7 +55,7 @@ Las contribuciones son lo que hacen que la comunidad de código abierto sea un l
 
 ### Instalación
 
-Sherlock requiere [Android Studio](https://developer.android.com/studio) v4+ para ejecutarse.
+Sherlock requiere [Android Studio](https://developer.android.com/studio) v4+ y [Python](https://www.python.org) v3.5+ para ejecutarse.
 
 1. Clona el repositorio
 ```sh
