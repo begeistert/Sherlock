@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo apt-get install python-distutils-extra
+      - run: ll /usr/bin/python3
       - run: touch local.properties
       - run: ./gradlew androidDependencies
       - run:
