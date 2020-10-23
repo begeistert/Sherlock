@@ -21,6 +21,10 @@
   </p>
 </p>
 
+<p align="center">
+<a href='https://play.google.com/store/apps/details?id=mx.brennen.sherlock&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Disponible en Google Play' width="280" height="100" src='https://play.google.com/intl/en_us/badges/static/images/badges/es-419_badge_web_generic.png'/></a>
+<p/>
+
 ## Acerca del proyecto
 [Métodos Numéricos](https://github.com/begeistert/Sherlock) (Nombre clave: "Sherlock") es una aplicación para Android, diseñada para ayudar a estudiantes y a cualquier interesado a poder llevar a cabo algunos análisis numéricos, proveyendo de una interfaz simple y fácil de usar, esta es impulsada por [Chaquopy](https://github.com/chaquo/chaquopy), un compilador de Python, diseñado para funcionar bajo la plataforma Android, y a su vez, todas las operaciones matemáticas son realizadas con la ayuda de [SymPy](https://github.com/sympy/sympy), una librería destinada a ser un sistema de álgebra computacional (CAS), lo que permitió obtener un resultado simplista, pero se espera que cumpla con los siguientes objetivos:
 * Fácil de usar
