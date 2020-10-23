@@ -11,8 +11,10 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
+      - run: sudo apt update
+      - run: sudo apt install software-properties-common
+      #- run: sudo chown -R circleci:circleci /usr/local/bin
+      #- run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - run: touch local.properties
       - run: ./gradlew androidDependencies
       - run:
