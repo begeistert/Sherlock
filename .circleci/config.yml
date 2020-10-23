@@ -10,7 +10,8 @@ jobs:
     steps:
       - checkout
       - run:
-          command: ./gradlew build
+          - command: ./gradlew androidDependencies
+          - command: ./gradlew build
           
 checkout:
   post: 
