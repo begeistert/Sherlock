@@ -6,8 +6,9 @@ orbs:
 jobs:
   build:
   
-    machine:
-      image: ubuntu-2004:202010-01 # recommended linux image
+    required:
+      machine:
+        image: ubuntu-2004:202010-01 # recommended linux image
       
     executor: android/android
 
