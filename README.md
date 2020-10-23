@@ -1,3 +1,4 @@
+[![Sherlock](https://circleci.com/gh/begeistert/Sherlock.svg?style=svg)](https://circleci.com/gh/begeistert/Sherlock)
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
