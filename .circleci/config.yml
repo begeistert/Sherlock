@@ -13,6 +13,13 @@ jobs:
 
     executor: android/android
 
+    docker: # run the steps with Docker
+      # CircleCI Python images available at: https://hub.docker.com/r/circleci/python/
+      - image: circleci/python:3.6.4
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD
+
     steps:
       - checkout
       - python/dist
