@@ -1,3 +1,12 @@
+
+version: 2.1
+
+orbs:
+  android: circleci/android@0.2.1
+
+jobs:
+  build:
+    executor: android/android
 steps:
       - run:
           name: Build debug APK and release APK
