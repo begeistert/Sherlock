@@ -7,6 +7,7 @@ orbs:
 jobs:
   build:
     executor: android/android
+    
 steps:
       - run:
           name: Build debug APK and release APK
