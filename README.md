@@ -11,13 +11,13 @@
   <p align="center">
     ¡Una aplicación simple para tus cálculos numéricos!
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explora el Proyecto »</strong></a>
+    <a href="https://github.com/begeistert/Sherlock"><strong>Explora el Proyecto »</strong></a>
     <br />
     <br />
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Reportar un Bug</a>
+    <a href="https://github.com/begeistert/Sherlock/issues">Reportar un Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Solicitar una característica</a>
+    <a href="https://github.com/begeistert/Sherlock/issues">Solicitar una característica</a>
   </p>
 </p>
 
