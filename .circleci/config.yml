@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo apt-get install python3-distutils
+      - run: sudo apt-get install libpython3.7-stdlib
       - run: touch local.properties
       - run: ./gradlew androidDependencies
       - run:
