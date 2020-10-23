@@ -11,4 +11,6 @@ jobs:
       - checkout
       - run:
           command: ./gradlew build
+          
+checkout: post: - cp local.properties.ci local.properties
 
