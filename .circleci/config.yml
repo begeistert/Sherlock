@@ -1,30 +1,38 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@0.2.1
+  python: circleci/python@1.0.0
+
 jobs:
   build:
-    executor: python/default
+
+    required:
+      machine:
+        image: ubuntu-2004:202010-01 # recommended linux image
+
+    executor: android/android
+
     steps:
       - checkout
-      - python/install-packages:
-          args: pytest
-          pkg-manager: pipenv
+      - python/dist
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+      - restore_cache:
+      # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
-            pipenv run pytest --version
-          name: Test it
-orbs:
-  python: circleci/python@1.0.0
-  android: circleci/android@0.2.1
-version: 2.1
-workflows:
-  main:
-    jobs:
-      build:
-      
-        executor: android/android
-
-        steps:
-          - checkout
-          - python/dist
-          - run: touch local.properties
-          - run: ./gradlew androidDependencies
-          - run:
-            command: ./gradlew build
+            sudo pip install pipenv
+            pipenv install
+      - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - "venv"
+      - run:
+          command: |
+            pipenv run python manage.py test
+      - run: touch local.properties
+      - run: ./gradlew androidDependencies
+      - run:
+          command: ./gradlew build
